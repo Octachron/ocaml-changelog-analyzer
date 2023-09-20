@@ -79,7 +79,6 @@ module Sapient = struct
   type sep =
     | Comma
     | And
-    | With
     | Semi
   type name = string list
   let name_to_yojson =Json.(list string)
@@ -87,10 +86,15 @@ module Sapient = struct
   let to_yojson (fs:t): (string * Yojson.Safe.t) list =
     fields (Json.list name_to_yojson) fs
 
+  let rec ligature = function
+    | ("report"| "review" as x) :: "and" :: q ->
+      x :: "&&&" :: ligature q
+    | x :: q -> x :: ligature q
+    | [] -> []
+
   let by_connector = function
     | "," -> Group_by.Sep Comma
     | "and" -> Group_by.Sep And
-    | "with" -> Sep With
     | ";" -> Sep Semi
     | x -> Elt x
 
@@ -136,8 +140,24 @@ module Sapient = struct
   let split_section x = match strip_postfix (List.filter ((<>) "") x) with
     | "additional" :: "testing" :: "by" :: q ->
        [Group_by.Sep "tests"; Elt q]
-     (* author section "header"*)
-    | ("help"|"review" | "thought" | "feedback" | "contributions" | "advice" | "design" as x) :: "from" :: q
+   (* alternative name for authors *)
+    | ("code"|"patch") :: "by" :: q
+    | "final" :: "fix" :: "by" :: q ->
+      [Group_by.Sep "authors"; Elt q]
+  (* factorizations *)
+    | "review" :: "&&&" :: "final" :: "fix" :: "by" :: name ->
+      [Sep "review"; Elt name; Sep "authors"; Elt name]
+    | "report" :: "&&&" :: "fix" :: "by" :: name ->
+      [Sep "report"; Elt name; Sep "authors"; Elt name]
+    | x :: "&&&" :: y :: "by" :: name ->
+      [Sep x; Elt name; Sep y; Elt name]
+    | x :: "&&&" :: y :: z :: "by" :: name ->
+      [Sep x; Elt name; Sep (String.concat " " [y;z]); Elt name]
+    | x :: "&&&" :: y :: z :: w :: "by" :: name ->
+      [Sep x; Elt name; Sep (String.concat " " [y;z;w]); Elt name]
+    (* author section "header"*)
+    | ("help"|"review" | "thought" | "feedback" | "contributions" | "advice" | "design" | "discussion" as x)
+      :: ("from"|"with") :: q
     | "patch" :: ("review" as x) :: "by" :: q
     | "with" :: ("help" | "inspiration" as x) :: "from" :: q
     | ("inspiration" as x) :: "from" :: q
@@ -147,6 +167,8 @@ module Sapient = struct
     | _ :: ("fix" as x) :: "by" :: q
     | _ :: ("report" as x) :: "by" :: q
     | ("thanks" as x) :: "to" :: q
+    | "following" :: ("discussion" as x) :: "with" :: q
+    | "with" :: ("thanks" | "feedback" | "contributions" as x) :: ("to"|"from") :: q
     | ("report" as x) :: "par" :: q
     | "additional" :: x :: "by" :: q
     | ("fix" as x) :: "in" :: _ :: "by" :: q
@@ -155,12 +177,18 @@ module Sapient = struct
     | "design":: ("advice" as x) :: "by" :: q
     | ("compatibility" as x) :: "hacking":: "by" :: q
     | ("report" as x) :: "on" :: "the" :: q
-
+    | "additional" :: x :: "with" :: q
     | "superior" :: "implementation" :: x :: "by" :: q
     | ("debugging" as x) :: "&" :: "test" :: ("cases" | "case") :: "by" :: q
-    | x :: "by" :: (_ :: _ as q)
-   | ("review" | "report" as x) :: q
-      -> [Group_by.Sep x; Elt q]
+    | x :: "by" :: q
+    | ("review" | "report" as x) :: q
+      ->
+      if List.is_empty q then
+        [Group_by.Sep x]
+      else
+        [Group_by.Sep x; Elt q]
+    | "designed" :: "with" :: q -> [Group_by.Sep "design"; Elt q]
+
     | ("initial"|"first") :: ("PR"|"patch") :: "by" :: q ->
        [Group_by.Sep "initial PR"; Elt q]
     | "based" :: "on" :: "an" :: "initial" :: "work" :: "by" :: q ->
@@ -185,15 +213,22 @@ module Sapient = struct
 
     | "split" :: "off" :: "from" :: _ :: "by" :: q ->
        [Group_by.Sep "PR editing"; Elt q]
+  (* with grouping *)
+    | [x;y;"with";w;z] ->
+      [Elt [x;y]; Elt [w;z]]
     (* typo fixes *)
     | ["Xavier"; "Leroy"; "Guillaume"; "Munch-Maccagnoni";] ->
       [Elt  ["Xavier"; "Leroy"]; Elt ["Guillaume"; "Munch-Maccagnoni";]]
+    | [] -> []
     | q ->
       if List.length q > 2 then
         [Elt (normalize_name q)]
      else
        [Elt q]
 
+  module Dict = Map.Make(String)
+  let merge l =
+    l |> Dict.of_list |> Dict.bindings
 
   let parse authors =
     let split_punct s =
@@ -209,10 +244,13 @@ module Sapient = struct
       |> List.to_seq
       |> Seq.filter (function "" -> false | _ -> true)
       |> Seq.concat_map split_punct
-      |> Group_by.seq ~debug:Pp.string ~and_then:Fun.id ~parent:Comma by_connector
+      |> List.of_seq
+      |> ligature
+      |> Group_by.list ~debug:Pp.string ~and_then:Fun.id ~parent:Comma by_connector
       |> List.map snd
       |> List.concat_map split_section
       |> Group_by.list ~debug:Pp.(list string) ~and_then:Fun.id ~parent:"authors" Fun.id
+      |> merge
     in words
 
 
@@ -243,7 +281,7 @@ module Sapient = struct
      | [] -> no_authors [] (Format.dprintf "no text")
      | last :: q as rev_lines ->
        match String.rindex_opt last ')', String.rindex_opt last '(' with
-       | Some close, Some open_ when open_ < close ->
+       | Some close, Some open_ when open_ + 1 < close ->
          let before = String.concat "\n" (List.rev @@ String.sub last 0 open_ :: q) in
          let after = String.sub last (open_+1) (close - open_ - 1) in
          let empty_tail, tail = check_tail close last in
