@@ -1,1 +1,4 @@
-(executable (name changestat) (libraries angstrom))
+(executable
+ (name changestat)
+ (libraries angstrom yojson)
+)
