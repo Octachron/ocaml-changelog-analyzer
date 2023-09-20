@@ -140,10 +140,12 @@ module Sapient = struct
     | "design":: ("advice" as x) :: "by" :: q
     | ("compatibility" as x) :: "hacking":: "by" :: q
     | ("report" as x) :: "on" :: "the" :: q
-    | ("review" | "report" as x) :: q
+
     | "superior" :: "implementation" :: x :: "by" :: q
     | ("debugging" as x) :: "&" :: "test" :: ("cases" | "case") :: "by" :: q
-    | x :: "by" :: (_ :: _ as q) -> [Group_by.Sep x; Elt q]
+    | x :: "by" :: (_ :: _ as q)
+   | ("review" | "report" as x) :: q
+      -> [Group_by.Sep x; Elt q]
     | ("initial"|"first") :: ("PR"|"patch") :: "by" :: q ->
        [Group_by.Sep "initial PR"; Elt q]
     | "based" :: "on" :: "an" :: "initial" :: "work" :: "by" :: q ->
@@ -302,7 +304,10 @@ module Section = struct
     | 'A'..'Z' | 'a' .. 'z' | ' ' -> true
     | _ -> false
 
-  let old_style_header = satisfy is_capital *> take_while is_alpha_or_space <* char ':'
+  let old_style_header =
+    let* start = satisfy is_capital in
+    let* rest = take_while is_alpha_or_space <* char ':' in
+    return (String.init 1 (const start) ^ rest)
 
   let section_header = markdown_header <|> old_style_header
 
