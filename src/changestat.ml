@@ -87,17 +87,38 @@ module Sapient = struct
 
 
   let normalize_name = function
+    (* groups *)
     | ["the"; "Tarides" ; "multicore";  "team"] -> ["Tarides multicore team"]
     | ["the"; "OCaml"; "core"; "development"; "team"] -> ["OCaml core development team"]
-    | ["many"; "other"; "valued"; "reviewers"] -> ["many other valued reviewers"]
+    | ["many"; "other"; "valued"; "reviewers"] | ["Many"; "fine"; "eyes"] -> ["many"]
     | ["reviewing"; "each"; "other"; "without"; "self-loops";] ->
       ["Author group review"]
-    | ["Xavier"; "Van"; "de"; "Woestyne" ] as q ->  q
+   (* typo *)
+    | (["Nicolas"; "Ojeda"; "Bar"])  -> ["Nicolás"; "Ojeda"; "Bär"]
+    | ["Jacques-"; "Henri"; "Jourdan"] -> ["Jacques-Henri"; "Jourdan"]
+  (* Long names*)
+    | (["Paul-Elliot"; "Anglès"; "d'Auriac"] as q)
+    | (["Antonio"; "Nuno"; "Monteiro"] as q)
+    | ( [ _; ("von"|"De"|"Van"); _] as q )
+    | (["Richard"; "L"; "Ford"] as q)
+    | (["Fabrice"; "Le"; "Fessant"] as q)
+    | (["Nicolás"; "Ojeda"; "Bär"] as q)
+    | (["Demi"; "Marie"; "Obenour"] as q)
+    | (["Raphael"; "Sousa"; "Santos"] as q)
+    | (["Fu"; "Yong"; "Quah"] as q)
+    | (["San"; "Vũ"; "Ngọc"] as q)
+    | (["Isaac"; {|"Izzy"|}; "Avram"] as q)
+    | (["Gabriel"; "de"; "Perthuis"] as q)
+    | (["John"; "Christopher"; "McAlpine"] as q)
+    | (["Peter"; "Michael"; "Green"] as q)
+    | (["Khoo"; "Yit"; "Phang"] as q)
+    | ("Github"|"github") :: "user" :: q
+    | (["Xavier"; "Van"; "de"; "Woestyne" ] as q) ->  q
     | x ->
       Format.eprintf "Complex name or error:%s@." (String.concat " " x);
       x
 
-  let split_section x = match strip_postfix x with
+  let split_section x = match strip_postfix (List.filter ((<>) "") x) with
     | "additional" :: "testing" :: "by" :: q ->
        [Group_by.Sep "tests"; Elt q]
      (* author section "header"*)
@@ -119,6 +140,7 @@ module Sapient = struct
     | "design":: ("advice" as x) :: "by" :: q
     | ("compatibility" as x) :: "hacking":: "by" :: q
     | ("report" as x) :: "on" :: "the" :: q
+    | ("review" | "report" as x) :: q
     | "superior" :: "implementation" :: x :: "by" :: q
     | ("debugging" as x) :: "&" :: "test" :: ("cases" | "case") :: "by" :: q
     | x :: "by" :: (_ :: _ as q) -> [Group_by.Sep x; Elt q]
@@ -150,7 +172,7 @@ module Sapient = struct
     | ["Xavier"; "Leroy"; "Guillaume"; "Munch-Maccagnoni";] ->
       [Elt  ["Xavier"; "Leroy"]; Elt ["Guillaume"; "Munch-Maccagnoni";]]
     | q ->
-      if List.length q > 3 then
+      if List.length q > 2 then
         [Elt (normalize_name q)]
      else
        [Elt q]
