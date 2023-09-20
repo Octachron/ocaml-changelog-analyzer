@@ -10,6 +10,19 @@ module Pp = struct
   let list ?(sep=comma)= Format.pp_print_list ~pp_sep:sep
 end
 
+module Json = struct
+  let string x = `String x
+  let list inner x = `List (List.map inner x)
+end
+
+
+type 'a fields = (string * 'a) list
+
+let fields to_json fs =
+    List.map (fun (x,l) -> x, to_json l) fs
+
+let fields_to_yojson to_json fs =
+  `Assoc (fields to_json fs)
 
 module Group_by = struct
   type ('a,'b) split =
@@ -68,9 +81,11 @@ module Sapient = struct
     | And
     | With
     | Semi
-
   type name = string list
-  type t = (string * name list) list
+  let name_to_yojson =Json.(list string)
+  type t = name list fields
+  let to_yojson (fs:t): (string * Yojson.Safe.t) list =
+    fields (Json.list name_to_yojson) fs
 
   let by_connector = function
     | "," -> Group_by.Sep Comma
@@ -329,7 +344,20 @@ module Entry = struct
       breaking:bool;
       sapients: Sapient.t
     }
+    let to_yojson x: Yojson.Safe.t =
+      `Assoc ([
+        "references", `List (List.map (fun n -> `Int n) x.references);
+        "text", `String x.text;
+        "breaking change", `Bool x.breaking
+      ] @ Sapient.to_yojson x.sapients
+    )
 
+  type any =
+    | Doc of string
+    | Entry of t
+  let any_to_yojson = function
+    | Doc x -> `Assoc ["doc", Json.string x ]
+    | Entry x -> to_yojson x
 
   let ref = (string "#" <|> string "RFC" <|> string "ocaml/RFCs") *> nums
   let refs = (space *> sep_by1 comma ref) <?> "refs"
@@ -358,16 +386,16 @@ module Entry = struct
   let parse_entry lines =
     let main, authors = Sapient.split (List.rev lines) in
     match parse_string ~consume:All (parse_flat_entry authors <?> "entry")  main with
-    | Ok x -> `Entry x
+    | Ok x -> Entry x
     | Error err ->
       Format.eprintf "@[<v> error = %s@, main=%S@]@." err main;
-      `Doc main
+      Doc main
 
   let debug ppf s = Format.fprintf ppf "(group by entry)%s" s
   let group_by x =
     Group_by.list ~parent:`Doc ~debug ~and_then:Fun.id by_entry x
     |> List.filter_map (function
-        | `Doc, (_ :: _  as lines) -> Some (`Doc (String.concat "" @@ List.rev lines))
+        | `Doc, (_ :: _  as lines) -> Some (Doc (String.concat "" @@ List.rev lines))
         | `Doc, [] -> None
         | `Start x, lines -> Some (parse_entry (x::lines))
       )
@@ -387,10 +415,11 @@ module Entry = struct
       (Pp.list Sapient.pp) x.sapients
 
   let pp_any ppf = function
-    | `Doc x -> Format.fprintf ppf "Doc [%s]" x
-    | `Entry x -> pp ppf x
+    | Doc x -> Format.fprintf ppf "Doc [%s]" x
+    | Entry x -> pp ppf x
 
 end
+
 
 let line ppf () = Format.fprintf ppf "@,"
 
@@ -413,6 +442,9 @@ let summary ppf x =
   Format.fprintf ppf "@[<v>%a@]"
   (Format.pp_print_list ~pp_sep:line summary_release) x
 
+type t = Entry.any list fields fields
+let to_yojson: t -> Yojson.Safe.t =
+  fields_to_yojson (fields_to_yojson (Json.list Entry.any_to_yojson))
 
 let group_all l =
   l
@@ -431,5 +463,6 @@ let () =
       )
   in
   let groups = group_all lines in
-  Format.printf "@[<v>Summary=@,%a@]@."
-   summary groups
+  let json = to_yojson groups in
+  Format.printf "@[<v>%a@]@."
+   (Yojson.Safe.pretty_print ~std:false)  json
