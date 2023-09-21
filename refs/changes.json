@@ -21426,9 +21426,8 @@
       },
       {
         "references": [ 5338 ],
-        "text": "sanitize.sh has windows style end-of-lines ",
-        "breaking change": false,
-        "authors": [ [ "mingw" ] ]
+        "text": "(mingw) sanitize.sh has windows style end-of-lines",
+        "breaking change": false
       },
       {
         "references": [ 5344 ],
