@@ -12032,7 +12032,7 @@
         "references": [ 1649 ],
         "text": "change compilation order of toplevel definitions, so that some\n  warnings emitted by the bytecode compiler appear more in-order than before.\n  ",
         "breaking change": false,
-        "authors": [ [ "Luc", "Maranget" ], [ "advice" ] ],
+        "authors": [ [ "Luc", "Maranget" ] ],
         "review": [ [ "Damien", "Doligez" ] ]
       },
       {
