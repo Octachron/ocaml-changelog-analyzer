@@ -1,0 +1,4 @@
+(executable
+ (name analyzer)
+ (libraries yojson changelog fmt)
+)

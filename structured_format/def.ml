@@ -120,8 +120,10 @@ module Pp = struct
   let semi ppf () = Format.fprintf ppf ";@ "
   let visible_space ppf () = Format.fprintf ppf "⍽"
 
+  let name ppf x =  Fmt.(list ~sep:visible_space string) ppf x
+
   let sapient ppf x =
-    Format.fprintf ppf "[%a]" Fmt.(list ~sep:visible_space string) x
+    Format.fprintf ppf "[%a]" name x
 
   let sapients ppf (title,x) =
     Format.fprintf ppf "%s={@[%a@]}" title (Fmt.list sapient) x
