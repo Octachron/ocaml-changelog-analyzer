@@ -1174,8 +1174,7 @@
         "text": "poll for signals in long-running polymorphic\n  comparisons.\n  ",
         "breaking change": false,
         "authors": [
-          [ "B" ],
-          [ "Szilvasy" ],
+          [ "B.", "Szilvasy" ],
           [ "Gabriel", "Scherer" ],
           [ "Xavier", "Leroy" ]
         ],
@@ -4010,7 +4009,7 @@
         "breaking change": false,
         "PR editing": [ [ "Kate", "Deplaix" ] ],
         "authors": [ [ "Armaël", "Guéneau" ] ],
-        "report": [ [ "Ricardo", "M" ], [ "Correia" ] ],
+        "report": [ [ "Ricardo", "M.", "Correia" ] ],
         "review": [ [ "Gabriel", "Scherer" ] ]
       },
       {
@@ -4593,8 +4592,7 @@
           [ "Jacques-Henri", "Jourdan" ],
           [ "Xavier", "Leroy" ],
           [ "Guillaume", "Melquiond" ],
-          [ "Perry", "E" ],
-          [ "Metzger" ],
+          [ "Perry", "E.", "Metzger" ],
           [ "Runhang", "Li" ],
           [ "Gabriel", "Scherer" ],
           [ "Mark", "Shinwell" ],
@@ -6538,8 +6536,7 @@
         "breaking change": false,
         "authors": [ [ "Florian", "Angeletti" ] ],
         "review": [
-          [ "Hezekiah", "M" ],
-          [ "Carty" ],
+          [ "Hezekiah", "M.", "Carty" ],
           [ "Gabriel", "Scherer" ],
           [ "Marcello", "Seri" ]
         ]
@@ -7420,8 +7417,7 @@
         "breaking change": false,
         "authors": [ [ "Jeremy", "Yallop" ] ],
         "review": [
-          [ "Hezekiah", "M" ],
-          [ "Carty" ],
+          [ "Hezekiah", "M.", "Carty" ],
           [ "Gabriel", "Scherer" ],
           [ "Gabriel", "Radanne" ]
         ]
@@ -8819,7 +8815,7 @@
         "references": [ 8834 ],
         "text": ", `ocaml`: adhere to the XDG base directory specification to\n  locate an `.ocamlinit` file. Reads an `$XDG_CONFIG_HOME/ocaml/init.ml`\n  file before trying to lookup `~/.ocamlinit`. On Windows the behaviour\n  is unchanged.\n  ",
         "breaking change": true,
-        "authors": [ [ "Daniel", "C" ], [ "Bünzli" ] ],
+        "authors": [ [ "Daniel", "C.", "Bünzli" ] ],
         "review": [
           [ "David", "Allsopp" ],
           [ "Armaël", "Guéneau" ],
@@ -10661,8 +10657,7 @@
         "authors": [ [ "Florian", "Angeletti" ] ],
         "review": [
           [ "Daniel", "Bünzli" ],
-          [ "Perry", "E" ],
-          [ "Metzger" ],
+          [ "Perry", "E.", "Metzger" ],
           [ "Gabriel", "Scherer" ]
         ]
       },
@@ -10685,9 +10680,7 @@
         "text": "html manual split compilerlibs from stdlib in the html\n  index of modules\n  ",
         "breaking change": false,
         "authors": [ [ "Florian", "Angeletti" ] ],
-        "review": [
-          [ "Perry", "E" ], [ "Metzger" ], [ "Gabriel", "Scherer" ]
-        ]
+        "review": [ [ "Perry", "E.", "Metzger" ], [ "Gabriel", "Scherer" ] ]
       },
       {
         "references": [ 1209, 2008 ],
@@ -10703,8 +10696,7 @@
         "authors": [ [ "Florian", "Angeletti" ] ],
         "review": [
           [ "Xavier", "Clerc" ],
-          [ "Perry", "E" ],
-          [ "Metzger" ],
+          [ "Perry", "E.", "Metzger" ],
           [ "Gabriel", "Scherer" ],
           [ "Jeremy", "Yallop" ]
         ]
@@ -10737,8 +10729,7 @@
         "authors": [ [ "Florian", "Angeletti" ] ],
         "review": [
           [ "Daniel", "Bünzli" ],
-          [ "Perry", "E" ],
-          [ "Metzger" ],
+          [ "Perry", "E.", "Metzger" ],
           [ "Gabriel", "Scherer" ]
         ]
       },
@@ -10747,7 +10738,7 @@
         "text": "document \"exception A | pat\" patterns\n  ",
         "breaking change": false,
         "authors": [ [ "Florian", "Angeletti" ] ],
-        "review": [ [ "Perry", "E" ], [ "Metzger" ], [ "Jeremy", "Yallop" ] ]
+        "review": [ [ "Perry", "E.", "Metzger" ], [ "Jeremy", "Yallop" ] ]
       },
       {
         "references": [ 8508 ],
@@ -11306,8 +11297,7 @@
         "authors": [ [ "Damien", "Doligez" ], [ "Gabriel", "Scherer" ] ],
         "review": [
           [ "Sébastien", "Hinderer" ],
-          [ "Perry", "E" ],
-          [ "Metzger" ],
+          [ "Perry", "E.", "Metzger" ],
           [ "Xavier", "Leroy" ],
           [ "David", "Allsopp" ]
         ]
@@ -11582,9 +11572,7 @@
         "text": "in Unix.in_channel_of_descr and Unix.out_channel_of_descr,\n  raise an error if the given file description is not suitable for\n  character-oriented I/O, for example if it is a block device or a\n  datagram socket.\n  ",
         "breaking change": false,
         "authors": [ [ "Xavier", "Leroy" ] ],
-        "review": [
-          [ "Jérémie", "Dimino" ], [ "Perry", "E" ], [ "Metzger" ]
-        ]
+        "review": [ [ "Jérémie", "Dimino" ], [ "Perry", "E.", "Metzger" ] ]
       },
       {
         "references": [ 7799, 1820 ],
@@ -12391,8 +12379,7 @@
           [ "Florian", "Angeletti" ],
           [ "Xavier", "Leroy" ],
           [ "Gabriel", "Radanne" ],
-          [ "Perry", "E" ],
-          [ "Metzger" ],
+          [ "Perry", "E.", "Metzger" ],
           [ "Gabriel", "Scherer" ]
         ]
       },
@@ -12411,8 +12398,7 @@
         "authors": [ [ "Charles", "Chamberlain" ] ],
         "review": [
           [ "Daniel", "Bünzli" ],
-          [ "Perry", "E" ],
-          [ "Metzger" ],
+          [ "Perry", "E.", "Metzger" ],
           [ "Josh", "Berdine" ],
           [ "Gabriel", "Scherer" ]
         ]
@@ -12421,7 +12407,7 @@
         "references": [ 1779 ],
         "text": "integrate the Bigarray documentation into the main manual.\n  ",
         "breaking change": false,
-        "authors": [ [ "Perry", "E" ], [ "Metzger" ] ],
+        "authors": [ [ "Perry", "E.", "Metzger" ] ],
         "review": [ [ "Florian", "Angeletti" ], [ "Xavier", "Clerc" ] ]
       }
     ],
@@ -13170,8 +13156,7 @@
         "breaking change": true,
         "authors": [ [ "Markus", "Mottl" ] ],
         "review": [
-          [ "Hezekiah", "M" ],
-          [ "Carty" ],
+          [ "Hezekiah", "M.", "Carty" ],
           [ "Jérémie", "Dimino" ],
           [ "Damien", "Doligez" ],
           [ "Alain", "Frisch" ],
@@ -14553,7 +14538,7 @@
         "text": "`Weak.get_copy` `Ephemeron.*_copy` doesn't copy\n  custom blocks anymore\n  ",
         "breaking change": false,
         "authors": [ [ "François", "Bobot" ], [ "Alain", "Frisch" ] ],
-        "report": [ [ "by", "Martin", "R" ], [ "Neuhäußer" ] ],
+        "report": [ [ "by", "Martin", "R.", "Neuhäußer" ] ],
         "review": [ [ "Thomas", "Braibant" ], [ "Damien", "Doligez" ] ]
       },
       {
@@ -14598,9 +14583,7 @@
         "authors": [ [ "Gabriel", "de", "Perthuis" ] ],
         "contributions": [ [ "Alain", "Frisch" ] ],
         "report": [ [ "Gerd", "Stolpmann" ] ],
-        "review": [
-          [ "Hezekiah", "M" ], [ "Carty" ], [ "Simon", "Cruanes" ]
-        ]
+        "review": [ [ "Hezekiah", "M.", "Carty" ], [ "Simon", "Cruanes" ] ]
       },
       {
         "references": [ 875 ],
@@ -14738,8 +14721,7 @@
         "review": [
           [ "Gabriel", "Scherer" ],
           [ "Alain", "Frisch" ],
-          [ "Hezekiah", "M" ],
-          [ "Carty" ]
+          [ "Hezekiah", "M.", "Carty" ]
         ]
       },
       {
@@ -15944,7 +15926,7 @@
         "text": "\"./configure -safe-string\" to get a system where\n  \"-unsafe-string\" is not allowed, thus giving stronger non-local\n  guarantees about immutability of strings\n  ",
         "breaking change": false,
         "authors": [ [ "Alain", "Frisch" ] ],
-        "review": [ [ "Hezekiah", "M" ], [ "Carty" ] ]
+        "review": [ [ "Hezekiah", "M.", "Carty" ] ]
       }
     ],
     " Bug fixes:": [
@@ -18999,7 +18981,7 @@
         "text": "ocamldep support for \"-open M\"\n  ",
         "breaking change": false,
         "authors": [ [ "Gabriel", "Scherer" ] ],
-        "report": [ [ "Hezekiah", "M" ], [ "Carty" ] ],
+        "report": [ [ "Hezekiah", "M.", "Carty" ] ],
         "review": [ [ "Damien", "Doligez" ] ]
       },
       {
@@ -20783,7 +20765,7 @@
         "text": "'ocamlbuild -use-ocamlfind -tag thread -package threads t.cma' fails\n  ",
         "breaking change": false,
         "authors": [ [ "Gabriel", "Scherer" ] ],
-        "report": [ [ "Hezekiah", "M" ], [ "Carty" ] ]
+        "report": [ [ "Hezekiah", "M.", "Carty" ] ]
       },
       {
         "references": [ 6069 ],

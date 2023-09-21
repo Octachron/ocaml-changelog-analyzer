@@ -151,7 +151,8 @@ let parse authors =
   let split_punct s =
     let len = String.length s in
     let last = s.[len-1] in
-    if len > 1 && (last = ',' || last = ';' || last = '.') then
+    if (len > 1 && (last = ',' || last = ';')) ||
+       (len > 2 && last = '.') then
       Seq.cons (String.sub s 0 (len-1))  (Seq.return ",")
     else
       Seq.return s
