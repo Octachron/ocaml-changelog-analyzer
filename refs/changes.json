@@ -879,7 +879,7 @@
         "text": "Rename the type of the accumulator\n  of fold functions to 'acc:\n  fold_left : ('acc -> 'a -> 'acc) -> 'acc -> 'a list -> 'acc\n  fold_right : ('a -> 'acc -> 'acc) -> 'a list -> 'acc -> 'acc\n  fold_left_map : ('acc -> 'a -> 'acc * 'b) -> 'acc -> 'a list -> 'acc * 'b list\n  ...\n  ",
         "breaking change": false,
         "authors": [
-          [ "Valentin", "Gatien-Baron" ], [ "Francois", "Berenger" ]
+          [ "Valentin", "Gatien-Baron" ], [ "François", "Berenger" ]
         ],
         "review": [
           [ "Gabriel", "Scherer" ], [ "Nicolás", "Ojeda", "Bär" ]
@@ -2134,7 +2134,7 @@
         "references": [ 11450, 12018 ],
         "text": "Fix erroneous functor error messages that were too eager to\n  cast `struct end` functor arguments as unit modules in `F(struct end)`.\n  ",
         "breaking change": false,
-        "authors": [ [ "Florian", "Angetti" ] ],
+        "authors": [ [ "Florian", "Angeletti" ] ],
         "review": [ [ "Gabriel", "Scherer" ] ]
       },
       {
@@ -4903,7 +4903,7 @@
         "text": "Add Random.full_int which allows 62-bit bounds on 64-bit\n  systems.\n  ",
         "breaking change": false,
         "authors": [ [ "David", "Allsopp" ] ],
-        "request": [ [ "Francois", "Berenger" ] ],
+        "request": [ [ "François", "Berenger" ] ],
         "review": [ [ "Xavier", "Leroy" ], [ "Damien", "Doligez" ] ]
       },
       {
@@ -5502,7 +5502,7 @@
         "text": "Check that sizes and offsets in stack frame descriptors\n  do not overflow the 16-bit fields where they are stored.\n  ",
         "breaking change": false,
         "authors": [ [ "Xavier", "Leroy" ] ],
-        "report": [ [ "Github", "user", "pveber" ] ],
+        "report": [ [ "pveber" ] ],
         "review": [ [ "Gabriel", "Scherer" ] ]
       },
       {
@@ -5510,7 +5510,7 @@
         "text": "In the toplevel REPL, don't use the cache\n  of included directories, so that files created or deleted while\n  the REPL is running are correctly handled.\n  ",
         "breaking change": false,
         "authors": [ [ "Xavier", "Leroy" ] ],
-        "report": [ [ "Github", "user", "quakerquickoats" ] ],
+        "report": [ [ "quakerquickoats" ] ],
         "review": [ [ "Jeremie", "Dimino" ] ]
       },
       {
@@ -5576,7 +5576,7 @@
         "text": "Enforce right-to-left evaluation order for Lstaticraise\n  ",
         "breaking change": false,
         "authors": [ [ "Vincent", "Laviron" ] ],
-        "report": [ [ "Github", "user", "Ngoguey42" ] ],
+        "report": [ [ "Ngoguey42" ] ],
         "review": [ [ "Gabriel", "Scherer" ] ]
       },
       {
@@ -6132,7 +6132,7 @@
         "references": [ 10050 ],
         "text": "update {PUSH,}OFFSETCLOSURE* bytecode instructions to match new\n  representation for closures\n  ",
         "breaking change": false,
-        "authors": [ [ "Nathanaël", "Courant" ] ],
+        "authors": [ [ "Nathanaëlle", "Courant" ] ],
         "review": [ [ "Xavier", "Leroy" ] ]
       },
       {
@@ -6764,7 +6764,7 @@
         "text": "fix pprint of extension constructors (and exceptions) that rebind\n   ",
         "breaking change": false,
         "authors": [ [ "Chet", "Murthy" ] ],
-        "review": [ [ "octachron@" ] ]
+        "review": [ [ "Florian", "Angeletti" ] ]
       },
       {
         "references": [ 9963 ],
@@ -8815,7 +8815,7 @@
         "references": [ 8834 ],
         "text": ", `ocaml`: adhere to the XDG base directory specification to\n  locate an `.ocamlinit` file. Reads an `$XDG_CONFIG_HOME/ocaml/init.ml`\n  file before trying to lookup `~/.ocamlinit`. On Windows the behaviour\n  is unchanged.\n  ",
         "breaking change": true,
-        "authors": [ [ "Daniel", "C.", "Bünzli" ] ],
+        "authors": [ [ "Daniel", "Bünzli" ] ],
         "review": [
           [ "David", "Allsopp" ],
           [ "Armaël", "Guéneau" ],
@@ -10327,7 +10327,7 @@
         "text": "added Unix.fsync\n  ",
         "breaking change": false,
         "authors": [
-          [ "Francois", "Berenger" ], [ "Nicolás", "Ojeda", "Bär" ]
+          [ "François", "Berenger" ], [ "Nicolás", "Ojeda", "Bär" ]
         ],
         "review": [
           [ "Daniel", "Bünzli" ], [ "David", "Allsopp" ], [ "ygrek" ]

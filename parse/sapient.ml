@@ -22,7 +22,7 @@ let strip_postfix q = match List.rev q with
   | _ -> q
 
 
-let normalize_name = function
+let normalize_name ~warn = function
   (* groups *)
   | ["the"; "Tarides" ; "multicore";  "team"] -> ["Tarides multicore team"]
   | ["the"; "OCaml"; "core"; "development"; "team"] -> ["OCaml core development team"]
@@ -32,6 +32,12 @@ let normalize_name = function
   (* typo *)
   | (["Nicolas"; "Ojeda"; "Bar"])  -> ["Nicolás"; "Ojeda"; "Bär"]
   | ["Jacques-"; "Henri"; "Jourdan"] -> ["Jacques-Henri"; "Jourdan"]
+  | ["Florian"; "Angetti"] -> ["Florian"; "Angeletti"]
+  | ["Francois"; "Berenger"] -> ["François"; "Berenger"]
+  | ["Nathanaël"; "Courant"] -> ["Nathanaëlle"; "Courant"]
+  (* pseudo*)
+  | ["octachron@"] -> ["Florian"; "Angeletti"]
+  | ["Daniel"; "C."; "Bünzli"] ->  ["Daniel"; "Bünzli"]
   (* Long names*)
   | (["Paul-Elliot"; "Anglès"; "d'Auriac"] as q)
   | (["Antonio"; "Nuno"; "Monteiro"] as q)
@@ -51,16 +57,19 @@ let normalize_name = function
   | ("Github"|"github") :: "user" :: q
   | (["Xavier"; "Van"; "de"; "Woestyne" ] as q) ->  q
   | x ->
-    Format.eprintf "Complex name or error:%s@." (String.concat " " x);
+    if warn then Format.eprintf "Complex name or error:%s@." (String.concat " " x);
     x
+
+
+let elt ?(warn=false)  x= Group_by.Elt (normalize_name ~warn x)
 
 let split_section x = match strip_postfix (List.filter ((<>) "") x) with
   | "additional" :: "testing" :: "by" :: q ->
-    [Group_by.Sep "tests"; Elt q]
+    [Group_by.Sep "tests"; elt q]
   (* alternative name for authors *)
   | ("code"|"patch") :: "by" :: q
   | "final" :: "fix" :: "by" :: q ->
-    [Group_by.Sep "authors"; Elt q]
+    [Group_by.Sep "authors"; elt q]
   (* factorizations *)
   | "review" :: "&&&" :: "final" :: "fix" :: "by" :: name ->
     [Sep "review"; Elt name; Sep "authors"; Elt name]
@@ -69,9 +78,9 @@ let split_section x = match strip_postfix (List.filter ((<>) "") x) with
   | x :: "&&&" :: y :: "by" :: name ->
     [Sep x; Elt name; Sep y; Elt name]
   | x :: "&&&" :: y :: z :: "by" :: name ->
-    [Sep x; Elt name; Sep (String.concat " " [y;z]); Elt name]
+    [Sep x; Elt name; Sep (String.concat " " [y;z]); elt name]
   | x :: "&&&" :: y :: z :: w :: "by" :: name ->
-    [Sep x; Elt name; Sep (String.concat " " [y;z;w]); Elt name]
+    [Sep x; Elt name; Sep (String.concat " " [y;z;w]); elt name]
   (* author section "header"*)
   | ("help"|"review" | "thought" | "feedback" | "contributions" | "advice" | "design" | "discussion" as x)
     :: ("from"|"with") :: q
@@ -103,33 +112,33 @@ let split_section x = match strip_postfix (List.filter ((<>) "") x) with
     if List.is_empty q then
       [Group_by.Sep x]
     else
-      [Group_by.Sep x; Elt q]
-  | "designed" :: "with" :: q -> [Group_by.Sep "design"; Elt q]
+      [Group_by.Sep x; elt q]
+  | "designed" :: "with" :: q -> [Group_by.Sep "design"; elt q]
 
   | ("initial"|"first") :: ("PR"|"patch") :: "by" :: q ->
-    [Group_by.Sep "initial PR"; Elt q]
+    [Group_by.Sep "initial PR"; elt q]
   | "based" :: "on" :: "an" :: "initial" :: "work" :: "by" :: q ->
-    [Group_by.Sep "initial work"; Elt q]
+    [Group_by.Sep "initial work"; elt q]
   | "feedbacks" :: "from" :: q ->
-    [Group_by.Sep "feedback"; Elt q]
+    [Group_by.Sep "feedback"; elt q]
   | "reports" :: "from" :: q ->
-    [Group_by.Sep "report"; Elt q]
+    [Group_by.Sep "report"; elt q]
   | ("feature" | "original") :: "request" :: ("from"|"by") :: q ->
-    [Group_by.Sep "feature request"; Elt q]
+    [Group_by.Sep "feature request"; elt q]
   | "bug" :: "reported" :: q
   | "regression" :: "spotted" :: q ->
-    [Group_by.Sep "report"; Elt q]
+    [Group_by.Sep "report"; elt q]
   | "stealth" :: "commit" :: "by" :: q ->
-    [ Sep "stealth commit"; Elt q]
+    [ Sep "stealth commit"; elt q]
   | x :: y :: ("review" | "reviewed") :: "by" :: q ->
-    [Elt [x;y]; Sep "review"; Elt q]
+    [Elt [x;y]; Sep "review"; elt q]
   | x :: y :: z :: ("review" | "reviewed") :: "by" :: q ->
-    [Elt [x;y;z]; Sep "review"; Elt q]
+    [Elt [x;y;z]; Sep "review"; elt q]
   | _ :: "bug" :: "report" :: "by" :: q ->
-    [Group_by.Sep "bug report"; Elt q]
+    [Group_by.Sep "bug report"; elt q]
 
   | "split" :: "off" :: "from" :: _ :: "by" :: q ->
-    [Group_by.Sep "PR editing"; Elt q]
+    [Group_by.Sep "PR editing"; elt q]
   (* with grouping *)
   | [x;y;"with";w;z] ->
     [Elt [x;y]; Elt [w;z]]
@@ -138,10 +147,8 @@ let split_section x = match strip_postfix (List.filter ((<>) "") x) with
     [Elt  ["Xavier"; "Leroy"]; Elt ["Guillaume"; "Munch-Maccagnoni";]]
   | [] -> []
   | q ->
-    if List.length q > 2 then
-      [Elt (normalize_name q)]
-    else
-      [Elt q]
+    let warn = List.length q > 2 in
+      [Elt (normalize_name ~warn q)]
 
 module Dict = Map.Make(String)
 let merge l =
