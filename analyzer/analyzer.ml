@@ -25,17 +25,18 @@ let fold_entry start f (x:Changelog.Def.t) =
     )
     x
 
-let authors x =
-  let add_author set _ _ = function
+let count_category cat x =
+  let add set _ _ = function
     | Changelog.Def.Doc _ -> set
     | Entry e ->
       let s = Dict.of_list e.Changelog.Def.sapients in
       List.fold_left (fun s x -> Name_set.add x s)
         set
-        s.%("authors")
+        s.%(cat)
   in
-  fold_entry Name_set.empty
-   add_author x
+  fold_entry Name_set.empty add x
+
+
 
 
 let () =
@@ -43,7 +44,13 @@ let () =
   Format.printf "Analyzing %s@." filename;
   let json = Yojson.Safe.from_file filename in
   let changelog = Changelog.Def.from_yojson json in
-  let authors = authors changelog in
-  Fmt.pr "@[<v>%d Authors@,%a@]@."
+  let authors = count_category "authors" changelog in
+  let reviewers = count_category "review" changelog in
+  Fmt.pr
+    "@[<v>%d Authors@,%a@,\
+    ---------------------------------------------@,\
+     %d reviewer@,%a@]@."
     (Name_set.cardinal authors)
     Fmt.(list Changelog.Def.Pp.name) (Name_set.elements authors)
+    (Name_set.cardinal reviewers)
+    Fmt.(list Changelog.Def.Pp.name) (Name_set.elements reviewers)
