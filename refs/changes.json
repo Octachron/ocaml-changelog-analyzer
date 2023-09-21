@@ -702,7 +702,7 @@
         "breaking change": false,
         "authors": [ [ "Aleksei", "Nikiforov" ] ],
         "help": [ [ "Vincent", "Laviron" ], [ "Xavier", "Leroy" ] ],
-        "review": [ [ "the", "same" ], [ "KC", "Sivaramakrishnan" ] ],
+        "review": [ [ "Author group review" ], [ "KC", "Sivaramakrishnan" ] ],
         "suggestions": [ [ "Luc", "Maranget" ] ]
       },
       {
@@ -2544,7 +2544,7 @@
         "text": "Use strerror_r for reentrant error string conversion.\n  ",
         "breaking change": false,
         "authors": [ [ "Anil", "Madhavapeddy" ], [ "Xavier", "Leroy" ] ],
-        "review": [ [ "same" ], [ "Edwin", "Török" ] ]
+        "review": [ [ "Author group review" ], [ "Edwin", "Török" ] ]
       },
       {
         "references": [ 11002, 11066, 11086 ],
@@ -2845,7 +2845,7 @@
           [ "David", "Allsopp" ],
           [ "Xavier", "Leroy" ]
         ],
-        "review": [ [ "the", "same" ] ]
+        "review": [ [ "Author group review" ] ]
       },
       {
         "references": [ 11479 ],
@@ -3038,7 +3038,7 @@
         "text": "Stop calling ranlib on created / installed libraries\n  ",
         "breaking change": false,
         "authors": [ [ "Sébastien", "Hinderer" ], [ "Xavier", "Leroy" ] ],
-        "review": [ [ "the", "same" ] ]
+        "review": [ [ "Author group review" ] ]
       },
       {
         "references": [ 11253 ],
@@ -4896,7 +4896,9 @@
         "breaking change": false,
         "authors": [ [ "David", "Allsopp" ] ],
         "review": [
-          [ "Damien", "Doligez" ], [ "Gabriel", "Scherer" ], [ "others" ]
+          [ "Damien", "Doligez" ],
+          [ "Gabriel", "Scherer" ],
+          [ "Many fine eyes" ]
         ]
       },
       {

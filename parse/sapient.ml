@@ -38,9 +38,9 @@ let normalize_name ~warn = function
   (* groups *)
   | ["the"; "Tarides" ; "multicore";  "team"] -> ["Tarides multicore team"]
   | ["the"; "OCaml"; "core"; "development"; "team"] -> ["OCaml core development team"]
-  | ["many"; "other"; "valued"; "reviewers"] | [("Many"|"many"); "fine"; "eyes"] ->
+  | ["others"] | ["many"; "other"; "valued"; "reviewers"] | [("Many"|"many"); "fine"; "eyes"] ->
     ["Many fine eyes"]
-  | ["reviewing"; "each"; "other"; "without"; "self-loops";] ->
+  | ["same"] | ["the"; "same"] | ["reviewing"; "each"; "other"; "without"; "self-loops";] ->
     ["Author group review"]
   (* typo *)
   | (["Nicolas"; "Ojeda"; "Bar"])  -> ["Nicolás"; "Ojeda"; "Bär"]
