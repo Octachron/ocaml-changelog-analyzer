@@ -63,5 +63,6 @@ let () =
   in
   let groups = group_all lines in
   let json = Changelog.to_yojson groups in
+  assert ( json = Changelog.(to_yojson (from_yojson json)));
   Format.printf "@[<v>%a@]@."
    (Yojson.Safe.pretty_print ~std:false)  json
