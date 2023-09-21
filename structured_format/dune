@@ -1,0 +1,4 @@
+(library
+ (name changelog)
+  (libraries yojson fmt)
+)
