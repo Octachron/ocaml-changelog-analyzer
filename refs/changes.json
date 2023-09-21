@@ -14970,9 +14970,7 @@
         "breaking change": false,
         "authors": [ [ "Sébastien", "Hinderer" ] ],
         "fix": [ [ "Jérémie", "Dimino" ] ],
-        "review": [
-          [ "Alain", "Frisch" ], [ "David", "Allsopp" ], [ "testing" ]
-        ]
+        "review": [ [ "Alain", "Frisch" ], [ "David", "Allsopp" ] ]
       },
       {
         "references": [ 788 ],
@@ -15028,9 +15026,7 @@
         "breaking change": false,
         "authors": [ [ "Sébastien", "Hinderer" ] ],
         "fix": [ [ "Andreas", "Hauptmann" ] ],
-        "review": [
-          [ "Adrien", "Nader" ], [ "Damien", "Doligez" ], [ "testing" ]
-        ]
+        "review": [ [ "Adrien", "Nader" ], [ "Damien", "Doligez" ] ]
       }
     ],
     " Internal/compiler-libs changes:": [
@@ -21099,9 +21095,8 @@
       },
       {
         "references": [ 5757 ],
-        "text": "GC compaction bug ",
-        "breaking change": false,
-        "authors": [ [ "crash" ] ]
+        "text": "(crash) GC compaction bug",
+        "breaking change": false
       },
       {
         "references": [ 5758 ],
@@ -21583,9 +21578,8 @@
       },
       {
         "references": [ 5495 ],
-        "text": "camlp4o dies on infix definition ",
-        "breaking change": false,
-        "authors": [ [ "or" ] ]
+        "text": "camlp4o dies on infix definition",
+        "breaking change": false
       },
       {
         "references": [ 5498 ],
@@ -21614,9 +21608,8 @@
       },
       {
         "references": [ 5513 ],
-        "text": "Int64.div causes floating point exception ",
-        "breaking change": false,
-        "authors": [ [ "ocamlopt" ], [ "x86" ] ]
+        "text": "(ocamlopt, x86) Int64.div causes floating point exception",
+        "breaking change": false
       },
       {
         "references": [ 5516 ],
@@ -21806,9 +21799,28 @@
       },
       {
         "references": [ 5687 ],
-        "text": "dynlink broken when used from \"output-obj\" main program (bytecode)\n- problem with printing of string literals in camlp4 (reported on caml-list)\n- emacs mode: colorization of comments and strings now works correctly\n- problem with forall and method (reported on caml-list on 2011-07-26)\n- crash when using OCAMLRUNPARAM=a=X with invalid X ",
-        "breaking change": false,
-        "authors": [ [ "reported" ] ]
+        "text": "(bytecode) dynlink broken when used from \"output-obj\" main program",
+        "breaking change": false
+      },
+      {
+        "references": [ 0 ],
+        "text": "(reported on caml-list) problem with printing of string literals in camlp4",
+        "breaking change": false
+      },
+      {
+        "references": [ 0 ],
+        "text": "emacs mode: colorization of comments and strings now works correctly",
+        "breaking change": false
+      },
+      {
+        "references": [ 0 ],
+        "text": "(reported on caml-list on 2011-07-26) problem with forall and method",
+        "breaking change": false
+      },
+      {
+        "references": [ 0 ],
+        "text": "(reported in private) crash when using OCAMLRUNPARAM=a=X with invalid X",
+        "breaking change": false
       }
     ],
     "Feature wishes": [
@@ -21829,9 +21841,8 @@
       },
       {
         "references": [ 7971 ],
-        "text": "allow configuring LIBDIR, BINDIR, and MANDIR relative to $",
-        "breaking change": false,
-        "authors": [ [ "PREFIX" ] ]
+        "text": "allow configuring LIBDIR, BINDIR, and MANDIR relative to $(PREFIX) <not an author>",
+        "breaking change": false
       },
       {
         "references": [ 8285 ],
@@ -21945,9 +21956,8 @@
       },
       {
         "references": [ 5420 ],
-        "text": "Unix.openfile share mode ",
-        "breaking change": false,
-        "authors": [ [ "Windows" ] ]
+        "text": "Windows, Unix.openfile share mode",
+        "breaking change": false
       },
       {
         "references": [ 5421 ],
@@ -21956,9 +21966,8 @@
       },
       {
         "references": [ 5434 ],
-        "text": "implement Unix.times in win32unix ",
-        "breaking change": false,
-        "authors": [ [ "partially" ] ]
+        "text": "implement Unix.times in win32unix <partially>",
+        "breaking change": false
       },
       {
         "references": [ 5438 ],
