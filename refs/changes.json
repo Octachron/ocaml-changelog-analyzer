@@ -1030,7 +1030,7 @@
         "text": "Restore frame-pointers support for amd64\n  ",
         "breaking change": false,
         "authors": [ [ "Fabrice", "Buoro" ] ],
-        "review": [ [ "Frederic", "Bour" ], [ "KC", "Sivaramakrishnan" ] ]
+        "review": [ [ "Frédéric", "Bour" ], [ "KC", "Sivaramakrishnan" ] ]
       },
       {
         "references": [ 11935 ],
@@ -1215,7 +1215,7 @@
         "references": [ 11984 ],
         "text": "Add dedicated syntax for generative functor application.\n  Previously, OCaml did not distinguish between `F ()` and\n  `F (struct end)`, even though the latter looks applicative. Instead,\n  the decision between generative and applicative functor application\n  was made based on the type of `F`. With this patch, we now distinguish\n  these two application forms; writing `F (struct end)` for a generative\n  functor leads to new warning 73.\n  ",
         "breaking change": true,
-        "authors": [ [ "Frederic", "Bour" ], [ "Richard", "Eisenberg" ] ],
+        "authors": [ [ "Frédéric", "Bour" ], [ "Richard", "Eisenberg" ] ],
         "review": [ [ "Florian", "Angeletti" ] ]
       },
       {
@@ -2430,7 +2430,7 @@
           [ "Nicolás", "Ojeda", "Bär" ],
           [ "Gabriel", "Scherer" ],
           [ "OCaml core development team" ],
-          [ "many" ]
+          [ "Many fine eyes" ]
         ]
       }
     ],
@@ -9513,7 +9513,7 @@
         "text": "Better error message for private constructors\n  of an extensible variant type\n  ",
         "breaking change": false,
         "authors": [ [ "Guillaume", "Bury" ] ],
-        "review": [ [ "many", "fine", "eyes" ] ]
+        "review": [ [ "Many fine eyes" ] ]
       }
     ],
     " Code generation and optimizations:": [
@@ -10058,31 +10058,31 @@
         "references": [ 2128 ],
         "text": "Add Fun module: `id, const, flip, negate, protect`\n  (protect is a \"try_finally\" combinator)\n  https://caml.inria.fr/pub/docs/manual-ocaml/libref/Fun.html\n  ",
         "breaking change": false,
-        "authors": [ [ "many" ] ]
+        "authors": [ [ "Many fine eyes" ] ]
       },
       {
         "references": [ 2010 ],
         "text": "Add Bool module\n  https://caml.inria.fr/pub/docs/manual-ocaml/libref/Bool.html\n  ",
         "breaking change": false,
-        "authors": [ [ "many" ] ]
+        "authors": [ [ "Many fine eyes" ] ]
       },
       {
         "references": [ 2011 ],
         "text": "Add Int module\n  https://caml.inria.fr/pub/docs/manual-ocaml/libref/Int.html\n  ",
         "breaking change": false,
-        "authors": [ [ "many" ] ]
+        "authors": [ [ "Many fine eyes" ] ]
       },
       {
         "references": [ 1940 ],
         "text": "Add Option module and Format.pp_print_option\n  `none, some, value, get, bind, join, map, fold, iter`, etc.\n  https://caml.inria.fr/pub/docs/manual-ocaml/libref/Option.html\n  ",
         "breaking change": false,
-        "authors": [ [ "many" ] ]
+        "authors": [ [ "Many fine eyes" ] ]
       },
       {
         "references": [ 1956 ],
         "text": "Add Result module and Format.pp_print_result\n  `ok, error, value, get_ok, bind, join, map, map_error`, etc.\n  https://caml.inria.fr/pub/docs/manual-ocaml/libref/Result.html\n  ",
         "breaking change": false,
-        "authors": [ [ "many" ] ]
+        "authors": [ [ "Many fine eyes" ] ]
       },
       {
         "references": [ 1855, 2118 ],
@@ -21305,9 +21305,8 @@
       },
       {
         "references": [ 5233 ],
-        "text": "finaliser on weak array gives dangling pointers ",
-        "breaking change": false,
-        "authors": [ [ "crash" ] ]
+        "text": "(crash) finaliser on weak array gives dangling pointers",
+        "breaking change": false
       },
       {
         "references": [ 5238, 5277 ],
