@@ -4,10 +4,14 @@ type sep =
   | Semi
 
 let rec ligature = function
-  | ("report"| "review" as x) :: "and" :: q ->
+  | ("report"| "review" | "suggestions" as x) :: "and" :: q ->
     x :: "&&&" :: ligature q
+  | "request" :: "and" :: q ->
+    "feature request" :: "&&&" :: ligature q
   | "with" :: "help" :: "and" :: "review" :: "from":: q ->
-    "help" :: "from" :: q
+    "help" :: "by" :: q
+  | "with" :: "help" :: "and" :: "advice" :: q ->
+    "help" :: q
   | "testing" :: "and" :: "regression" :: "fix" :: q ->
     "regression" :: "fix" :: q
   | x :: q -> x :: ligature q
@@ -38,7 +42,7 @@ let normalize_name ~warn = function
   | ["Jacques-"; "Henri"; "Jourdan"] -> ["Jacques-Henri"; "Jourdan"]
   | ["Florian"; "Angetti"] -> ["Florian"; "Angeletti"]
   | ["Francois"; "Berenger"] -> ["François"; "Berenger"]
-  | ["Nathanaël"; "Courant"] -> ["Nathanaëlle"; "Courant"]
+  | [("Nathanaël"|"Naëla"); "Courant"] -> ["Nathanaëlle"; "Courant"]
   (* pseudo*)
   | ["octachron@"] -> ["Florian"; "Angeletti"]
   | ["Daniel"; "C."; "Bünzli"] ->  ["Daniel"; "Bünzli"]

@@ -1820,8 +1820,9 @@
         "references": [ 12138 ],
         "text": "Generalise interface for BUILD_PATH_PREFIX_MAP mapping.\n  Absolute paths are now rewritten too.\n  ",
         "breaking change": false,
-        "authors": [ [ "Richard", "L", "Ford" ], [ "suggestions" ] ],
-        "review": [ [ "Gabriel", "Scherer" ] ]
+        "authors": [ [ "Richard", "L", "Ford" ] ],
+        "review": [ [ "Gabriel", "Scherer" ] ],
+        "suggestions": [ [ "Gabriel", "Scherer" ] ]
       },
       {
         "references": [ 10512 ],
@@ -3699,7 +3700,7 @@
         "review": [
           [ "Nicolás", "Ojeda", "Bär" ],
           [ "Daniel", "Bünzli" ],
-          [ "Naëla", "Courant" ],
+          [ "Nathanaëlle", "Courant" ],
           [ "Craig", "Ferguson" ],
           [ "Wiktor", "Kuchta" ],
           [ "Xavier", "Leroy" ],
@@ -10417,16 +10418,14 @@
         "references": [ 1720 ],
         "text": "Improve error reporting for missing 'rec' in let-bindings.\n  ",
         "breaking change": false,
-        "advice": [
+        "authors": [
+          [ "Arthur", "Charguéraud" ], [ "Armaël", "Guéneau" ]
+        ],
+        "help": [
           [ "Gabriel", "Scherer" ],
           [ "Frédéric", "Bour" ],
           [ "Xavier", "Clerc" ],
           [ "Leo", "White" ]
-        ],
-        "authors": [
-          [ "Arthur", "Charguéraud" ],
-          [ "Armaël", "Guéneau" ],
-          [ "with", "help" ]
         ]
       },
       {
@@ -11394,9 +11393,10 @@
       },
       {
         "references": [ 2047, 2269 ],
-        "text": "a new type for unification traces\n  (Florian Angeletti, report by Leo White ",
+        "text": "a new type for unification traces\n  ",
         "breaking change": false,
-        "authors": [ [ "#2269)" ] ],
+        "authors": [ [ "Florian", "Angeletti" ] ],
+        "report": [ [ "Leo", "White" ] ],
         "review": [ [ "Thomas", "Refis" ], [ "Gabriel", "Scherer" ] ]
       },
       {
@@ -13543,7 +13543,8 @@
         "references": [ 7351 ],
         "text": "ocamldoc, use semantic tags rather than <br> tags in the html\n  backend\n  ",
         "breaking change": true,
-        "authors": [ [ "Florian", "Angeletti" ], [ "request" ] ],
+        "authors": [ [ "Florian", "Angeletti" ] ],
+        "feature request": [ [ "Daniel", "Bünzli" ] ],
         "review": [ [ "Daniel", "Bünzli" ] ]
       },
       {
@@ -13557,7 +13558,8 @@
         "references": [ 7363, 830 ],
         "text": "ocamldoc, start heading levels at {1 not {2 or {6.\n  This change modifies the mapping between ocamldoc heading level and\n  html heading level, breaking custom css style for ocamldoc.\n  ",
         "breaking change": true,
-        "authors": [ [ "Florian", "Angeletti" ], [ "request" ] ],
+        "authors": [ [ "Florian", "Angeletti" ] ],
+        "feature request": [ [ "Daniel", "Bünzli" ] ],
         "review": [ [ "Daniel", "Bünzli" ] ]
       },
       {
@@ -21793,9 +21795,8 @@
       },
       {
         "references": [ 5677 ],
-        "text": "do not use \"value\" as identifier ",
-        "breaking change": false,
-        "authors": [ [ "genprintval.ml" ] ]
+        "text": "(genprintval.ml) do not use \"value\" as identifier",
+        "breaking change": false
       },
       {
         "references": [ 5687 ],
