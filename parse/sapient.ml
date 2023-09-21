@@ -8,6 +8,8 @@ let rec ligature = function
     x :: "&&&" :: ligature q
   | "with" :: "help" :: "and" :: "review" :: "from":: q ->
     "help" :: "from" :: q
+  | "testing" :: "and" :: "regression" :: "fix" :: q ->
+    "regression" :: "fix" :: q
   | x :: q -> x :: ligature q
   | [] -> []
 
