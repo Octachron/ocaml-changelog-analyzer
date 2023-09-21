@@ -6738,7 +6738,7 @@
         "text": "Don't ignore EOL-at-EOF differences in ocamltest.\n  ",
         "breaking change": false,
         "authors": [ [ "David", "Allsopp" ] ],
-        "review": [ [ "Damien", "Doligez" ], [ "much", "input" ] ],
+        "review": [ [ "Damien", "Doligez" ] ],
         "thought": [
           [ "Daniel", "Bünzli" ],
           [ "Damien", "Doligez" ],
