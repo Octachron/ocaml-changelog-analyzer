@@ -20397,11 +20397,8 @@
         "references": [ 5825 ],
         "text": "Add a toplevel primitive to use source file wrapped with the\n  corresponding module\n  ",
         "breaking change": false,
-        "authors": [
-          [ "Grégoire", "Henry" ],
-          [ "Wojciech", "Meyer" ],
-          [ "caml-list", "discussion" ]
-        ]
+        "authors": [ [ "Grégoire", "Henry" ], [ "Wojciech", "Meyer" ] ],
+        "review": [ [ "caml-list" ] ]
       },
       {
         "references": [ 5833 ],

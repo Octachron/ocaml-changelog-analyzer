@@ -157,6 +157,8 @@ let split_section x = match strip_postfix (List.filter ((<>) "") x) with
   (* typo fixes *)
   | ["Xavier"; "Leroy"; "Guillaume"; "Munch-Maccagnoni";] ->
     [Elt  ["Xavier"; "Leroy"]; Elt ["Guillaume"; "Munch-Maccagnoni";]]
+  | ["caml-list"; "discussion"] ->
+    [Sep "review"; elt ["caml-list"]]
   | [] -> []
   | q ->
     let warn = List.length q > 2 in
