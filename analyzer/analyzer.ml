@@ -57,7 +57,7 @@ let () =
   let changelog = Changelog.Def.from_yojson json in
   let authors = count_category "authors" changelog in
   let reviewers = count_category "review" changelog in
-  let author_history = count_category_by_release "authors" changelog in
+  let author_history = List.rev @@ count_category_by_release "authors" changelog in
   let pp_author_info ppf (r,any,news) =
     Fmt.pf ppf "%S %d %d"
       r any news
