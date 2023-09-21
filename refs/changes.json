@@ -7152,11 +7152,8 @@
         "references": [ 9082 ],
         "text": "The instrumented runtime now records logs in the CTF format.\n  A new API is available in the runtime to collect runtime statistics,\n  replacing the previous instrumented runtime macros.\n  Gc.eventlog_pause and Gc.eventlog_resume were added to allow user to control\n  instrumentation in a running program.\n  See the manual for more information on how to use this instrumentation mode.\n  ",
         "breaking change": false,
-        "authors": [
-          [ "Enguerrand", "Decorne" ],
-          [ "Stephen", "Dolan" ],
-          [ "with", "help" ]
-        ],
+        "authors": [ [ "Enguerrand", "Decorne" ], [ "Stephen", "Dolan" ] ],
+        "help": [ [ "David", "Allsopp" ], [ "Sébastien", "Hinderer" ] ],
         "review": [
           [ "Anil", "Madhavapeddy" ],
           [ "Nicolás", "Ojeda", "Bär" ],
@@ -9966,8 +9963,8 @@
         "references": [ 2122 ],
         "text": "Introduce local substitutions in signatures: \"type t := type_expr\"\n  and \"module M := Extended(Module).Path\"\n  ",
         "breaking change": false,
-        "authors": [ [ "Thomas", "Refis" ], [ "with", "help" ] ],
-        "review": [ [ "Leo", "White" ], [ "Alain", "Frisch" ] ]
+        "authors": [ [ "Thomas", "Refis" ] ],
+        "help": [ [ "Leo", "White" ], [ "Alain", "Frisch" ] ]
       },
       {
         "references": [ 1804 ],
@@ -9980,8 +9977,8 @@
         "references": [ 6422, 7083, 305, 1568 ],
         "text": "Allow `exception` under or-patterns\n  ",
         "breaking change": false,
-        "authors": [ [ "Thomas", "Refis" ], [ "with", "help" ] ],
-        "review": [
+        "authors": [ [ "Thomas", "Refis" ] ],
+        "help": [
           [ "Alain", "Frisch" ],
           [ "Gabriel", "Scherer" ],
           [ "Jeremy", "Yallop" ],
@@ -12007,8 +12004,8 @@
         "references": [ 1534 ],
         "text": "Extend the warning printed when (*) is used, adding a hint to\n  suggest using ( * ) instead.\n  ",
         "breaking change": false,
-        "authors": [ [ "Armaël", "Guéneau" ], [ "with", "help" ] ],
-        "review": [ [ "Florian", "Angeletti" ], [ "Gabriel", "Scherer" ] ]
+        "authors": [ [ "Armaël", "Guéneau" ] ],
+        "help": [ [ "Florian", "Angeletti" ], [ "Gabriel", "Scherer" ] ]
       },
       {
         "references": [ 1552, 1577 ],

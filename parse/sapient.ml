@@ -6,6 +6,8 @@ type sep =
 let rec ligature = function
   | ("report"| "review" as x) :: "and" :: q ->
     x :: "&&&" :: ligature q
+  | "with" :: "help" :: "and" :: "review" :: "from":: q ->
+    "help" :: "from" :: q
   | x :: q -> x :: ligature q
   | [] -> []
 
