@@ -1,4 +1,30 @@
+(library
+ (name common)
+ (modules common)
+ (libraries changelog)
+)
+
 (executable
- (name analyzer)
- (libraries yojson changelog fmt)
+ (name contributor_list)
+ (modules contributor_list)
+ (libraries yojson changelog common fmt)
+)
+
+(executable
+ (name ar_histogram)
+ (modules ar_histogram)
+ (libraries yojson changelog common fmt)
+)
+
+(executable
+ (name sorted_contributions)
+ (modules sorted_contributions)
+ (libraries yojson changelog common fmt)
+)
+
+
+(executable
+ (name cat_history)
+ (modules cat_history)
+ (libraries yojson changelog common fmt)
 )
