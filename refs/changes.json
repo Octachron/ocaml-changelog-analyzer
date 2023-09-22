@@ -2268,7 +2268,7 @@
         "authors": [ [ "Nicolás", "Ojeda", "Bär" ] ],
         "review": [
           [ "Xavier", "Leroy" ],
-          [ "David", "Allsop" ],
+          [ "David", "Allsopp" ],
           [ "Javier", "Chávarri" ],
           [ "Anil", "Madhavapeddy" ]
         ]
@@ -4646,7 +4646,7 @@
         "text": "Maintain more structural information in type-checking errors\n  A mostly-internal change that preserves more information in errors\n  during type checking; most significantly, it split the errors from\n  unification, moregen, and type equality into three different types.\n  ",
         "breaking change": false,
         "authors": [
-          [ "Antal", "Spector-Zabusky" ], [ "Mekhrubon", "Tuarev" ]
+          [ "Antal", "Spector-Zabusky" ], [ "Mekhrubon", "Turaev" ]
         ],
         "review": [
           [ "Leo", "White" ],
@@ -5215,7 +5215,7 @@
         "text": "Replace references with functions arguments in Simplif\n  ",
         "breaking change": false,
         "authors": [ [ "Anukriti", "Kumar" ] ],
-        "review": [ [ "Vincent", "Laviron" ], [ "David", "Allsop" ] ]
+        "review": [ [ "Vincent", "Laviron" ], [ "David", "Allsopp" ] ]
       },
       {
         "references": [ 10007 ],
@@ -6688,7 +6688,7 @@
         "text": "optimize pattern-matching exhaustivity analysis in the single-row case\n  ",
         "breaking change": false,
         "authors": [ [ "Gabriel", "Scherer" ] ],
-        "review": [ [ "Stephen", "DOlan" ] ]
+        "review": [ [ "Stephen", "Dolan" ] ]
       },
       {
         "references": [ 9442 ],
@@ -7622,7 +7622,7 @@
         "breaking change": false,
         "authors": [ [ "Anukriti", "Kumar" ] ],
         "review": [
-          [ "San", "Vu", "Ngoc" ],
+          [ "San", "Vũ", "Ngọc" ],
           [ "Florian", "Angeletti" ],
           [ "Léo", "Andrès" ]
         ]
@@ -8834,7 +8834,7 @@
         "text": "ocamldoc: fix the formatting of closing brace in record types.\n  ",
         "breaking change": false,
         "authors": [ [ "David", "Allsopp" ] ],
-        "report": [ [ "San", "Vu", "Ngoc" ] ]
+        "report": [ [ "San", "Vũ", "Ngọc" ] ]
       },
       {
         "references": [ 9181 ],
@@ -11840,7 +11840,7 @@
         "review": [
           [ "Richard", "Bonichon" ],
           [ "Gabriel", "Radanne" ],
-          [ "Gabiel", "Scherer" ],
+          [ "Gabriel", "Scherer" ],
           [ "Pierre", "Weis" ]
         ]
       },
@@ -12120,21 +12120,21 @@
         "references": [ 1627 ],
         "text": "Reduce cmx sizes by sharing variable names (Flambda only).\n  ",
         "breaking change": false,
-        "authors": [ [ "Fuyong", "Quah" ], [ "Leo", "White" ] ],
+        "authors": [ [ "Fu", "Yong", "Quah" ], [ "Leo", "White" ] ],
         "review": [ [ "Xavier", "Clerc" ] ]
       },
       {
         "references": [ 1665 ],
         "text": "reduce the size of cmx files in classic mode by dropping the\n  bodies of functions that will not be inlined.\n  ",
         "breaking change": false,
-        "authors": [ [ "Fuyong", "Quah" ] ],
+        "authors": [ [ "Fu", "Yong", "Quah" ] ],
         "review": [ [ "Leo", "White" ], [ "Pierre", "Chambart" ] ]
       },
       {
         "references": [ 1666 ],
         "text": "reduce the size of cmx files in classic mode by dropping the\n  bodies of functions that cannot be reached from the module block.\n  ",
         "breaking change": false,
-        "authors": [ [ "Fuyong", "Quah" ] ],
+        "authors": [ [ "Fu", "Yong", "Quah" ] ],
         "review": [ [ "Leo", "White" ], [ "Pierre", "Chambart" ] ]
       },
       {
@@ -13608,7 +13608,7 @@
         "references": [ 1012 ],
         "text": "ocamlyacc, fix parsing of raw strings and nested comments, as well\n  as the handling of ' characters in identifiers.\n  ",
         "breaking change": false,
-        "authors": [ [ "Demi", "Obenour" ] ]
+        "authors": [ [ "Demi", "Marie", "Obenour" ] ]
       },
       {
         "references": [ 1045 ],
@@ -15660,7 +15660,7 @@
         "references": [ 427 ],
         "text": "Obj.is_block is now an inlined OCaml function instead of a\n  C external.  This should be faster.\n  ",
         "breaking change": false,
-        "authors": [ [ "Demi", "Obenour" ] ]
+        "authors": [ [ "Demi", "Marie", "Obenour" ] ]
       },
       {
         "references": [ 580 ],
@@ -15909,7 +15909,7 @@
         "references": [ 512, 587 ],
         "text": "Installed `ocamlc`, `ocamlopt`, and `ocamllex` are\n  now the native-code versions of the tools, if those versions were\n  built.\n  ",
         "breaking change": true,
-        "authors": [ [ "Demi", "Obenour" ] ]
+        "authors": [ [ "Demi", "Marie", "Obenour" ] ]
       },
       {
         "references": [ 525 ],
@@ -16664,7 +16664,7 @@
         "references": [ 514, 554 ],
         "text": "Added several command-line flags to explicitly enable\n  settings that are currently the default:\n  `-alias-deps`, `-app-funct`, `-no-keep-docs`, `-no-keep-locs`,\n  `-no-principal`, `-no-rectypes`, `-no-strict-formats`\n  ",
         "breaking change": false,
-        "authors": [ [ "Demi", "Obenour" ] ]
+        "authors": [ [ "Demi", "Marie", "Obenour" ] ]
       },
       {
         "references": [ 545 ],

@@ -53,8 +53,14 @@ let normalize_name ~warn = function
   (* pseudo*)
   | ["octachron@"] -> ["Florian"; "Angeletti"]
   | ["Daniel"; "C."; "Bünzli"] ->  ["Daniel"; "Bünzli"]
-  | ["David"; "Alsopp"] -> ["David"; "Allsopp"]
+  | ["David"; ("Alsopp" | "Allsop") ] -> ["David"; "Allsopp"]
   | ["Oliver"; "Andrieu"] -> ["Olivier"; "Andrieu"]
+  | ["Gabiel"; "Scherer"] -> ["Gabriel"; "Scherer"]
+  | ["San"; "Vu"; "Ngoc"] -> ["San";"Vũ";"Ngọc"]
+  | ["Stephen"; "DOlan"] -> ["Stephen"; "Dolan"]
+  | ["Demi"; "Obenour"] -> ["Demi"; "Marie"; "Obenour"]
+  | ["Fuyong"; "Quah"] -> ["Fu"; "Yong"; "Quah"]
+  | ["Mekhrubon"; "Tuarev"] -> ["Mekhrubon"; "Turaev"]
   (* Long names*)
   | (["Perry"; "E."; "Metzger"] as q)
   | (["Hezekiah"; "M."; "Carty"] as q)
