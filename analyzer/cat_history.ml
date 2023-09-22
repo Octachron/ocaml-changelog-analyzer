@@ -2,17 +2,19 @@ open Common
 
 
 let count_category_by_release cat (x:Changelog.Def.t) =
-  let by_release (history, previous) release x =
-    let set =
-      fold_entry_by_section ~f:(fun set _ _ x -> Cat.add cat set x)
-        Name_set.empty release x
-    in
-    let all = Name_set.union previous set in
-    let diff = Name_set.diff set previous in
-    (release, diff, Name_set.cardinal set, Name_set.cardinal diff) :: history , all
-  in
-  let history, _ = fold_field ~f:by_release ([], Name_set.empty) (List.rev x) in
- List.rev history
+  let history, _ =
+    fold_by_release
+      ~entry:(fun set _ _ x -> Cat.add cat set x)
+      ~entry_start:Name_set.empty
+      ~release_start:([],Name_set.empty)
+      ~release:(fun release (history, previous) set ->
+          let all = Name_set.union previous set in
+          let diff = Name_set.diff set previous in
+          (release, diff, Name_set.cardinal set, Name_set.cardinal diff) :: history , all
+        )
+      (List.rev x)
+   in
+   history
 
 let () =
   let filename = Sys.argv.(1) and cat = Sys.argv.(2) in

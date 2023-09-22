@@ -19,6 +19,21 @@ let fold_entry_by_section ~f acc release s =
           List.fold_left (fun acc e -> f acc release section e) acc es
         ) acc s
 
+let fold_by_release
+    ~release
+    ~release_start
+    ~entry
+    ~entry_start
+    changelog =
+  let by_release r_acc r x =
+    let release_info =
+      fold_entry_by_section ~f:entry entry_start r x
+    in
+    release r r_acc release_info
+  in
+  fold_field ~f:by_release release_start changelog
+
+
 let fold_entry ~f start (x:Changelog.Def.t) =
   fold_field ~f:(fold_entry_by_section ~f) start x
 
@@ -70,11 +85,12 @@ module AR = struct
   let count changelog =
     fold_entry ~f:(fun map _ _ x -> add map x) Name_map.empty changelog
 
+  let compare (namex,x) (namey, y) =
+    let d = compare x y in
+    if d = 0 then Stdlib.compare namex namey else d
+
+
   let sorted_contributions changelog  =
-    let compare (namex,x) (namey, y) =
-      let d = compare x y in
-      if d = 0 then Stdlib.compare namex namey else d
-    in
     List.sort compare @@ Name_map.bindings @@ count changelog
 
 end

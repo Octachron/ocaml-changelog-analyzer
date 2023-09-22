@@ -28,3 +28,10 @@
  (modules cat_history)
  (libraries yojson changelog common fmt)
 )
+
+
+(executable
+ (name contributor_history)
+ (modules contributor_history)
+ (libraries yojson changelog common fmt)
+)
