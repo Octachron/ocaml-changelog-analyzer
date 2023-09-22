@@ -173,7 +173,7 @@
         "initial work": [ [ "Anmol", "Sahoo" ] ],
         "review": [
           [ "Damien", "Doligez" ],
-          [ "Sebastien", "Hinderer" ],
+          [ "Sébastien", "Hinderer" ],
           [ "Jacques-Henri", "Jourdan" ],
           [ "Luc", "Maranget" ],
           [ "Guillaume", "Munch-Maccagnoni" ],
@@ -4836,7 +4836,7 @@
         "text": "Add an optional invariants check on Cmm, which can be activated\n  with the -dcmm-invariants flag\n  ",
         "breaking change": false,
         "authors": [ [ "Vincent", "Laviron" ] ],
-        "help": [ [ "Sebastien", "Hinderer" ] ],
+        "help": [ [ "Sébastien", "Hinderer" ] ],
         "review": [ [ "Stephen", "Dolan" ], [ "David", "Allsopp" ] ]
       },
       {

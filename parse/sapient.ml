@@ -49,6 +49,7 @@ let normalize_name ~warn = function
   | ["Francois"; "Berenger"] -> ["François"; "Berenger"]
   | [("Nathanaël"|"Naëla"); "Courant"] -> ["Nathanaëlle"; "Courant"]
   | ["Frederic"; "Bour"] -> ["Frédéric"; "Bour"]
+  | ["Sebastien"; "Hinderer"] ->  ["Sébastien"; "Hinderer"]
   (* pseudo*)
   | ["octachron@"] -> ["Florian"; "Angeletti"]
   | ["Daniel"; "C."; "Bünzli"] ->  ["Daniel"; "Bünzli"]
