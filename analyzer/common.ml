@@ -77,9 +77,6 @@ module AR = struct
     in
     List.sort compare @@ Name_map.bindings @@ count changelog
 
-  let pp_contrib  ppf (name, {Vect.author; review}) =
-    Fmt.pf ppf "@[%a (%d,%d)@]" Changelog.Def.Pp.name name author review
-
 end
 
 module Cat = struct
