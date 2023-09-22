@@ -1,5 +1,5 @@
-set terminal png
-set output 'histogram.png'
+set terminal png size 1024,1024
+set output 'plot/histogram.png'
 set pm3d map
 
 f = "data/contrib_hist"
@@ -11,4 +11,4 @@ set logscale zcb
 set pm3d interpolate 3,3
 
 set palette rgb 33,13,10
-splot f u 1:(0.1+$2):(0.1+$3) with pm3d t "Contribution histogram"
+splot f u 1:($2<1?0.5:$2):($3<1?0.5:$3) with pm3d t "Contribution histogram"
