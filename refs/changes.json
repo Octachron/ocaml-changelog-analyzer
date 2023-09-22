@@ -7816,7 +7816,7 @@
         "text": "encourage better compatibility with older Microsoft C compilers by\n  using GCC's -Wdeclaration-after-statement when available. Introduce\n  Caml_inline to stop abuse of the inline keyword on MSVC and to help ensure\n  that only static inline is used in the codebase (erroneous instance in\n  runtime/win32.c removed).\n  ",
         "breaking change": false,
         "authors": [ [ "David", "Allsopp" ] ],
-        "review": [ [ "Oliver", "Andrieu" ], [ "Xavier", "Leroy" ] ]
+        "review": [ [ "Olivier", "Andrieu" ], [ "Xavier", "Leroy" ] ]
       },
       {
         "references": [ 8934 ],
