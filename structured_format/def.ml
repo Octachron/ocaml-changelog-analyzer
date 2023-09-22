@@ -114,13 +114,18 @@ let from_yojson: Yojson.Safe.t -> t =
 
 
 module Pp = struct
-  let string =  Format.pp_print_string
-  let int = Format.pp_print_int
+  let escaped_string ppf s = Fmt.pf ppf "%S" s
   let comma ppf () = Format.fprintf ppf ",@ "
   let semi ppf () = Format.fprintf ppf ";@ "
   let visible_space ppf () = Format.fprintf ppf "⍽"
+  let insecable_space ppf () = Format.fprintf ppf " "
 
   let name ppf x =  Fmt.(list ~sep:visible_space string) ppf x
+  let name' ppf x =
+    let escape =
+      String.map (function '"' -> ' ' | x -> x) (String.concat " " x)
+    in
+    Fmt.pf ppf {|"%s"|} escape
 
   let sapient ppf x =
     Format.fprintf ppf "[%a]" name x

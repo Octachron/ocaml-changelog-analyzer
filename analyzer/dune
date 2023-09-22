@@ -35,3 +35,10 @@
  (modules contributor_history)
  (libraries yojson changelog common fmt)
 )
+
+
+(executable
+ (name social)
+ (modules social)
+ (libraries yojson changelog common fmt)
+)

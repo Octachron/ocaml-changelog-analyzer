@@ -53,7 +53,6 @@ module Count(Monoid:sig
 end
 
 let changelog_from_file filename =
-  Format.printf "Analyzing %s@." filename;
   let json = Yojson.Safe.from_file filename in
   Changelog.Def.from_yojson json
 
