@@ -89,8 +89,9 @@ module AR = struct
     if d = 0 then Stdlib.compare namex namey else d
 
 
+  let sort x = List.sort compare @@ Name_map.bindings x
   let sorted_contributions changelog  =
-    List.sort compare @@ Name_map.bindings @@ count changelog
+    sort @@ count changelog
 
 end
 
