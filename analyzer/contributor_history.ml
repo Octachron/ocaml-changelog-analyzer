@@ -8,42 +8,10 @@ let contribution_by_release (x:Changelog.Def.t) =
     ~release:(fun release history map -> (release, map) :: history)
     x
 
-type version =
-  | Working_version
-  | Normal of { major:int; minor:int; patch:int; date:string * string * string}
-  | Maintenance of { major:int; minor:int}
-
-
-module Scanf_pattern = struct
-  type ('a,'i,'b,'c,'d) scan =
-    ('a, 'i, 'b, 'c, 'a -> 'd option, 'd) format6
-  type ('i,'b, 'x) t =
-    | []
-    | (::): (('a, 'i,'b, 'u -> 'x option, 'x) scan * 'u) * ('i,'b,'x) t -> ('i,'b,'x) t
-end
-
-let rec one_of: type x. string -> (_,_,x) Scanf_pattern.t -> x option =
-  fun s pats -> match pats with
-  | [] -> None
-  | (fmt,k) :: rest ->
-    match Scanf.sscanf_opt s fmt k with
-    | None -> one_of s rest
-    | Some _ as x -> x
-
-let parse_release_name = function
-  | "Working version" -> Working_version
-  | s ->
-    let mk major minor patch day month year  =
-      Normal {major;minor;patch;date=day, month, year} in
-    let mkm major minor = Maintenance {major;minor} in
-    match one_of s [
-      "OCaml %d.%02d.%d (%s %s %s@)", mk;
-      "OCaml %d.%d maintenance branch", mkm;
-      "OCaml %d.%d, maintenance version", mkm
-    ]
-    with
+let parse_release_name x =
+  match Scanning.release_name x with
     | Some x -> x
-    | None -> Fmt.epr "Cannot parse:%s@." s; exit 2
+    | None -> Fmt.epr "Cannot parse:%s@." x; exit 2
 
 let () =
   let filename = Sys.argv.(1) in

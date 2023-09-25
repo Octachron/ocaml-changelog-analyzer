@@ -38,6 +38,13 @@
 
 
 (executable
+ (name contributor_history_ballet)
+ (modules contributor_history_ballet)
+ (libraries yojson changelog common fmt)
+)
+
+
+(executable
  (name social)
  (modules social)
  (libraries yojson changelog common fmt)

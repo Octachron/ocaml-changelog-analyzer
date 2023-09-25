@@ -56,9 +56,20 @@ let changelog_from_file filename =
   let json = Yojson.Safe.from_file filename in
   Changelog.Def.from_yojson json
 
+
+module V2 = struct
+    type x = { x:float; y: float }
+end
+
 module AR = struct
   module Vect = struct
     type t = { author:int; review:int }
+    let interpolate alpha x y =
+      let linear alpha x y = x +. alpha *. (y -. x) in
+      { V2.x = linear alpha (float x.author) (float y.author);
+        y = linear alpha (float x.review) (float y.review);
+      }
+
     let compare x y =
       let d = x.review + x.author - y.review - y.author in
       if d = 0 then x.author - y.author else d
@@ -106,4 +117,44 @@ module Cat = struct
 
   let count_category cat x =
     fold_entry ~f:(fun set _ _ x -> add cat set x) Name_set.empty x
+end
+
+
+
+type version =
+  | Working_version
+  | Normal of { major:int; minor:int; patch:int; date:string * string * string}
+  | Maintenance of { major:int; minor:int}
+
+
+module Scanning = struct
+
+
+  module Scanf_pattern = struct
+    type ('a,'i,'b,'c,'d) scan =
+      ('a, 'i, 'b, 'c, 'a -> 'd option, 'd) format6
+    type ('i,'b, 'x) t =
+      | []
+      | (::): (('a, 'i,'b, 'u -> 'x option, 'x) scan * 'u) * ('i,'b,'x) t -> ('i,'b,'x) t
+  end
+
+  let rec one_of: type x. string -> (_,_,x) Scanf_pattern.t -> x option =
+    fun s pats -> match pats with
+      | [] -> None
+      | (fmt,k) :: rest ->
+        match Scanf.sscanf_opt s fmt k with
+        | None -> one_of s rest
+        | Some _ as x -> x
+
+  let release_name = function
+    | "Working version" -> Some Working_version
+    | s ->
+      let mk major minor patch day month year  =
+        Normal {major;minor;patch;date=day, month, year} in
+      let mkm major minor = Maintenance {major;minor} in
+      one_of s [
+          "OCaml %d.%02d.%d (%s %s %s@)", mk;
+          "OCaml %d.%d maintenance branch", mkm;
+          "OCaml %d.%d, maintenance version", mkm
+        ]
 end
