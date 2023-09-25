@@ -45,6 +45,14 @@
 
 
 (executable
+ (name total_contribution)
+ (modules total_contribution)
+ (libraries yojson changelog common fmt)
+)
+
+
+
+(executable
  (name social)
  (modules social)
  (libraries yojson changelog common fmt)
