@@ -19,7 +19,7 @@ let () =
   let changelog = changelog_from_file filename in
   let history = contribution_by_release changelog in
   let pp_author ppf (name, {AR.Vect.author; review}) =
-    Fmt.pf ppf "%a %d %d" Changelog.Def.Pp.name name author review
+    Fmt.pf ppf "%a %g %g" Changelog.Def.Pp.name name author review
   in
   let output_release (r,l) =
     let version = parse_release_name r in

@@ -57,24 +57,21 @@ let changelog_from_file filename =
   Changelog.Def.from_yojson json
 
 
-module V2 = struct
-    type x = { x:float; y: float }
-end
-
 module AR = struct
   module Vect = struct
-    type t = { author:int; review:int }
+    type t = { author:float; review:float }
+    let linear alpha x y = x +. alpha *. (y -. x)
     let interpolate alpha x y =
-      let linear alpha x y = x +. alpha *. (y -. x) in
-      { V2.x = linear alpha (float x.author) (float y.author);
-        y = linear alpha (float x.review) (float y.review);
+      { author = linear alpha x.author y.author;
+        review = linear alpha x.review y.review;
       }
 
     let compare x y =
-      let d = x.review + x.author - y.review - y.author in
-      if d = 0 then x.author - y.author else d
-    let (+) x y = {author=x.author + y.author; review=x.review + y.review}
-    let zero = { author=0; review=0 }
+      let d = x.review +. x.author -. y.review -. y.author in
+      if d = 0. then x.author -. y.author else d
+    let (+) x y = {author=x.author +. y.author; review=x.review +. y.review}
+    let (/.) x n = {author= x.author /. n; review = x.review /. n  }
+    let zero = { author=0.; review=0. }
   end
 
   module Count= Count(Vect)
@@ -84,20 +81,23 @@ module AR = struct
     | Entry e ->
       let s = Dict.of_list e.Changelog.Def.sapients in
       let add_cat cat x map  =
-        List.fold_left (fun map name -> Count.add map name x)
-          map
-          s.%(cat)
+        let set = s.%(cat) in
+        let many = float @@ List.length @@ set in
+        List.fold_left (fun map name -> Count.add map name Vect.(x/. many))
+          map set
       in
       map
-      |> add_cat "authors" Vect.{author=1; review=0}
-      |> add_cat "review" Vect.{review=1; author =1 }
+      |> add_cat "authors" Vect.{author=1.; review=0. }
+      |> add_cat "review" Vect.{review=1.; author =0. }
 
   let count changelog =
     fold_entry ~f:(fun map _ _ x -> add map x) Name_map.empty changelog
 
   let compare (namex,x) (namey, y) =
-    let d = compare x y in
-    if d = 0 then Stdlib.compare namex namey else d
+    let d = Vect.compare x y in
+    if d = 0. then Stdlib.compare namex namey
+    else if d >= 0. then 1
+    else -1
 
 
   let sort x = List.sort compare @@ Name_map.bindings x
@@ -120,6 +120,14 @@ module Cat = struct
 end
 
 
+
+let ids changelog =
+    let authors = Cat.count_category "authors" changelog in
+    let reviewers = Cat.count_category "review" changelog in
+    Name_set.union reviewers authors
+    |> Name_set.to_seq
+    |> Seq.mapi (fun i x -> x, i)
+    |> Name_map.of_seq
 
 type version =
   | Working_version

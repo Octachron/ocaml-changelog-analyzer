@@ -10,11 +10,10 @@ set output output_name
 d = sprintf("movie_data/contributions_at_time_%s.data",time)
 set xlabel "number of authored contributions"
 set ylabel "number of reviews"
-set log x
 
-ymax = 200
+ymax = 100
 yzero = 0.7
-xmax = 200
+xmax = 100
 xzero = 0.7
 
 set yrange [0.5:(1+log10(ymax))]
@@ -35,6 +34,9 @@ set grid mxtics mytics
 set k o
 set k bottom left
 
+f(x) = x
+
 set title sprintf("Contributions and reviews by contributors for %s",version)
 plot d u ($1<1?xzero+(1-xzero)*$1:1 + log10($1)):($2<1?yzero+(1-yzero)*$2:1 + log10($2)):3 t "" \
-w points linecolor variable pointtype 7 pointsize 3
+w points linecolor variable pointtype 7 pointsize 3,\
+f(x) w lines t ""

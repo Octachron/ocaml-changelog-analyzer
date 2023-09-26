@@ -6,10 +6,10 @@ let xy_log_histogram nbins contribs =
   in
   let x r = r.AR.Vect.author in
   let y r = r.AR.Vect.review in
-  let transf n = log (0.1 +. float n) in
+  let transf x = log (0.1 +. x) in
   let rev x = (exp x -. 0.1) in
-  let max_p p = transf (reduce 0 max p) in
-  let min_p p = transf (reduce Int.max_int min p) in
+  let max_p p = transf (reduce 0. max p) in
+  let min_p p = transf (reduce Float.max_float min p) in
   let max_x = max_p x and max_y = max_p y in
   let min_x = min_p x and min_y = min_p y in
   let lbin mn mx n =

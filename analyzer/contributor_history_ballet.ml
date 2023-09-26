@@ -46,8 +46,8 @@ let (.!()) map x = match Name_map.find_opt x map with
   | Some x -> x
   | None -> Fmt.epr "Not found: %a@." Changelog.Def.Pp.name x; exit 2
 
-let pp_author ids ppf (name, {V2.x; y}) =
-  Fmt.pf ppf "%f %f %d %a" x y ids.!(name) Changelog.Def.Pp.name name
+let pp_author ids ppf (name, {AR.Vect.author; review}) =
+  Fmt.pf ppf "%g %g %d %a" author review ids.!(name) Changelog.Def.Pp.name name
 
 let pp_version ppf (mj,mn) =
   if mj >= 5 then
@@ -76,14 +76,7 @@ let () =
   let plot = cmd Sys.argv.(3) in
   let template d = Fmt.str template d in
   let changelog = changelog_from_file filename in
-  let ids =
-    let authors = Cat.count_category "authors" changelog in
-    let reviewers = Cat.count_category "review" changelog in
-    Name_set.union reviewers authors
-    |> Name_set.to_seq
-    |> Seq.mapi (fun i x -> x, i)
-    |> Name_map.of_seq
-  in
+  let ids = ids changelog in
   let history =
     changelog
     |> contribution_by_release
