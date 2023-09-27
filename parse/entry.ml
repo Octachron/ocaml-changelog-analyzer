@@ -4,13 +4,15 @@ module Changelog = Changelog.Def
 let (let*) = (>>=)
 
 
-let ref = (string "#" <|> string "RFC" <|> string "ocaml/RFCs") *> nums
+let ref = (string "#" <|> string "fix #" <|> string "RFC" <|> string "ocaml/RFCs") *> nums
 let refs = (space *> sep_by1 comma ref) <?> "refs"
 
-let bullet =
-  (space *> (char '*' *> return true) <|> (char '-' *> return false)) <?> "bullet"
+let optional_refs = option [] refs
 
-let start = (bullet <* refs) <?> "entry prefix"
+let bullet =
+  ((char '*' *> return true) <|> (char '-' *> return false)) <?> "bullet"
+
+let start = (bullet <* optional_refs) <?> "entry prefix"
 
 let by_entry x =
   match parse_string ~consume:Prefix start x with
@@ -19,7 +21,7 @@ let by_entry x =
 
 let parse_flat_entry sapients =
   let* bullet in
-  let* refs in
+  let* refs = optional_refs in
   let* () = space *> skip_many (char ':') *> space in
   let* rest = all <?> "rest of entry" in
   return { Changelog.references=refs;
