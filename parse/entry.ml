@@ -30,10 +30,28 @@ let parse_flat_entry sapients =
            breaking=bullet;
          }
 
+let known_non_authors = function
+  | "no cross ref to class after dump+load"
+  | "changes the generated sequences"
+  | "error message in french"
+    as raw ->
+    Fmt.epr "Ignored non author parentheses: %s@." raw;
+    true
+  | _ -> false
+
 let parse_entry lines =
-  let main, authors = Sapient.split (List.rev lines) in
+  let {Sapient.main; raw; sapients} = Sapient.split (List.rev lines) in
+  let refs, authors =
+    match parse_string ~consume:Prefix refs raw with
+    | Ok x -> x, []
+    | Error _ ->
+      if known_non_authors raw then [], []
+      else [], sapients
+  in
   match parse_string ~consume:All (parse_flat_entry authors <?> "entry")  main with
-  | Ok x -> Changelog.Entry x
+  | Ok x ->
+    let x = { x with references = x.references @ refs } in
+    Changelog.Entry x
   | Error err ->
     Format.eprintf "@[<v> error = %s@, main=%S@]@." err main;
     Doc main

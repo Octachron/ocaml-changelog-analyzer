@@ -1,3 +1,5 @@
+type t = string list list
+
 type sep =
   | Comma
   | And
@@ -213,18 +215,23 @@ let split_line s =
     Some (String.sub s 0 start, String.sub s (start + 1) (String.length s - start -1))
   | None -> None
 
+type split = { raw:string; sapients:(string * t) list; main:string}
+
 let rec split after = function
-  | [] -> String.concat "" after, []
+  | [] ->
+    { raw = ""; main = String.concat "" (List.rev after); sapients= []}
   | next :: before ->
     match split_line next with
     | None -> split (next::after) before
     | Some (b, a) ->
-      let authors = parse (String.concat "" (a::after)) in
-      String.concat "\n" (List.rev (b::before)), authors
+      let raw = String.concat "" (a::after) in
+      let sapients = parse raw in
+      let main = String.concat "\n" (List.rev (b::before)) in
+      { raw; main; sapients }
 
 let no_authors t expl  =
   Format.eprintf "Entry without authors %t @." expl;
-  (String.concat "\n" (List.rev  t)), []
+  { raw = ""; main=String.concat "\n" (List.rev  t); sapients= []}
 
 let check_tail close last  =
   let right = String.sub last (close + 1) (String.length last - close - 1) in
@@ -239,7 +246,7 @@ let split = function
       let after = String.sub last (open_+1) (close - open_ - 1) in
       let empty_tail, tail = check_tail close last in
       if empty_tail then
-        before, parse after
+        { main=before; raw = after; sapients= parse after}
       else
         no_authors rev_lines (Format.dprintf "Closing ) is not last char in %S|%S|2" last tail)
     | Some close, None ->
