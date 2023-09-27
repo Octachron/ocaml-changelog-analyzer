@@ -117,6 +117,7 @@ let split_section x = match strip_postfix (List.filter ((<>) "") x) with
   | ("light"|"code") :: ("review" as x) :: "by" :: q
   | _ :: ("fix" as x) :: "by" :: q
   | _ :: ("report" as x) :: "by" :: q
+  | "thanks" :: "to" :: "a" :: ("report" as x) :: "of" :: q
   | ("thanks" as x) :: "to" :: q
   | "following" :: ("discussion" as x) :: "with" :: q
   | "with" :: ("thanks" | "feedback" | "contributions" as x) :: ("to"|"from") :: q
