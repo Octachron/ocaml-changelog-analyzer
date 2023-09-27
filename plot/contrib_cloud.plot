@@ -5,9 +5,9 @@ set xlabel "number of authored contributions"
 set ylabel "number of reviews"
 
 
-ymax = 100
+ymax = 300
 yzero = 0.7
-xmax = 100
+xmax = 300
 xzero = 0.7
 
 set yrange [0.5:(1+log10(ymax))]
