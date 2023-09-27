@@ -13205,7 +13205,14 @@
       },
       {
         "references": [ 1314 ],
-        "text": "Format, use the optional width information\n  when formatting a boolean: \"%8B\", \"%-8B\" for example\n  (Xavier Clerc, review by Gabriel Scherer)\n- c9cc0f25138ce58e4f4e68c4219afe33e2a9d034: Resurrect tabulation boxes\n  in module Format. Rewrite/extend documentation of tabulation boxes.\n  ",
+        "text": "Format, use the optional width information\n  when formatting a boolean: \"%8B\", \"%-8B\" for example\n  ",
+        "breaking change": false,
+        "authors": [ [ "Xavier", "Clerc" ] ],
+        "review": [ [ "Gabriel", "Scherer" ] ]
+      },
+      {
+        "references": [],
+        "text": "c9cc0f25138ce58e4f4e68c4219afe33e2a9d034: Resurrect tabulation boxes\n  in module Format. Rewrite/extend documentation of tabulation boxes.\n  ",
         "breaking change": false,
         "authors": [ [ "Pierre", "Weis" ] ]
       }
@@ -14800,7 +14807,15 @@
       },
       {
         "references": [ 1017 ],
-        "text": "ocamldoc, add an option to detect code fragments that could be\n  transformed into a cross-reference to a known element.\n  (Florian Angeletti, review and suggestion by David Allsopp)\n- clarify ocamldoc text parsing error messages\n  ",
+        "text": "ocamldoc, add an option to detect code fragments that could be\n  transformed into a cross-reference to a known element.\n  ",
+        "breaking change": false,
+        "authors": [ [ "Florian", "Angeletti" ] ],
+        "review": [ [ "David", "Allsopp" ] ],
+        "suggestion": [ [ "David", "Allsopp" ] ]
+      },
+      {
+        "references": [],
+        "text": "clarify ocamldoc text parsing error messages\n  ",
         "breaking change": false,
         "authors": [ [ "Gabriel", "Scherer" ] ]
       }
@@ -14938,7 +14953,12 @@
     ],
     " Compiler distribution build system: Makefile factorization": [
       {
-        "doc": "The complete list of changes is listed below.  or #7172 (More information in ocamlc -config).  or participate to #7116 (Allow easy retrieval of Makefile.config's values)  on Makefile.config, you may want to get in touch with Sébastien Hinderer  for scripting purposes, and have a stable interface there. If you rely  on it is a bit fragile. We plan to make `ocamlc -config` easier to use  Note that Makefile.config may change further in the future and relying    SUPPORTS_SHARED_LIBRARIES variable whose value is \"true\" or \"false\".    which duplicates the existing and more convenient  - the SHARED variable was removed; its value is \"shared\" or \"noshared\",  - the always-empty DLLCCCOMPOPTS was removed  - the PARTIALLD variable was removed (PACKLD is more complete)  - a BYTERUN variable was added that points to the installed ocamlrun  as follows:  which some advanced users might rely. The changes are  is exported as $(ocamlc -where)/Makefile.config, and on* Some changes were made to the config/Makefile file whichsystems.worked on harmonizing the build rules and merging the two buildnew systems. During the 4.05 development period, Sébastien Hindereron the compiler distribution, but also cross-compilation or porting tosubtle differences and technical debt in general -- for people workingfor Unix and Windows, which lead to some amount of duplication andbuild the compiler distribution) traditionally had separate MakefilesThe compiler distribution build system (the set of Makefiles used to"
+        "doc": "systems.worked on harmonizing the build rules and merging the two buildnew systems. During the 4.05 development period, Sébastien Hindereron the compiler distribution, but also cross-compilation or porting tosubtle differences and technical debt in general -- for people workingfor Unix and Windows, which lead to some amount of duplication andbuild the compiler distribution) traditionally had separate MakefilesThe compiler distribution build system (the set of Makefiles used to"
+      },
+      {
+        "references": [],
+        "text": "Some changes were made to the config/Makefile file which\n  is exported as $(ocamlc -where)/Makefile.config, and on\n  which some advanced users might rely. The changes are\n  as follows:\n  - a BYTERUN variable was added that points to the installed ocamlrun\n  - the PARTIALLD variable was removed (PACKLD is more complete)\n  - the always-empty DLLCCCOMPOPTS was removed\n  - the SHARED variable was removed; its value is \"shared\" or \"noshared\",\n    which duplicates the existing and more convenient\n    SUPPORTS_SHARED_LIBRARIES variable whose value is \"true\" or \"false\".\n  Note that Makefile.config may change further in the future and relying\n  on it is a bit fragile. We plan to make `ocamlc -config` easier to use\n  for scripting purposes, and have a stable interface there. If you rely\n  on Makefile.config, you may want to get in touch with Sébastien Hinderer\n  or participate to #7116 (Allow easy retrieval of Makefile.config's values)\n  or #7172 (More information in ocamlc -config).\nThe complete list of changes is listed below.",
+        "breaking change": true
       },
       {
         "references": [ 705 ],
@@ -15713,7 +15733,14 @@
       },
       {
         "references": [ 723 ],
-        "text": "Sort emitted functions according to source location\n  (Pierre Chambart, review by Mark Shinwell)\n- Lack of type normalization lead to missing simple compilation for \"lazy x\"\n  ",
+        "text": "Sort emitted functions according to source location\n  ",
+        "breaking change": false,
+        "authors": [ [ "Pierre", "Chambart" ] ],
+        "review": [ [ "Mark", "Shinwell" ] ]
+      },
+      {
+        "references": [],
+        "text": "Lack of type normalization lead to missing simple compilation for \"lazy x\"\n  ",
         "breaking change": false,
         "authors": [ [ "Alain", "Frisch" ] ]
       }
@@ -16707,7 +16734,14 @@
       },
       {
         "references": [ 6902, 210 ],
-        "text": "emit a runtime warning on stderr\n  when finalizing an I/O channel which is still open:\n    \"channel opened on file '...' dies without being closed\"\n  this is controlled by OCAMLRUNPARAM=W=1 or with Sys.enable_runtime_warnings.\n  The behavior of affected program is not changed,\n  but they should still be fixed.\n  (Alain Frisch, review by Damien Doligez)\n- Signal handling: for read-and-clear, use GCC/Clang atomic builtins\n  if available.\n  ",
+        "text": "emit a runtime warning on stderr\n  when finalizing an I/O channel which is still open:\n    \"channel opened on file '...' dies without being closed\"\n  this is controlled by OCAMLRUNPARAM=W=1 or with Sys.enable_runtime_warnings.\n  The behavior of affected program is not changed,\n  but they should still be fixed.\n  ",
+        "breaking change": false,
+        "authors": [ [ "Alain", "Frisch" ] ],
+        "review": [ [ "Damien", "Doligez" ] ]
+      },
+      {
+        "references": [],
+        "text": "Signal handling: for read-and-clear, use GCC/Clang atomic builtins\n  if available.\n  ",
         "breaking change": false,
         "authors": [ [ "Xavier", "Leroy" ] ]
       },
@@ -16919,7 +16953,13 @@
       },
       {
         "references": [ 272 ],
-        "text": "Switch classify_float to [@@unboxed]\n  (Alain Frisch)\n- Improve speed of classify_float by not going through fpclassify()\n  ",
+        "text": "Switch classify_float to [@@unboxed]\n  ",
+        "breaking change": false,
+        "authors": [ [ "Alain", "Frisch" ] ]
+      },
+      {
+        "references": [],
+        "text": "Improve speed of classify_float by not going through fpclassify()\n  ",
         "breaking change": false,
         "authors": [ [ "Alain", "Frisch" ], [ "Xavier", "Leroy" ] ]
       },
@@ -17057,12 +17097,21 @@
     ],
     " Other libraries:": [
       {
-        "doc": "  (Xavier Leroy)  now causes an error.  Calling [set_binary_mode_{in,out} chan false] on these channels  Unix.out_channel_of_descr no longer support text mode under Windows.* Unix library: channels created by Unix.in_channel_of_descr or"
+        "references": [],
+        "text": "Unix library: channels created by Unix.in_channel_of_descr or\n  Unix.out_channel_of_descr no longer support text mode under Windows.\n  Calling [set_binary_mode_{in,out} chan false] on these channels\n  now causes an error.\n  ",
+        "breaking change": true,
+        "authors": [ [ "Xavier", "Leroy" ] ]
       },
       {
         "references": [ 4023 ],
-        "text": "and #68: add Unix.sleepf (sleep with sub-second resolution)\n  (Evgenii Lepikhin and Xavier Leroy)\n* Protect Unix.sleep against interruptions by handled signals.\n  Before, a handled signal could cause Unix.sleep to return early.\n  Now, the sleep is restarted until the given time is elapsed.\n  ",
+        "text": "and #68: add Unix.sleepf (sleep with sub-second resolution)\n  ",
         "breaking change": false,
+        "authors": [ [ "Evgenii", "Lepikhin" ], [ "Xavier", "Leroy" ] ]
+      },
+      {
+        "references": [],
+        "text": "Protect Unix.sleep against interruptions by handled signals.\n  Before, a handled signal could cause Unix.sleep to return early.\n  Now, the sleep is restarted until the given time is elapsed.\n  ",
+        "breaking change": true,
         "authors": [ [ "Xavier", "Leroy" ] ]
       },
       {
@@ -18294,7 +18343,10 @@
     ],
     "Installation procedure": [
       {
-        "doc": "  (Mark Shinwell)- Update instructions for x86-64 PIC mode and POWER architecture builds"
+        "references": [],
+        "text": "Update instructions for x86-64 PIC mode and POWER architecture builds\n  ",
+        "breaking change": false,
+        "authors": [ [ "Mark", "Shinwell" ] ]
       }
     ],
     "Bug fixes": [
@@ -18745,7 +18797,13 @@
       },
       {
         "references": [ 190 ],
-        "text": "typo in pervasives\n  (Guillaume Bury)\n- Misplaced assertion in major_gc.c for no-naked-pointers mode\n  ",
+        "text": "typo in pervasives\n  ",
+        "breaking change": false,
+        "authors": [ [ "Guillaume", "Bury" ] ]
+      },
+      {
+        "references": [],
+        "text": "Misplaced assertion in major_gc.c for no-naked-pointers mode\n  ",
         "breaking change": false,
         "authors": [ [ "Stephen", "Dolan" ], [ "Mark", "Shinwell" ] ]
       }
@@ -18806,7 +18864,11 @@
       }
     ],
     "Standard library": [
-      { "doc": "* Add optional argument ?limit to Arg.align." }
+      {
+        "references": [],
+        "text": "Add optional argument ?limit to Arg.align.",
+        "breaking change": true
+      }
     ],
     "Bug Fixes": [
       {
@@ -19001,7 +19063,14 @@
       },
       {
         "references": [ 6602 ],
-        "text": "Fatal error when tracing a function with abstract type\n  (Jacques Garrigue, report by Hugo Herbelin)\n- ocamlbuild: add an -ocamlmklib option to change the ocamlmklib command\n  ",
+        "text": "Fatal error when tracing a function with abstract type\n  ",
+        "breaking change": false,
+        "authors": [ [ "Jacques", "Garrigue" ] ],
+        "report": [ [ "Hugo", "Herbelin" ] ]
+      },
+      {
+        "references": [],
+        "text": "ocamlbuild: add an -ocamlmklib option to change the ocamlmklib command\n  ",
         "breaking change": false,
         "authors": [ [ "Jérôme", "Vouillon" ] ]
       }
@@ -19015,7 +19084,34 @@
     ],
     "Language features": [
       {
-        "doc": "  (Damien Doligez)  sequences (type bytes). Activated by command-line option -safe-string.- Separation between read-only strings (type string) and read-write byte  (Alain Frisch)* Alternative syntax for string literals {id|...|id} (can break comments)  (Jacques Garrigue)* Module aliases  (Jacques Garrigue)- Generative functors (#5905)  (Alain Frisch)- Attributes and extension nodes"
+        "references": [],
+        "text": "Attributes and extension nodes\n  ",
+        "breaking change": false,
+        "authors": [ [ "Alain", "Frisch" ] ]
+      },
+      {
+        "references": [],
+        "text": "Generative functors (#5905)\n  ",
+        "breaking change": false,
+        "authors": [ [ "Jacques", "Garrigue" ] ]
+      },
+      {
+        "references": [],
+        "text": "Module aliases\n  ",
+        "breaking change": true,
+        "authors": [ [ "Jacques", "Garrigue" ] ]
+      },
+      {
+        "references": [],
+        "text": "Alternative syntax for string literals {id|...|id} (can break comments)\n  ",
+        "breaking change": true,
+        "authors": [ [ "Alain", "Frisch" ] ]
+      },
+      {
+        "references": [],
+        "text": "Separation between read-only strings (type string) and read-write byte\n  sequences (type bytes). Activated by command-line option -safe-string.\n  ",
+        "breaking change": false,
+        "authors": [ [ "Damien", "Doligez" ] ]
       },
       {
         "references": [ 6318 ],
@@ -19033,18 +19129,50 @@
     ],
     "Build system for the OCaml distribution": [
       {
-        "doc": "- Updated build instructions for 32-bit Mac OS X on Intel hardware.- Use GNU make instead of portable makefiles.- Use -bin-annot when building."
+        "references": [],
+        "text": "Use -bin-annot when building.",
+        "breaking change": false
+      },
+      {
+        "references": [],
+        "text": "Use GNU make instead of portable makefiles.",
+        "breaking change": false
+      },
+      {
+        "references": [],
+        "text": "Updated build instructions for 32-bit Mac OS X on Intel hardware.",
+        "breaking change": false
       }
     ],
     "Shedding weight": [
       {
-        "doc": "* Removed Labltk from the distribution, now available as a third-party library.* Removed Camlp4 from the distribution, now available as third-party software."
+        "references": [],
+        "text": "Removed Camlp4 from the distribution, now available as third-party software.",
+        "breaking change": true
+      },
+      {
+        "references": [],
+        "text": "Removed Labltk from the distribution, now available as a third-party library.",
+        "breaking change": true
       }
     ],
     "Type system": [
       {
         "references": [ 6235 ],
-        "text": "Keep typing of pattern cases independent in principal mode\n  (i.e. information from previous cases is no longer used when typing\n  patterns; cf. '#6235' in testsuite/test/typing-warnings/records.ml)\n  (Jacques Garrigue)\n- Allow opening a first-class module or applying a generative functor\n  in the body of a generative functor. Allow it also in the body of\n  an applicative functor if no types are created\n  (Jacques Garrigue, suggestion by Leo White)\n* Module aliases are now typed in a specific way, which remembers their\n  identity. Compiled interfaces become smaller, but may depend on the\n  original modules. This also changes the signature inferred by\n  \"module type of\".\n  ",
+        "text": "Keep typing of pattern cases independent in principal mode\n  (i.e. information from previous cases is no longer used when typing\n  patterns; cf. '#6235' in testsuite/test/typing-warnings/records.ml)\n  ",
+        "breaking change": true,
+        "authors": [ [ "Jacques", "Garrigue" ] ]
+      },
+      {
+        "references": [],
+        "text": "Allow opening a first-class module or applying a generative functor\n  in the body of a generative functor. Allow it also in the body of\n  an applicative functor if no types are created\n  ",
+        "breaking change": false,
+        "authors": [ [ "Jacques", "Garrigue" ] ],
+        "suggestion": [ [ "Leo", "White" ] ]
+      },
+      {
+        "references": [],
+        "text": "Module aliases are now typed in a specific way, which remembers their\n  identity. Compiled interfaces become smaller, but may depend on the\n  original modules. This also changes the signature inferred by\n  \"module type of\".\n  ",
         "breaking change": true,
         "authors": [ [ "Jacques", "Garrigue" ] ],
         "feedback": [
@@ -19066,18 +19194,53 @@
     ],
     "Compilers": [
       {
-        "doc": "  (Xavier Leroy)  (Removes arithmetic and load instructions whose results are unused.)- New back-end optimization pass: dead code elimination.  (Xavier Leroy)  (Reuses results of previous computations instead of recomputing them.)- New back-end optimization pass: common subexpression elimination (CSE).  (Xavier Leroy)  change FP rounding modes at run-time.  can be turned off with option -no-float-const-prop, for codes that  int32/int64/nativeint arithmetic.  Constant propagation for floats- More aggressive constant propagation, including float and"
+        "references": [],
+        "text": "More aggressive constant propagation, including float and\n  int32/int64/nativeint arithmetic.  Constant propagation for floats\n  can be turned off with option -no-float-const-prop, for codes that\n  change FP rounding modes at run-time.\n  ",
+        "breaking change": false,
+        "authors": [ [ "Xavier", "Leroy" ] ]
+      },
+      {
+        "references": [],
+        "text": "New back-end optimization pass: common subexpression elimination (CSE).\n  (Reuses results of previous computations instead of recomputing them.)\n  ",
+        "breaking change": false,
+        "authors": [ [ "Xavier", "Leroy" ] ]
+      },
+      {
+        "references": [],
+        "text": "New back-end optimization pass: dead code elimination.\n  (Removes arithmetic and load instructions whose results are unused.)\n  ",
+        "breaking change": false,
+        "authors": [ [ "Xavier", "Leroy" ] ]
       },
       {
         "references": [ 6269 ],
-        "text": "Optimization of sequences of string patterns\n  (Benoît Vaugon and Luc Maranget)\n- Experimental native code generator for AArch64 (ARM 64 bits)\n  ",
+        "text": "Optimization of sequences of string patterns\n  ",
+        "breaking change": false,
+        "authors": [ [ "Benoît", "Vaugon" ], [ "Luc", "Maranget" ] ]
+      },
+      {
+        "references": [],
+        "text": "Experimental native code generator for AArch64 (ARM 64 bits)\n  ",
         "breaking change": false,
         "authors": [ [ "Xavier", "Leroy" ] ]
       },
       {
         "references": [ 6042 ],
-        "text": "Optimization of integer division and modulus by constant divisors\n  (Xavier Leroy and Phil Denys)\n- Add \"-open\" command line flag for opening a single module before typing\n  (Leo White, Mark Shinwell and Nick Chapman)\n* \"-o\" now sets module name to the output file name up to the first \".\"\n  (it also applies when \"-o\" is not given, i.e. the module name is then\n   the input file name up to the first \".\")\n  ",
+        "text": "Optimization of integer division and modulus by constant divisors\n  ",
         "breaking change": false,
+        "authors": [ [ "Xavier", "Leroy" ], [ "Phil", "Denys" ] ]
+      },
+      {
+        "references": [],
+        "text": "Add \"-open\" command line flag for opening a single module before typing\n  ",
+        "breaking change": false,
+        "authors": [
+          [ "Leo", "White" ], [ "Mark", "Shinwell" ], [ "Nick", "Chapman" ]
+        ]
+      },
+      {
+        "references": [],
+        "text": "\"-o\" now sets module name to the output file name up to the first \".\"\n  (it also applies when \"-o\" is not given, i.e. the module name is then\n   the input file name up to the first \".\")\n  ",
+        "breaking change": true,
         "authors": [
           [ "Leo", "White" ], [ "Mark", "Shinwell" ], [ "Nick", "Chapman" ]
         ]
@@ -19145,7 +19308,29 @@
     ],
     "Runtime system": [
       {
-        "doc": "  (Damien Doligez)  increments proportional to heap size by default- Fixed a major performance problem on large heaps (~1GB) by making heap  (Mark Shinwell)  [Val_unit] rather than zero.* Blocks initialized by [CAMLlocal*] and [caml_alloc] are now filled with  (Mark Shinwell)  potentially lead to heap corruption.- Fixed bug in native code version of [caml_raise_with_string] that could  (Mark Shinwell, reviews by Damien Doligez and Xavier Leroy)  header.  The colour of said headers should be black.  things that look like OCaml values: in particular they must have a valid  of the major GC.  In this mode, all out-of-heap pointers must point at  avoiding page table tests during block darkening and the marking phase- New configure option \"-no-naked-pointers\" to improve performance by"
+        "references": [],
+        "text": "New configure option \"-no-naked-pointers\" to improve performance by\n  avoiding page table tests during block darkening and the marking phase\n  of the major GC.  In this mode, all out-of-heap pointers must point at\n  things that look like OCaml values: in particular they must have a valid\n  header.  The colour of said headers should be black.\n  ",
+        "breaking change": false,
+        "authors": [ [ "Mark", "Shinwell" ] ],
+        "reviews": [ [ "Damien", "Doligez" ], [ "Xavier", "Leroy" ] ]
+      },
+      {
+        "references": [],
+        "text": "Fixed bug in native code version of [caml_raise_with_string] that could\n  potentially lead to heap corruption.\n  ",
+        "breaking change": false,
+        "authors": [ [ "Mark", "Shinwell" ] ]
+      },
+      {
+        "references": [],
+        "text": "Blocks initialized by [CAMLlocal*] and [caml_alloc] are now filled with\n  [Val_unit] rather than zero.\n  ",
+        "breaking change": true,
+        "authors": [ [ "Mark", "Shinwell" ] ]
+      },
+      {
+        "references": [],
+        "text": "Fixed a major performance problem on large heaps (~1GB) by making heap\n  increments proportional to heap size by default\n  ",
+        "breaking change": false,
+        "authors": [ [ "Damien", "Doligez" ] ]
       },
       {
         "references": [ 4765 ],
@@ -19162,14 +19347,24 @@
       },
       {
         "references": [ 6075 ],
-        "text": "avoid using unsafe C library functions (strcpy, strcat, sprintf)\n  (Xavier Leroy, reports from user 'jfc' and Anil Madhavapeddy)\n- An ISO C99-compliant C compiler and standard library is now assumed.\n  (Plus special exceptions for MSVC.)  In particular, emulation code for\n  64-bit integer arithmetic was removed, the C compiler must support a\n  64-bit integer type.\n  ",
+        "text": "avoid using unsafe C library functions (strcpy, strcat, sprintf)\n  ",
+        "breaking change": false,
+        "authors": [ [ "Xavier", "Leroy" ] ],
+        "report": [ [ "user", "'jfc'" ], [ "Anil", "Madhavapeddy" ] ]
+      },
+      {
+        "references": [],
+        "text": "An ISO C99-compliant C compiler and standard library is now assumed.\n  (Plus special exceptions for MSVC.)  In particular, emulation code for\n  64-bit integer arithmetic was removed, the C compiler must support a\n  64-bit integer type.\n  ",
         "breaking change": false,
         "authors": [ [ "Xavier", "Leroy" ] ]
       }
     ],
     "Standard library": [
       {
-        "doc": "  (Damien Doligez)* Add new modules Bytes and BytesLabels for mutable byte sequences."
+        "references": [],
+        "text": "Add new modules Bytes and BytesLabels for mutable byte sequences.\n  ",
+        "breaking change": true,
+        "authors": [ [ "Damien", "Doligez" ] ]
       },
       {
         "references": [ 4986 ],
@@ -19204,7 +19399,13 @@
       },
       {
         "references": [ 6355 ],
-        "text": "Improve documentation regarding finalisers and multithreading\n  (Daniel Bünzli, Mark Shinwell)\n- Trigger warning 3 for all values marked as deprecated in the documentation.\n  ",
+        "text": "Improve documentation regarding finalisers and multithreading\n  ",
+        "breaking change": false,
+        "authors": [ [ "Daniel", "Bünzli" ], [ "Mark", "Shinwell" ] ]
+      },
+      {
+        "references": [],
+        "text": "Trigger warning 3 for all values marked as deprecated in the documentation.\n  ",
         "breaking change": false,
         "authors": [ [ "Damien", "Doligez" ] ]
       }
@@ -19609,7 +19810,20 @@
       },
       {
         "references": [ 6523 ],
-        "text": "failure upon character bigarray access, and unnecessary change\n  in comparison ordering (Jeremy Yallop, Mark Shinwell)\n- bound-checking bug in caml_string_{get,set}{16,32,64}\n  (Pierre Chambart and Gabriel Scherer, report by Nicolas Trangez)\n- sometimes wrong stack alignment at out-of-bounds array access\n  ",
+        "text": "failure upon character bigarray access, and unnecessary change\n  in comparison ordering ",
+        "breaking change": false,
+        "authors": [ [ "Jeremy", "Yallop" ], [ "Mark", "Shinwell" ] ]
+      },
+      {
+        "references": [],
+        "text": "bound-checking bug in caml_string_{get,set}{16,32,64}\n  ",
+        "breaking change": false,
+        "authors": [ [ "Pierre", "Chambart" ], [ "Gabriel", "Scherer" ] ],
+        "report": [ [ "Nicolas", "Trangez" ] ]
+      },
+      {
+        "references": [],
+        "text": "sometimes wrong stack alignment at out-of-bounds array access\n  ",
         "breaking change": false,
         "authors": [ [ "Gabriel", "Scherer" ], [ "Xavier", "Leroy" ] ],
         "report": [ [ "Pierre", "Chambart" ] ]
@@ -19812,7 +20026,27 @@
       },
       {
         "references": [ 6497 ],
-        "text": "pass context information to -ppx preprocessors\n  (whitequark, Alain Frisch)\n- ocamllex: user-definable refill action\n  (Frédéric Bour, review by Gabriel Scherer and Luc Maranget)\n- shorten syntax for functor signatures: \"functor (M1:S1) (M2:S2) .. -> ..\"\n  (Thomas Gazagnaire and Jeremy Yallop, review by Gabriel Scherer)\n- make ocamldebug -I auto-detection work with ocamlbuild\n  ",
+        "text": "pass context information to -ppx preprocessors\n  ",
+        "breaking change": false,
+        "authors": [ [ "whitequark" ], [ "Alain", "Frisch" ] ]
+      },
+      {
+        "references": [],
+        "text": "ocamllex: user-definable refill action\n  ",
+        "breaking change": false,
+        "authors": [ [ "Frédéric", "Bour" ] ],
+        "review": [ [ "Gabriel", "Scherer" ], [ "Luc", "Maranget" ] ]
+      },
+      {
+        "references": [],
+        "text": "shorten syntax for functor signatures: \"functor (M1:S1) (M2:S2) .. -> ..\"\n  ",
+        "breaking change": false,
+        "authors": [ [ "Thomas", "Gazagnaire" ], [ "Jeremy", "Yallop" ] ],
+        "review": [ [ "Gabriel", "Scherer" ] ]
+      },
+      {
+        "references": [],
+        "text": "make ocamldebug -I auto-detection work with ocamlbuild\n  ",
         "breaking change": false,
         "authors": [ [ "Josh", "Watzman" ] ]
       }
@@ -19824,12 +20058,28 @@
         "doc": "(Changes that can break existing programs are marked with a \"*\")"
       }
     ],
-    "Other libraries": [ { "doc": "- Labltk: updated to Tcl/Tk 8.6." } ],
+    "Other libraries": [
+      {
+        "references": [],
+        "text": "Labltk: updated to Tcl/Tk 8.6.",
+        "breaking change": false
+      }
+    ],
     "Type system": [
       {
         "references": [ 5759 ],
-        "text": "use well-disciplined type information propagation to\n  disambiguate label and constructor names\n  (Jacques Garrigue, Alain Frisch and Leo White)\n* Propagate type information towards pattern-matching, even in the presence of\n  polymorphic variants (discarding only information about possibly-present\n  constructors). As a result, matching against absent constructors is no longer\n  allowed for exact and fixed polymorphic variant types.\n  ",
+        "text": "use well-disciplined type information propagation to\n  disambiguate label and constructor names\n  ",
         "breaking change": false,
+        "authors": [
+          [ "Jacques", "Garrigue" ],
+          [ "Alain", "Frisch" ],
+          [ "Leo", "White" ]
+        ]
+      },
+      {
+        "references": [],
+        "text": "Propagate type information towards pattern-matching, even in the presence of\n  polymorphic variants (discarding only information about possibly-present\n  constructors). As a result, matching against absent constructors is no longer\n  allowed for exact and fixed polymorphic variant types.\n  ",
+        "breaking change": true,
         "authors": [ [ "Jacques", "Garrigue" ] ]
       },
       {
@@ -19848,13 +20098,43 @@
       },
       {
         "references": [ 5634 ],
-        "text": "parsetree rewriter (-ppx flag)\n  (Alain Frisch)\n- ocamldep now supports -absname\n  ",
+        "text": "parsetree rewriter (-ppx flag)\n  ",
+        "breaking change": false,
+        "authors": [ [ "Alain", "Frisch" ] ]
+      },
+      {
+        "references": [],
+        "text": "ocamldep now supports -absname\n  ",
         "breaking change": false,
         "authors": [ [ "Alain", "Frisch" ] ]
       },
       {
         "references": [ 5768 ],
-        "text": "On \"unbound identifier\" errors, use spell-checking to suggest names\n  present in the environment\n  (Gabriel Scherer)\n- ocamlc has a new option -dsource to visualize the parsetree\n  (Alain Frisch, Hongbo Zhang)\n- tools/eqparsetree compares two parsetree ignoring location\n  (Hongbo Zhang)\n- ocamlopt now uses clang as assembler on OS X if available, which enables\n  CFI support for OS X.\n  (Benedikt Meurer)\n- Added a new -short-paths option, which attempts to use the shortest\n  representation for type constructors inside types, taking open modules\n  into account. This can make types much more readable if your code\n  uses lots of functors.\n  ",
+        "text": "On \"unbound identifier\" errors, use spell-checking to suggest names\n  present in the environment\n  ",
+        "breaking change": false,
+        "authors": [ [ "Gabriel", "Scherer" ] ]
+      },
+      {
+        "references": [],
+        "text": "ocamlc has a new option -dsource to visualize the parsetree\n  ",
+        "breaking change": false,
+        "authors": [ [ "Alain", "Frisch" ], [ "Hongbo", "Zhang" ] ]
+      },
+      {
+        "references": [],
+        "text": "tools/eqparsetree compares two parsetree ignoring location\n  ",
+        "breaking change": false,
+        "authors": [ [ "Hongbo", "Zhang" ] ]
+      },
+      {
+        "references": [],
+        "text": "ocamlopt now uses clang as assembler on OS X if available, which enables\n  CFI support for OS X.\n  ",
+        "breaking change": false,
+        "authors": [ [ "Benedikt", "Meurer" ] ]
+      },
+      {
+        "references": [],
+        "text": "Added a new -short-paths option, which attempts to use the shortest\n  representation for type constructors inside types, taking open modules\n  into account. This can make types much more readable if your code\n  uses lots of functors.\n  ",
         "breaking change": false,
         "authors": [ [ "Jacques", "Garrigue" ] ]
       },
@@ -19866,7 +20146,20 @@
       },
       {
         "references": [ 5980 ],
-        "text": "warning on open statements which shadow an existing\n  identifier (if it is actually used in the scope of the open); new\n  open! syntax to silence it locally\n  (Alain Frisch, thanks to a report of Daniel Bünzli)\n* warning 3 is extended to warn about other deprecated features:\n  - ISO-latin1 characters in identifiers\n  - uses of the (&) and (or) operators instead of (&&) and (||)\n  (Damien Doligez)\n- Experimental OCAMLPARAM for ocamlc and ocamlopt\n  ",
+        "text": "warning on open statements which shadow an existing\n  identifier (if it is actually used in the scope of the open); new\n  open! syntax to silence it locally\n  ",
+        "breaking change": false,
+        "authors": [ [ "Alain", "Frisch" ] ],
+        "report": [ [ "Daniel", "Bünzli" ] ]
+      },
+      {
+        "references": [],
+        "text": "warning 3 is extended to warn about other deprecated features:\n  - ISO-latin1 characters in identifiers\n  - uses of the (&) and (or) operators instead of (&&) and (||)\n  ",
+        "breaking change": true,
+        "authors": [ [ "Damien", "Doligez" ] ]
+      },
+      {
+        "references": [],
+        "text": "Experimental OCAMLPARAM for ocamlc and ocamlopt\n  ",
         "breaking change": false,
         "authors": [ [ "Fabrice", "Le", "Fessant" ] ]
       },
@@ -19897,7 +20190,13 @@
       },
       {
         "references": [ 5986 ],
-        "text": "new flag Marshal.Compat_32 for the serialization functions\n  (Marshal.to_*), forcing the output to be readable on 32-bit hosts.\n  (Xavier Leroy)\n- infix application operators |> and @@ in Pervasives\n  ",
+        "text": "new flag Marshal.Compat_32 for the serialization functions\n  (Marshal.to_*), forcing the output to be readable on 32-bit hosts.\n  ",
+        "breaking change": false,
+        "authors": [ [ "Xavier", "Leroy" ] ]
+      },
+      {
+        "references": [],
+        "text": "infix application operators |> and @@ in Pervasives\n  ",
         "breaking change": false,
         "authors": [ [ "Fabrice", "Le", "Fessant" ] ]
       },
@@ -19928,7 +20227,16 @@
     ],
     "Internals": [
       {
-        "doc": "  (Damien Doligez)- The test suite can now be run without installing OCaml first.  (Fabrice Le Fessant)  as part of compilerlibs, to be used on bin-annot files.- Moved debugger/envaux.ml to typing/envaux.ml to publish env_of_only_summary"
+        "references": [],
+        "text": "Moved debugger/envaux.ml to typing/envaux.ml to publish env_of_only_summary\n  as part of compilerlibs, to be used on bin-annot files.\n  ",
+        "breaking change": false,
+        "authors": [ [ "Fabrice", "Le", "Fessant" ] ]
+      },
+      {
+        "references": [],
+        "text": "The test suite can now be run without installing OCaml first.\n  ",
+        "breaking change": false,
+        "authors": [ [ "Damien", "Doligez" ] ]
       }
     ],
     "Bug fixes": [
@@ -20969,14 +21277,35 @@
       },
       {
         "references": [ 6060 ],
-        "text": "ocamlbuild tags 'principal', 'strict_sequence' and 'short_paths'\n  (Anil Madhavapeddy)\n- ocamlbuild tag 'no_alias_deps'\n  ",
+        "text": "ocamlbuild tags 'principal', 'strict_sequence' and 'short_paths'\n  ",
+        "breaking change": false,
+        "authors": [ [ "Anil", "Madhavapeddy" ] ]
+      },
+      {
+        "references": [],
+        "text": "ocamlbuild tag 'no_alias_deps'\n  ",
         "breaking change": false,
         "authors": [ [ "Daniel", "Bünzli" ] ]
       }
     ],
     "Tools": [
       {
-        "doc": "  (Wojciech Meyer)- OCamlbuild now picks the non-core tools like ocamlfind and menhir from PATH  (Jonathan Protzenko)  strict-sequence option.- OCamlbuild now features a strict_sequence tag to trigger the  (Jonathan Protzenko)- OCamlbuild now features a bin_annot tag to generate .cmt files."
+        "references": [],
+        "text": "OCamlbuild now features a bin_annot tag to generate .cmt files.\n  ",
+        "breaking change": false,
+        "authors": [ [ "Jonathan", "Protzenko" ] ]
+      },
+      {
+        "references": [],
+        "text": "OCamlbuild now features a strict_sequence tag to trigger the\n  strict-sequence option.\n  ",
+        "breaking change": false,
+        "authors": [ [ "Jonathan", "Protzenko" ] ]
+      },
+      {
+        "references": [],
+        "text": "OCamlbuild now picks the non-core tools like ocamlfind and menhir from PATH\n  ",
+        "breaking change": false,
+        "authors": [ [ "Wojciech", "Meyer" ] ]
       },
       {
         "references": [ 5884 ],
@@ -21114,17 +21443,96 @@
   "OCaml 4.00.0 (26 Jul 2012):": {
     "Release documentation": [
       {
-        "doc": "- The official name of the language is now OCaml.(Changes that can break existing programs are marked with a \"*\")"
+        "doc": "(Changes that can break existing programs are marked with a \"*\")"
+      },
+      {
+        "references": [],
+        "text": "The official name of the language is now OCaml.",
+        "breaking change": false
       }
     ],
     "Language features": [
       {
-        "doc": "  unpacking of a first-class module.- New (module M) and (module M : S) syntax in patterns, for immediate  Using the -principal option guarantees forward compatibility.  first-class modules. The type-checker attempts to infer it from the context.- It is now possible to omit type annotations when packing and unpacking  See chapter \"Language extensions\" of the reference manual for documentation.- Added Generalized Algebraic Data Types (GADTs) to the language."
+        "references": [],
+        "text": "Added Generalized Algebraic Data Types (GADTs) to the language.\n  See chapter \"Language extensions\" of the reference manual for documentation.",
+        "breaking change": false
+      },
+      {
+        "references": [],
+        "text": "It is now possible to omit type annotations when packing and unpacking\n  first-class modules. The type-checker attempts to infer it from the context.\n  Using the -principal option guarantees forward compatibility.",
+        "breaking change": false
+      },
+      {
+        "references": [],
+        "text": "New (module M) and (module M : S) syntax in patterns, for immediate\n  unpacking of a first-class module.",
+        "breaking change": false
       }
     ],
     "Compilers": [
       {
-        "doc": "- New tool: ocamloptp, the equivalent of ocamlcp for the native-code compiler.  (#5487)  the gdb debugger. Currently supported for x86 32-bits and 64-bits only.  annotations, enabling in particular precise stack backtraces with- Generation of CFI information, and filename/line number debugging (with -g)      exception backtraces.    . Added support for position-independent code, natdynlink, profiling and      savings of 28%.    . Added support for the Thumb-2 instruction set with average code size    . Supports both Linux/EABI (armel) and Linux/EABI+VFPv3 (armhf).* New ARM backend (#5433):  #5360).- Small improvements in code generated for array bounds checks (#5345,- Optimized handling of partially-applied functions (#5287)Native-code compiler:  with the \"method\" keyword.  Use \"method!\" to avoid the warning.* New meaning for warning 7: it is now triggered when a method is overridden  constructors, etc.- Added lots of new warnings about unused variables, opens, fields,- Added option -bin-annot to dump the AST with type annotations.- Optimize away compile-time beta-redexes, e.g. (fun x y -> e) a b.- New option -absname to use absolute paths in error messages* Warning 28 is now enabled by default.- Better reporting of compiler version mismatch in .cmi files- Revised simplification of let-alias (#5205, #5288)"
+        "references": [ 5205, 5288 ],
+        "text": "Revised simplification of let-alias ",
+        "breaking change": false
+      },
+      {
+        "references": [],
+        "text": "Better reporting of compiler version mismatch in .cmi files",
+        "breaking change": false
+      },
+      {
+        "references": [],
+        "text": "Warning 28 is now enabled by default.",
+        "breaking change": true
+      },
+      {
+        "references": [],
+        "text": "New option -absname to use absolute paths in error messages",
+        "breaking change": false
+      },
+      {
+        "references": [],
+        "text": "Optimize away compile-time beta-redexes, e.g. (fun x y -> e) a b.",
+        "breaking change": false
+      },
+      {
+        "references": [],
+        "text": "Added option -bin-annot to dump the AST with type annotations.",
+        "breaking change": false
+      },
+      {
+        "references": [],
+        "text": "Added lots of new warnings about unused variables, opens, fields,\n  constructors, etc.",
+        "breaking change": false
+      },
+      {
+        "references": [],
+        "text": "New meaning for warning 7: it is now triggered when a method is overridden\n  with the \"method\" keyword.  Use \"method!\" to avoid the warning.\nNative-code compiler:",
+        "breaking change": true
+      },
+      {
+        "references": [ 5287 ],
+        "text": "Optimized handling of partially-applied functions ",
+        "breaking change": false
+      },
+      {
+        "references": [ 5345, 5360 ],
+        "text": "Small improvements in code generated for array bounds checks ",
+        "breaking change": false
+      },
+      {
+        "references": [],
+        "text": "New ARM backend (#5433):\n    . Supports both Linux/EABI (armel) and Linux/EABI+VFPv3 (armhf).\n    . Added support for the Thumb-2 instruction set with average code size\n      savings of 28%.\n    . Added support for position-independent code, natdynlink, profiling and\n      exception backtraces.",
+        "breaking change": true
+      },
+      {
+        "references": [ 5487 ],
+        "text": "Generation of CFI information, and filename/line number debugging (with -g)\n  annotations, enabling in particular precise stack backtraces with\n  the gdb debugger. Currently supported for x86 32-bits and 64-bits only.\n  ",
+        "breaking change": false
+      },
+      {
+        "references": [],
+        "text": "New tool: ocamloptp, the equivalent of ocamlcp for the native-code compiler.",
+        "breaking change": false
       }
     ],
     "OCamldoc": [
@@ -21140,23 +21548,109 @@
       },
       {
         "references": [ 5522 ],
-        "text": "allow referring to record fields and variant constructors\n- fix #5419 (error message in french)\n- fix #5535 (no cross ref to class after dump+load)\n* Use first class modules for custom generators, to be able to\n  load various plugins incrementally adding features to the current\n  generator",
+        "text": "allow referring to record fields and variant constructors",
         "breaking change": false
+      },
+      { "references": [ 5419 ], "text": "", "breaking change": false },
+      { "references": [ 5535 ], "text": "", "breaking change": false },
+      {
+        "references": [],
+        "text": "Use first class modules for custom generators, to be able to\n  load various plugins incrementally adding features to the current\n  generator",
+        "breaking change": true
       },
       {
         "references": [ 5507 ],
-        "text": "Use Location.t structures for locations.\n- fix: do not keep code when not told to keep code.",
+        "text": "Use Location.t structures for locations.",
         "breaking change": true
+      },
+      {
+        "references": [],
+        "text": "fix: do not keep code when not told to keep code.",
+        "breaking change": false
       }
     ],
     "Standard library": [
       {
-        "doc": "- String: new function \"map\" (#3888)- Set and Map: more efficient implementation of \"filter\" and \"partition\"- Scanf: new function \"unescaped\" (#3888)- Scanf: width and precision for floating point numbers are now handled    . Consistently treat %% as a plain % character    . Consistently treat %@ as a plain @ character- Format strings for formatted input/output revised to correct #5380     * Faster implementation of Random.float (changes the generated sequences)       when available (e.g. Linux, FreeBSD, MacOS X, Solaris)     . More random initialization (Random.self_init()), using /dev/urandom- Random:  also works for functions that come from dynamically-loaded modules (#5215)- Marshal: marshalling of function values (flag Marshal.Closures) now- Filename: on-demand (lazy) initialization of the PRNG used by \"temp_file\".    . Install new header <caml/hash.h> for C code.      with user-provided seeded hash functions.    . Added new functorial interface \"MakeSeeded\" to support randomization      to turn randomization on by default (#5572, CVE-2012-0839)    . Added \"randomize\" function and \"R\" parameter to OCAMLRUNPARAM      collision patterns and improve security (#5572, CVE-2012-0839)    . Added optional \"random\" parameter to Hashtbl.create to randomize    . Fixed behavior of generic hash function w.r.t. -0.0 and NaN (#5222)    . Statistically-better generic hash function based on Murmur 3 (#5225)* Hashtbl:  (#2395, #2787, #4591)- Array: faster implementations of \"blit\", \"copy\", \"sub\", \"append\" and \"concat\"  (#5437)* Arg: options with empty doc strings are no longer included in the usage string- Added float functions \"hypot\" and \"copysign\" (#3806, #4752, #5246)"
+        "references": [ 3806, 4752, 5246 ],
+        "text": "Added float functions \"hypot\" and \"copysign\" ",
+        "breaking change": false
+      },
+      {
+        "references": [ 5437 ],
+        "text": "Arg: options with empty doc strings are no longer included in the usage string\n  ",
+        "breaking change": true
+      },
+      {
+        "references": [ 2395, 2787, 4591 ],
+        "text": "Array: faster implementations of \"blit\", \"copy\", \"sub\", \"append\" and \"concat\"\n  ",
+        "breaking change": false
+      },
+      {
+        "references": [],
+        "text": "Hashtbl:\n    . Statistically-better generic hash function based on Murmur 3 (#5225)\n    . Fixed behavior of generic hash function w.r.t. -0.0 and NaN (#5222)\n    . Added optional \"random\" parameter to Hashtbl.create to randomize\n      collision patterns and improve security (#5572, CVE-2012-0839)\n    . Added \"randomize\" function and \"R\" parameter to OCAMLRUNPARAM\n      to turn randomization on by default (#5572, CVE-2012-0839)\n    . Added new functorial interface \"MakeSeeded\" to support randomization\n      with user-provided seeded hash functions.\n    . Install new header <caml/hash.h> for C code.",
+        "breaking change": true
+      },
+      {
+        "references": [],
+        "text": "Filename: on-demand (lazy) initialization of the PRNG used by \"temp_file\".",
+        "breaking change": false
+      },
+      {
+        "references": [ 5215 ],
+        "text": "Marshal: marshalling of function values (flag Marshal.Closures) now\n  also works for functions that come from dynamically-loaded modules ",
+        "breaking change": false
+      },
+      {
+        "references": [],
+        "text": "Random:\n     . More random initialization (Random.self_init()), using /dev/urandom\n       when available (e.g. Linux, FreeBSD, MacOS X, Solaris)\n     * Faster implementation of Random.float ",
+        "breaking change": false
+      },
+      {
+        "references": [],
+        "text": "Format strings for formatted input/output revised to correct #5380\n    . Consistently treat %@ as a plain @ character\n    . Consistently treat %% as a plain % character",
+        "breaking change": false
+      },
+      {
+        "references": [],
+        "text": "Scanf: width and precision for floating point numbers are now handled",
+        "breaking change": false
+      },
+      {
+        "references": [ 3888 ],
+        "text": "Scanf: new function \"unescaped\" ",
+        "breaking change": false
+      },
+      {
+        "references": [],
+        "text": "Set and Map: more efficient implementation of \"filter\" and \"partition\"",
+        "breaking change": false
+      },
+      {
+        "references": [ 3888 ],
+        "text": "String: new function \"map\" ",
+        "breaking change": false
       }
     ],
     "Installation procedure": [
       {
-        "doc": "  (-runtime-variant) to select the debug runtime.  a debug version of the runtime system, and a compiler option- Added a configuration option (-with-debug-runtime) to compile and install  ocamlcommon.cma ocamlbytecomp.cma ocamltoplevel.cma* toplevellib.cma is no longer installed because subsumed by  Add \"-I +compiler-libs\" where needed.  `ocamlc -where` are now to be found in  `ocamlc -where`/compiler-libs.* Some .cmi for toplevel internals that used to be installed in   (#8255, #4653, frequently-asked feature).      ocamltoplevel.cma         modules specific to ocaml      ocamloptcomp.cma/.cmxa    modules specific to ocamlopt      ocamlbytecomp.cma/.cmxa   modules for ocamlc and ocaml      ocamlcommon.cma/.cmxa     modules common to ocamlc, ocamlopt, ocaml  modules, plus the following libraries:  The files available there include the .cmi interfaces for all compiler- Compiler internals are now installed in `ocamlc -where`/compiler-libs."
+        "references": [ 8255, 4653 ],
+        "text": "Compiler internals are now installed in `ocamlc -where`/compiler-libs.\n  The files available there include the .cmi interfaces for all compiler\n  modules, plus the following libraries:\n      ocamlcommon.cma/.cmxa     modules common to ocamlc, ocamlopt, ocaml\n      ocamlbytecomp.cma/.cmxa   modules for ocamlc and ocaml\n      ocamloptcomp.cma/.cmxa    modules specific to ocamlopt\n      ocamltoplevel.cma         modules specific to ocaml\n   ",
+        "breaking change": false
+      },
+      {
+        "references": [],
+        "text": "Some .cmi for toplevel internals that used to be installed in\n  `ocamlc -where` are now to be found in  `ocamlc -where`/compiler-libs.\n  Add \"-I +compiler-libs\" where needed.",
+        "breaking change": true
+      },
+      {
+        "references": [],
+        "text": "toplevellib.cma is no longer installed because subsumed by\n  ocamlcommon.cma ocamlbytecomp.cma ocamltoplevel.cma",
+        "breaking change": true
+      },
+      {
+        "references": [],
+        "text": "Added a configuration option (-with-debug-runtime) to compile and install\n  a debug version of the runtime system, and a compiler option\n  (-runtime-variant) to select the debug runtime.",
+        "breaking change": false
       }
     ],
     "Bug Fixes": [
@@ -22054,17 +22548,48 @@
       },
       {
         "references": [ 5666 ],
-        "text": "C includes don't provide a revision number\n- ocamldebug: ability to inspect values that contain code pointers\n- ocamldebug: new 'environment' directive to set environment variables\n  for debuggee\n- configure: add -no-camlp4 option",
+        "text": "C includes don't provide a revision number",
+        "breaking change": false
+      },
+      {
+        "references": [],
+        "text": "ocamldebug: ability to inspect values that contain code pointers",
+        "breaking change": false
+      },
+      {
+        "references": [],
+        "text": "ocamldebug: new 'environment' directive to set environment variables\n  for debuggee",
+        "breaking change": false
+      },
+      {
+        "references": [],
+        "text": "configure: add -no-camlp4 option",
         "breaking change": false
       }
     ],
     "Shedding weight": [
       {
-        "doc": "  https://forge.ocamlcore.org/projects/ocamltopwin/  part of this distribution.  It now lives its own life at* The \"OCamlWin\" toplevel user interface for MS Windows is no longer  https://forge.ocamlcore.org/projects/camldbm/  longer part of this distribution.  It now lives its own life at* The \"DBM\" library (interface with Unix DBM key-value stores) is no* Removed the obsolete native-code generators for Alpha, HPPA, IA64 and MIPS."
+        "references": [],
+        "text": "Removed the obsolete native-code generators for Alpha, HPPA, IA64 and MIPS.",
+        "breaking change": true
+      },
+      {
+        "references": [],
+        "text": "The \"DBM\" library (interface with Unix DBM key-value stores) is no\n  longer part of this distribution.  It now lives its own life at\n  https://forge.ocamlcore.org/projects/camldbm/",
+        "breaking change": true
+      },
+      {
+        "references": [],
+        "text": "The \"OCamlWin\" toplevel user interface for MS Windows is no longer\n  part of this distribution.  It now lives its own life at\n  https://forge.ocamlcore.org/projects/ocamltopwin/",
+        "breaking change": true
       }
     ],
     "Other changes": [
-      { "doc": "- Copy VERSION file to library directory when installing." }
+      {
+        "references": [],
+        "text": "Copy VERSION file to library directory when installing.",
+        "breaking change": false
+      }
     ]
   }
 }
