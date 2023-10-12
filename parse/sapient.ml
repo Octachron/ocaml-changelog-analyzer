@@ -85,6 +85,9 @@ let normalize_name ~warn = function
   | (["Khoo"; "Yit"; "Phang"] as q)
   | ("Github"|"github") :: "user" :: q
   | (["Xavier"; "Van"; "de"; "Woestyne" ] as q) ->  q
+    (* mixed format *)
+  | ["Leo";  "White"; "(#2269)"] -> ["Leo"; "White"]
+  | ["&"; "Mark"; "Shinwell" ] -> ["Mark"; "Shinwell" ]
   | x ->
     if warn then Format.eprintf "Complex name or error:%s@." (String.concat " " x);
     x
@@ -213,6 +216,7 @@ let known_non_authors = function
   | "from #5318"
   | "set|clear"
   | "probably fixed"
+  | "or"
   | "" | "_"  -> true
   | s ->
     if List.exists (fun prefix -> String.starts_with ~prefix s)
@@ -307,8 +311,15 @@ let cut_at_char s pos =
   String.sub s (pos + gap) (String.length s - pos - gap )
 
 let split_middle s start stop =
-  let rest, last = cut_at_char s stop in
-  let before, mid = cut_at_char rest start in
+  let rest, last =
+    if stop >= String.length s then
+      s, ""
+    else cut_at_char s stop in
+  let before, mid =
+    if start >= String.length rest then
+      rest, ""
+    else
+      cut_at_char rest start in
   before, mid, last
 
 let validate_parenthese s (first,last) =

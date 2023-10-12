@@ -2,12 +2,14 @@
   "Working version": {
     " Restored backends:": [
       {
-        "references": [ 12276 ],
+        "references": [ 12276, 12601 ],
         "text": "native-code compilation for POWER (64 bits, little-endian)",
         "breaking change": false,
         "authors": [ [ "Xavier", "Leroy" ] ],
         "review": [
-          [ "KC", "Sivaramakrishnan" ], [ "Anil", "Madhavapeddy" ]
+          [ "KC", "Sivaramakrishnan" ],
+          [ "Anil", "Madhavapeddy" ],
+          [ "Stephen", "Dolan" ]
         ]
       }
     ],
@@ -64,6 +66,19 @@
         "breaking change": false,
         "authors": [ [ "Christophe", "Raffalli" ] ],
         "review": [ [ "Gabriel", "Scherer" ] ]
+      },
+      {
+        "references": [ 12502 ],
+        "text": "the compiler now normalizes the newline sequence \\r\\n to\n  a single \\n character during lexing, to guarantee that the semantics\n  of newlines in string literals is not modified by Windows tools\n  transforming \\n into \\r\\n in source files.\n  Warning 29 [eol-in-string] is not emitted anymore, as the normalization\n  gives a more robust semantics to newlines in string literals.",
+        "breaking change": true,
+        "authors": [ [ "Gabriel", "Scherer" ], [ "Damien", "Doligez" ] ],
+        "report": [ [ "Andreas", "Rossberg" ] ],
+        "review": [
+          [ "Daniel", "Bünzli" ],
+          [ "David", "Allsopp" ],
+          [ "Andreas", "Rossberg" ],
+          [ "Xavier", "Leroy" ]
+        ]
       }
     ],
     " Type system:": [
@@ -111,10 +126,10 @@
         "review": [ [ "Daniel", "Bünzli" ], [ "Xavier", "Leroy" ] ]
       },
       {
-        "references": [ 12235 ],
-        "text": "introduce and use the `CAMLnoret` macro as a lighter alternative\n  to `CAMLnoreturn_start` / `CAMLnoreturn_end`",
+        "references": [ 12235, 12468 ],
+        "text": "introduce and use the `CAMLnoret` macro as\n  a lighter alternative to `CAMLnoreturn_start` / `CAMLnoreturn_end`.\n  Implement it so as to conform with C11, C23, C++11, C++17.",
         "breaking change": false,
-        "authors": [ [ "Xavier", "Leroy" ] ],
+        "authors": [ [ "Xavier", "Leroy" ], [ "Dhruv", "Maroo" ] ],
         "help": [ [ "Antonin", "Décimo" ] ],
         "review": [ [ "Gabriel", "Scherer" ], [ "David", "Allsopp" ] ]
       },
@@ -215,6 +230,13 @@
           [ "Xavier", "Leroy" ],
           [ "KC", "Sivaramakrishnan" ]
         ]
+      },
+      {
+        "references": [ 12634 ],
+        "text": "Simplify TSan backtrace bookkeeping upon raise",
+        "breaking change": false,
+        "authors": [ [ "Olivier", "Nicole" ], [ "Fabrice", "Buoro" ] ],
+        "review": [ [ "Gabriel", "Scherer" ] ]
       }
     ],
     " Code generation and optimizations:": [
@@ -231,6 +253,13 @@
         "breaking change": false,
         "authors": [ [ "Xavier", "Leroy" ] ],
         "review": [ [ "Anil", "Madhavapeddy" ], [ "Tim", "McGilchrist" ] ]
+      },
+      {
+        "references": [ 12551 ],
+        "text": "Propagate classification of recursive bindings from Rec_check",
+        "breaking change": false,
+        "authors": [ [ "Vincent", "Laviron" ] ],
+        "review": [ [ "Gabriel", "Scherer" ] ]
       }
     ],
     " Standard library:": [
@@ -298,6 +327,26 @@
         ]
       },
       {
+        "references": [ 12455 ],
+        "text": "Add `Array.init_matrix`, `Float.Array.make_matrix`,\n  `Float.Array.init_matrix`.",
+        "breaking change": false,
+        "authors": [ [ "Glen", "Mével" ] ],
+        "review": [
+          [ "Xavier", "Leroy" ],
+          [ "Gabriel", "Scherer" ],
+          [ "Jeremy", "Yallop" ],
+          [ "Nicolás", "Ojeda", "Bär" ]
+        ]
+      },
+      {
+        "references": [ 12455 ],
+        "text": "`Array.make_matrix dimx dimy f` now raises `Invalid_argument`\n  when `dimx = 0 && dimy < 0` This was already specified but not enforced.",
+        "breaking change": true,
+        "authors": [ [ "Glen", "Mével" ] ],
+        "report": [ [ "Jeremy", "Yallop" ] ],
+        "review": [ [ "Nicolás", "Ojeda", "Bär" ] ]
+      },
+      {
         "references": [ 12511 ],
         "text": "Minor performance improvements and cleanups in the implementation\n  of modules Int32, Int64, and Nativeint",
         "breaking change": false,
@@ -310,6 +359,13 @@
         "breaking change": false,
         "authors": [ [ "Guillaume", "Munch-Maccagnoni" ] ],
         "review": [ [ "KC", "Sivaramakrishnan" ], [ "Gabriel", "Scherer" ] ]
+      },
+      {
+        "references": [ 12625 ],
+        "text": "Remove the Closure module from Obj",
+        "breaking change": false,
+        "authors": [ [ "Vincent", "Laviron" ] ],
+        "review": [ [ "Xavier", "Leroy" ] ]
       }
     ],
     " Other libraries:": [
@@ -368,6 +424,31 @@
           [ "Gabriel", "Scherer" ],
           [ "Xavier", "Leroy" ]
         ]
+      },
+      {
+        "references": [ 12576 ],
+        "text": "ocamldep: various refactors.",
+        "breaking change": false,
+        "authors": [ [ "Antonin", "Décimo" ] ],
+        "review": [
+          [ "Florian", "Angeletti" ],
+          [ "Gabriel", "Scherer" ],
+          [ "Léo", "Andrès" ]
+        ]
+      },
+      {
+        "references": [ 12615 ],
+        "text": "ocamldoc: get rid of the odoc_literate and odoc_todo generators.",
+        "breaking change": false,
+        "authors": [ [ "Sébaistien", "Hinderer" ] ],
+        "review": [ [ "Gabriel", "Scherer" ], [ "Florian", "Angeletti" ] ]
+      },
+      {
+        "references": [ 12497, 12613 ],
+        "text": "Make ocamlc/ocamlopt fail with an error when no\n  input files are specified to build an executable.",
+        "breaking change": true,
+        "authors": [ [ "Antonin", "Décimo" ] ],
+        "review": [ [ "Sébastien", "Hinderer" ] ]
       }
     ],
     " Manual and documentation:": [
@@ -405,6 +486,13 @@
         "review": [ [ "Damien", "Doligez" ], [ "Sébastien", "Hinderer" ] ]
       },
       {
+        "references": [ 12199 ],
+        "text": "improve the error message for non-overriding `inherit!`",
+        "breaking change": false,
+        "authors": [ [ "Florian", "Angeletti" ] ],
+        "review": [ [ "Jules", "Aguillon" ] ]
+      },
+      {
         "references": [ 12210 ],
         "text": "uniform style for inline code in compiler messages",
         "breaking change": false,
@@ -432,6 +520,13 @@
         "breaking change": false,
         "authors": [ [ "Florian", "Angeletti" ] ],
         "review": [ [ "Gabriel", "Scherer" ] ]
+      },
+      {
+        "references": [ 12622 ],
+        "text": "Give hints about existential types appearing in error messages",
+        "breaking change": false,
+        "authors": [ [ "Leo", "White" ] ],
+        "review": [ [ "Gabriel", "Scherer" ], [ "Florian", "Angeletti" ] ]
       }
     ],
     " Internal/compiler-libs changes:": [
@@ -573,6 +668,36 @@
     ],
     " Bug fixes:": [
       {
+        "references": [ 12590, 12595 ],
+        "text": "fix a race in `caml_collect_gc_stats_sample`",
+        "breaking change": false,
+        "authors": [ [ "B.", "Szilvasy" ] ],
+        "review": [ [ "Gabriel", "Scherer" ] ]
+      },
+      {
+        "references": [ 12595, 12597 ],
+        "text": "fix a race in `caml_clear_gc_stats_sample`",
+        "breaking change": false,
+        "authors": [ [ "Gabriel", "Scherer" ] ],
+        "report": [ [ "B.", "Szilvasy" ] ],
+        "review": [ [ "B.", "Szilvasy" ] ]
+      },
+      {
+        "references": [ 12580 ],
+        "text": "Fix location of alias pattern variables.",
+        "breaking change": false,
+        "authors": [ [ "Chris", "Casinghino" ] ],
+        "report": [ [ "Milo", "Davis" ] ],
+        "review": [ [ "Gabriel", "Scherer" ] ]
+      },
+      {
+        "references": [ 12583 ],
+        "text": "Add a closing event for when `EV_MAJOR_EPHE_MARK` is complete",
+        "breaking change": false,
+        "authors": [ [ "Sudha", "Parimala" ] ],
+        "review": [ [ "Gabriel", "Scherer" ] ]
+      },
+      {
         "references": [ 12566 ],
         "text": "caml_output_value_to_malloc wrongly uses `caml_stat_alloc`\n  instead of `malloc` since 4.06, breaking (in pooled mode) user code\n  that uses `free` on the result. Symmetrically,\n  caml_input_value_from_malloc should use `free`.",
         "breaking change": false,
@@ -596,12 +721,19 @@
         "review": [ [ "Leo", "White" ], [ "Jacques", "Garrigue" ] ]
       },
       {
-        "references": [ 12037 ],
-        "text": "get_extern_state potential NULL dereference.",
+        "references": [ 12037, 12171 ],
+        "text": "Fix get_extern_state potential NULL dereference.",
         "breaking change": false,
         "authors": [ [ "Alexander", "Skvortsov" ] ],
         "design": [ [ "Gabriel", "Scherer" ], [ "Xavier", "Leroy" ] ],
         "report": [ [ "Török", "Edwin" ] ]
+      },
+      {
+        "references": [ 12635 ],
+        "text": "Fix get_intern_state potential NULL dereference.",
+        "breaking change": false,
+        "authors": [ [ "Antonin", "Décimo" ] ],
+        "review": [ [ "KC", "Sivaramakrishnan" ] ]
       },
       {
         "references": [ 12032, 12059 ],
@@ -626,6 +758,16 @@
         "authors": [ [ "Vincent", "Laviron" ] ],
         "report": [ [ "François", "Pottier" ] ],
         "review": [ [ "Nathanaëlle", "Courant" ], [ "Gabriel", "Scherer" ] ]
+      },
+      {
+        "references": [ 11040, 12591 ],
+        "text": "fix a data race in major_gc.c",
+        "breaking change": false,
+        "authors": [ [ "Gabriel", "Scherer" ] ],
+        "report": [ [ "Sadiq", "Jaffer" ] ],
+        "review": [
+          [ "Guillaume", "Munch-Maccagnoni" ], [ "KC", "Sivaramakrishnan" ]
+        ]
       },
       {
         "references": [ 12238, 12403 ],
@@ -684,6 +826,58 @@
         "breaking change": false,
         "authors": [ [ "Alain", "Frisch" ] ],
         "review": [ [ "Vincent", "Laviron" ] ]
+      },
+      {
+        "references": [ 12486 ],
+        "text": "Fix delivery of unhandled effect exceptions on amd64 with\n  --enable-frame-pointers",
+        "breaking change": false,
+        "authors": [ [ "Miod", "Vallat" ] ],
+        "report": [ [ "Jan", "Midtgaard" ] ],
+        "review": [ [ "Gabriel", "Scherer" ] ]
+      },
+      {
+        "references": [ 12561 ],
+        "text": "Fix crash when combining TSan and frame-pointers",
+        "breaking change": false,
+        "authors": [ [ "Fabrice", "Buoro" ], [ "Olivier", "Nicole" ] ],
+        "report": [ [ "Jan", "Midtgaard" ] ],
+        "review": [ [ "Miod", "Vallat" ], [ "Gabriel", "Scherer" ] ]
+      },
+      {
+        "references": [ 12482 ],
+        "text": "Rework bounds checking code in the POWER backend",
+        "breaking change": false,
+        "authors": [ [ "Miod", "Vallat" ], [ "Xavier", "Leroy" ] ],
+        "report": [ [ "Jan", "Midtgaard" ] ],
+        "review": [ [ "KC", "Sivaramakrishnan" ] ]
+      },
+      {
+        "references": [ 12593 ],
+        "text": "TSan should handle Effect.Unhandled correctly",
+        "breaking change": false,
+        "authors": [ [ "Fabrice", "Buoro" ], [ "Olivier", "Nicole" ] ],
+        "report": [ [ "Jan", "Midtgaard" ], [ "Miod", "Vallat" ] ],
+        "review": [ [ "Gabriel", "Scherer" ] ]
+      }
+    ]
+  },
+  "OCaml 5.1.1": {
+    " Bug fixes:": [
+      {
+        "references": [ 12623 ],
+        "text": ", fix the computation of variance composition",
+        "breaking change": false,
+        "authors": [ [ "Florian", "Angeletti" ] ],
+        "report": [ [ "Vesa", "Karvonen" ] ],
+        "review": [ [ "Gabriel", "Scherer" ] ]
+      },
+      {
+        "references": [ 12645 ],
+        "text": ", fix error messages for cyclic type definitions in presence of\n  the `-short-paths` flag.",
+        "breaking change": false,
+        "authors": [ [ "Florian", "Angeletti" ] ],
+        "report": [ [ "Vesa", "Karvonen" ] ],
+        "review": [ [ "Gabriel", "Scherer" ] ]
       }
     ]
   },
@@ -6874,7 +7068,7 @@
         "text": "Type-checker infers recursive type, even though -rectypes is\n  off.",
         "breaking change": false,
         "authors": [ [ "Jacques", "Garrigue" ] ],
-        "report": [ [ "Francois", "Pottier" ] ],
+        "report": [ [ "François", "Pottier" ] ],
         "review": [ [ "Leo", "White" ] ]
       },
       {
@@ -11394,7 +11588,7 @@
         "review": [ [ "Alain", "Frisch" ], [ "David", "Allsopp" ] ]
       },
       {
-        "references": [ 2047, 2269 ],
+        "references": [ 2047, 2269, 2269 ],
         "text": "a new type for unification traces",
         "breaking change": false,
         "authors": [ [ "Florian", "Angeletti" ] ],
@@ -15956,7 +16150,7 @@
     " Bug fixes:": [
       {
         "references": [ 6505 ],
-        "text": "Missed Type-error leads to a segfault upon record access.\n  Proper fix required a more restrictive approach to recursive types:\n  mutually recursive types are seen as abstract types (i.e. non-contractive)\n  when checking the well-foundedness of the recursion.",
+        "text": "Missed Type-error leads to a segfault upon record access.\n  \n  Proper fix required a more restrictive approach to recursive types:\n  mutually recursive types are seen as abstract types (i.e. non-contractive)\n  when checking the well-foundedness of the recursion.",
         "breaking change": true,
         "authors": [ [ "Jacques", "Garrigue" ] ],
         "report": [ [ "Stephen", "Dolan" ] ]
@@ -18585,7 +18779,7 @@
       },
       {
         "references": [ 6770 ],
-        "text": "duplicate of #6686",
+        "text": "(duplicate of #6686)",
         "breaking change": false
       },
       {
@@ -21425,7 +21619,7 @@
       },
       {
         "references": [ 5757 ],
-        "text": "(crash) GC compaction bug",
+        "text": "GC compaction bug (crash)",
         "breaking change": false
       },
       {
@@ -21543,7 +21737,7 @@
       },
       {
         "references": [ 5544 ],
-        "text": "improve HTML output <less formatting in html code>",
+        "text": "improve HTML output (less formatting in html code)",
         "breaking change": false
       },
       {
@@ -21809,7 +22003,7 @@
       },
       {
         "references": [ 5233 ],
-        "text": "(crash) finaliser on weak array gives dangling pointers",
+        "text": "finaliser on weak array gives dangling pointers (crash)",
         "breaking change": false
       },
       {
@@ -21929,7 +22123,7 @@
       },
       {
         "references": [ 5338 ],
-        "text": "(mingw) sanitize.sh has windows style end-of-lines",
+        "text": "sanitize.sh has windows style end-of-lines (mingw)",
         "breaking change": false
       },
       {
@@ -22079,7 +22273,7 @@
       },
       {
         "references": [ 5495 ],
-        "text": "camlp4o dies on infix definition",
+        "text": "camlp4o dies on infix definition (or)",
         "breaking change": false
       },
       {
@@ -22109,7 +22303,7 @@
       },
       {
         "references": [ 5513 ],
-        "text": "(ocamlopt, x86) Int64.div causes floating point exception",
+        "text": "Int64.div causes floating point exception (ocamlopt, x86)",
         "breaking change": false
       },
       {
@@ -22229,12 +22423,12 @@
       },
       {
         "references": [ 5620 ],
-        "text": "camlp4 revised syntax, invalid printing of type manifest",
+        "text": "invalid printing of type manifest (camlp4 revised syntax)",
         "breaking change": false
       },
       {
         "references": [ 5637 ],
-        "text": "camlp4 revised syntax, invalid printing of anonymous type parameters",
+        "text": "invalid printing of anonymous type parameters (camlp4 revised syntax)",
         "breaking change": false
       },
       {
@@ -22254,7 +22448,7 @@
       },
       {
         "references": [ 5651 ],
-        "text": "camlp4 revised syntax, printer for abstract data type",
+        "text": "printer for abstract data type (camlp4 revised syntax)",
         "breaking change": false
       },
       {
@@ -22294,36 +22488,36 @@
       },
       {
         "references": [ 5677 ],
-        "text": "(genprintval.ml) do not use \"value\" as identifier",
+        "text": "do not use \"value\" as identifier (genprintval.ml)",
         "breaking change": false
       },
       {
         "references": [ 5687 ],
-        "text": "(bytecode) dynlink broken when used from \"output-obj\" main program",
+        "text": "dynlink broken when used from \"output-obj\" main program (bytecode)",
         "breaking change": false
       },
       {
-        "references": [ 0 ],
+        "references": [],
         "text": "problem with printing of string literals in camlp4",
         "breaking change": false,
         "authors": [],
         "report": [ [ "caml-list" ] ]
       },
       {
-        "references": [ 0 ],
+        "references": [],
         "text": "emacs mode: colorization of comments and strings now works correctly",
         "breaking change": false
       },
       {
-        "references": [ 0 ],
+        "references": [],
         "text": "problem with forall and method",
         "breaking change": false,
         "authors": [],
         "report": [ [ "caml-list" ] ]
       },
       {
-        "references": [ 0 ],
-        "text": "(reported in private) crash when using OCAMLRUNPARAM=a=X with invalid X",
+        "references": [],
+        "text": "crash when using OCAMLRUNPARAM=a=X with invalid X (reported in private)",
         "breaking change": false
       }
     ],
@@ -22345,7 +22539,7 @@
       },
       {
         "references": [ 7971 ],
-        "text": "allow configuring LIBDIR, BINDIR, and MANDIR relative to $(PREFIX) <not an author>",
+        "text": "allow configuring LIBDIR, BINDIR, and MANDIR relative to $(PREFIX)",
         "breaking change": false
       },
       {
@@ -22460,7 +22654,7 @@
       },
       {
         "references": [ 5420 ],
-        "text": "Windows, Unix.openfile share mode",
+        "text": "Unix.openfile share mode (Windows)",
         "breaking change": false
       },
       {
@@ -22470,7 +22664,7 @@
       },
       {
         "references": [ 5434 ],
-        "text": "implement Unix.times in win32unix <partially>",
+        "text": "implement Unix.times in win32unix (partially)",
         "breaking change": false
       },
       {
