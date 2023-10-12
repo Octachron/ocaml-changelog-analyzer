@@ -21471,7 +21471,7 @@
     "Compilers": [
       {
         "references": [ 5205, 5288 ],
-        "text": "Revised simplification of let-alias",
+        "text": "Revised simplification of let-alias (#5205, #5288)",
         "breaking change": false
       },
       {
@@ -21511,22 +21511,22 @@
       },
       {
         "references": [ 5287 ],
-        "text": "Optimized handling of partially-applied functions",
+        "text": "Optimized handling of partially-applied functions (#5287)",
         "breaking change": false
       },
       {
         "references": [ 5345, 5360 ],
-        "text": "Small improvements in code generated for array bounds checks",
+        "text": "Small improvements in code generated for array bounds checks (#5345,\n  #5360).",
         "breaking change": false
       },
       {
-        "references": [],
+        "references": [ 5433 ],
         "text": "New ARM backend (#5433):\n    . Supports both Linux/EABI (armel) and Linux/EABI+VFPv3 (armhf).\n    . Added support for the Thumb-2 instruction set with average code size\n      savings of 28%.\n    . Added support for position-independent code, natdynlink, profiling and\n      exception backtraces.",
         "breaking change": true
       },
       {
         "references": [ 5487 ],
-        "text": "Generation of CFI information, and filename/line number debugging (with -g)\n  annotations, enabling in particular precise stack backtraces with\n  the gdb debugger. Currently supported for x86 32-bits and 64-bits only.",
+        "text": "Generation of CFI information, and filename/line number debugging (with -g)\n  annotations, enabling in particular precise stack backtraces with\n  the gdb debugger. Currently supported for x86 32-bits and 64-bits only.\n  (#5487)",
         "breaking change": false
       },
       {
@@ -21551,8 +21551,16 @@
         "text": "allow referring to record fields and variant constructors",
         "breaking change": false
       },
-      { "references": [ 5419 ], "text": "", "breaking change": false },
-      { "references": [ 5535 ], "text": "", "breaking change": false },
+      {
+        "references": [ 5419 ],
+        "text": "(error message in french)",
+        "breaking change": false
+      },
+      {
+        "references": [ 5535 ],
+        "text": "(no cross ref to class after dump+load)",
+        "breaking change": false
+      },
       {
         "references": [],
         "text": "Use first class modules for custom generators, to be able to\n  load various plugins incrementally adding features to the current\n  generator",
@@ -21572,21 +21580,21 @@
     "Standard library": [
       {
         "references": [ 3806, 4752, 5246 ],
-        "text": "Added float functions \"hypot\" and \"copysign\"",
+        "text": "Added float functions \"hypot\" and \"copysign\" (#3806, #4752, #5246)",
         "breaking change": false
       },
       {
         "references": [ 5437 ],
-        "text": "Arg: options with empty doc strings are no longer included in the usage string",
+        "text": "Arg: options with empty doc strings are no longer included in the usage string\n  (#5437)",
         "breaking change": true
       },
       {
         "references": [ 2395, 2787, 4591 ],
-        "text": "Array: faster implementations of \"blit\", \"copy\", \"sub\", \"append\" and \"concat\"",
+        "text": "Array: faster implementations of \"blit\", \"copy\", \"sub\", \"append\" and \"concat\"\n  (#2395, #2787, #4591)",
         "breaking change": false
       },
       {
-        "references": [],
+        "references": [ 5225, 5222, 5572, 5572 ],
         "text": "Hashtbl:\n    . Statistically-better generic hash function based on Murmur 3 (#5225)\n    . Fixed behavior of generic hash function w.r.t. -0.0 and NaN (#5222)\n    . Added optional \"random\" parameter to Hashtbl.create to randomize\n      collision patterns and improve security (#5572, CVE-2012-0839)\n    . Added \"randomize\" function and \"R\" parameter to OCAMLRUNPARAM\n      to turn randomization on by default (#5572, CVE-2012-0839)\n    . Added new functorial interface \"MakeSeeded\" to support randomization\n      with user-provided seeded hash functions.\n    . Install new header <caml/hash.h> for C code.",
         "breaking change": true
       },
@@ -21597,12 +21605,12 @@
       },
       {
         "references": [ 5215 ],
-        "text": "Marshal: marshalling of function values (flag Marshal.Closures) now\n  also works for functions that come from dynamically-loaded modules",
+        "text": "Marshal: marshalling of function values (flag Marshal.Closures) now\n  also works for functions that come from dynamically-loaded modules (#5215)",
         "breaking change": false
       },
       {
         "references": [],
-        "text": "Random:\n     . More random initialization (Random.self_init()), using /dev/urandom\n       when available (e.g. Linux, FreeBSD, MacOS X, Solaris)\n     * Faster implementation of Random.float",
+        "text": "Random:\n     . More random initialization (Random.self_init()), using /dev/urandom\n       when available (e.g. Linux, FreeBSD, MacOS X, Solaris)\n     * Faster implementation of Random.float (changes the generated sequences)",
         "breaking change": false
       },
       {
@@ -21617,7 +21625,7 @@
       },
       {
         "references": [ 3888 ],
-        "text": "Scanf: new function \"unescaped\"",
+        "text": "Scanf: new function \"unescaped\" (#3888)",
         "breaking change": false
       },
       {
@@ -21627,14 +21635,14 @@
       },
       {
         "references": [ 3888 ],
-        "text": "String: new function \"map\"",
+        "text": "String: new function \"map\" (#3888)",
         "breaking change": false
       }
     ],
     "Installation procedure": [
       {
         "references": [ 8255, 4653 ],
-        "text": "Compiler internals are now installed in `ocamlc -where`/compiler-libs.\n  The files available there include the .cmi interfaces for all compiler\n  modules, plus the following libraries:\n      ocamlcommon.cma/.cmxa     modules common to ocamlc, ocamlopt, ocaml\n      ocamlbytecomp.cma/.cmxa   modules for ocamlc and ocaml\n      ocamloptcomp.cma/.cmxa    modules specific to ocamlopt\n      ocamltoplevel.cma         modules specific to ocaml",
+        "text": "Compiler internals are now installed in `ocamlc -where`/compiler-libs.\n  The files available there include the .cmi interfaces for all compiler\n  modules, plus the following libraries:\n      ocamlcommon.cma/.cmxa     modules common to ocamlc, ocamlopt, ocaml\n      ocamlbytecomp.cma/.cmxa   modules for ocamlc and ocaml\n      ocamloptcomp.cma/.cmxa    modules specific to ocamlopt\n      ocamltoplevel.cma         modules specific to ocaml\n   (#8255, #4653, frequently-asked feature).",
         "breaking change": false
       },
       {
@@ -22296,8 +22304,10 @@
       },
       {
         "references": [ 0 ],
-        "text": "(reported on caml-list) problem with printing of string literals in camlp4",
-        "breaking change": false
+        "text": "problem with printing of string literals in camlp4",
+        "breaking change": false,
+        "authors": [],
+        "report": [ [ "caml-list" ] ]
       },
       {
         "references": [ 0 ],
@@ -22306,8 +22316,10 @@
       },
       {
         "references": [ 0 ],
-        "text": "(reported on caml-list on 2011-07-26) problem with forall and method",
-        "breaking change": false
+        "text": "problem with forall and method",
+        "breaking change": false,
+        "authors": [],
+        "report": [ [ "caml-list" ] ]
       },
       {
         "references": [ 0 ],
