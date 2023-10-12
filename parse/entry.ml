@@ -50,7 +50,7 @@ let parse_entry lines =
   in
   match parse_string ~consume:All (parse_flat_entry authors <?> "entry")  main with
   | Ok x ->
-    let x = { x with references = x.references @ refs } in
+    let x = { x with text = String.trim x.text; references = x.references @ refs } in
     Changelog.Entry x
   | Error err ->
     Format.eprintf "@[<v> error = %s@, main=%S@]@." err main;
