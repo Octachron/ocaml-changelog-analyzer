@@ -154,6 +154,7 @@ let split_section x = match strip_postfix (List.filter ((<>) "") x) with
   | ("feature" | "original") :: "request" :: ("from"|"by") :: q ->
     [Group_by.Sep "feature request"; elt q]
   | "bug" :: "reported" :: q
+  | "regression" :: "spotted" :: "by" :: q
   | "regression" :: "spotted" :: q ->
     [Group_by.Sep "report"; elt q]
   | "stealth" :: "commit" :: "by" :: q ->
@@ -187,8 +188,10 @@ let merge l =
 let is_valid_name =
   (* a re to reject invalid names *)
   let bad = Re.[
-      (* name composed only of special characters *)
-      rep (set "^=<>+-()[]{}/*&~#\"'|`_\\$%!:/;.,?0123456789")
+      (* name starting by a special character  *)
+      seq [set "^=<>+-()[]{}/*&~#\"'|`_\\$%!:/;.,?0123456789"; rep any] ;
+      (* arg is not valid name *)
+      str "arg" ;
     ]
   in
   let re = Re.(compile (seq [start ; alt bad ; stop])) in
@@ -237,7 +240,7 @@ let parse authors =
 let split_line s =
   match String.rindex_opt s '(' with
   | Some start ->
-    Some (String.sub s 0 start, String.sub s (start + 1) (String.length s - start -1))
+      Some (String.sub s 0 start, String.sub s (start + 1) (String.length s - start -1))
   | None -> None
 
 type split = { raw:string; sapients:(string * t) list; main:string}
