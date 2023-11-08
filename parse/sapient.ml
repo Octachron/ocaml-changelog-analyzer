@@ -184,6 +184,30 @@ module Dict = Map.Make(String)
 let merge l =
   l |> Dict.of_list |> Dict.bindings
 
+let is_valid_name =
+  (* a re to reject invalid names *)
+  let bad = Re.[
+      (* name composed only of special characters *)
+      rep (set "^=<>+-()[]{}/*&~#\"'|`_\\$%!:/;.,?0123456789")
+    ]
+  in
+  let re = Re.(compile (seq [start ; alt bad ; stop])) in
+  fun str ->
+    match Re.exec_opt re str with
+    | None -> true
+    | Some _ -> false
+
+let remove_invalid_names l =
+  List.map
+    (fun (x, sapients) ->
+       (x, List.fold_left
+         (fun acc names ->
+            match List.filter is_valid_name names with
+            | [] -> acc
+            | res -> res :: acc)
+         [] sapients))
+    l
+
 let parse authors =
   let split_punct s =
     let len = String.length s in
@@ -205,6 +229,7 @@ let parse authors =
     |> List.map snd
     |> List.concat_map split_section
     |> Group_by.list ~debug:Fmt.(list string) ~and_then:Fun.id ~parent:"authors" Fun.id
+    |> remove_invalid_names
     |> merge
   in words
 
