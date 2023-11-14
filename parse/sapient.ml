@@ -26,7 +26,7 @@ let rec ligature = function
 
 let by_connector = function
   | "," -> Group_by.Sep Comma
-  | "and" -> Group_by.Sep And
+  | "and" | "via" | "through" -> Group_by.Sep And
   | ";" -> Sep Semi
   | x -> Elt x
 
