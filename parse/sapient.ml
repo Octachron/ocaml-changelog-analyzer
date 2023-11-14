@@ -37,6 +37,12 @@ let strip_postfix q = match List.rev q with
   | [ "skills"; "MSDN"; "impressive"; "displaying"] -> []
   | _ -> q
 
+let cut_for =
+  let rec iter acc = function
+  | [] | "for" :: _ -> List.rev acc
+  | h :: q -> iter (h::acc) q
+  in
+  iter []
 
 let normalize_name ~warn = function
   (* groups *)
@@ -89,6 +95,7 @@ let normalize_name ~warn = function
   | ["Leo";  "White"; "(#2269)"] -> ["Leo"; "White"]
   | ["&"; "Mark"; "Shinwell" ] -> ["Mark"; "Shinwell" ]
   | x ->
+    let x = cut_for x in
     if warn then Format.eprintf "Complex name or error:%s@." (String.concat " " x);
     x
 
