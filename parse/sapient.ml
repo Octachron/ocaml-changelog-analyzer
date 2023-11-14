@@ -252,7 +252,7 @@ let is_valid_name =
   (* a re to reject invalid names *)
   let bad = Re.[
       (* name starting by a special character  *)
-      seq [set "^=<>+-()[]{}/*&~#\"'|`_\\$%!:/;.,?0123456789"; rep any] ;
+      seq [set "^=<>+-()[]{}/*&~#|`_\\$%!:/;.,?0123456789"; rep any] ;
       (* arg is not valid name *)
       str "arg" ;
     ]
