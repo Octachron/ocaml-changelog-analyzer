@@ -67,7 +67,7 @@ module AR = struct
       }
 
     let compare x y =
-      let d = x.review +. x.author -. y.review -. y.author in
+      let d = x.review -. y.review in
       if d = 0. then x.author -. y.author else d
     let (+) x y = {author=x.author +. y.author; review=x.review +. y.review}
     let (/.) x n = {author= x.author /. n; review = x.review /. n  }

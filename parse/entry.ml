@@ -4,10 +4,8 @@ module Changelog = Changelog.Def
 let (let*) = (>>=)
 
 
-let ref = (string "#" <|> string "fix #" <|> string "RFC" <|> string "ocaml/RFCs") *> nums
-let refs = (space *> sep_by1 comma ref) <?> "refs"
 
-let optional_refs = option [] refs
+let optional_refs = option [] Refs.parse_many
 
 let bullet =
   ((char '*' *> return true) <|> (char '-' *> return false)) <?> "bullet"
@@ -30,27 +28,11 @@ let parse_flat_entry sapients =
            breaking=bullet;
          }
 
-let known_non_authors = function
-  | "no cross ref to class after dump+load"
-  | "changes the generated sequences"
-  | "error message in french"
-    as raw ->
-    Fmt.epr "Ignored non author parentheses: %s@." raw;
-    true
-  | _ -> false
-
 let parse_entry lines =
-  let {Sapient.main; raw; sapients} = Sapient.split (List.rev lines) in
-  let refs, authors =
-    match parse_string ~consume:Prefix refs raw with
-    | Ok x -> x, []
-    | Error _ ->
-      if known_non_authors raw then [], []
-      else [], sapients
-  in
-  match parse_string ~consume:All (parse_flat_entry authors <?> "entry")  main with
+  let {Sapient.main; refs; sapients} = Sapient.split lines in
+  match parse_string ~consume:All (parse_flat_entry sapients <?> "entry")  main with
   | Ok x ->
-    let x = { x with references = x.references @ refs } in
+    let x = { x with text = String.trim x.text; references = x.references @ refs } in
     Changelog.Entry x
   | Error err ->
     Format.eprintf "@[<v> error = %s@, main=%S@]@." err main;

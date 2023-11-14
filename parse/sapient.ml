@@ -1,4 +1,5 @@
 type t = string list list
+type groups = (string * t) list
 
 type sep =
   | Comma
@@ -33,6 +34,7 @@ let strip_postfix q = match List.rev q with
   | ("Coq" | "testing") :: "for" :: q -> List.rev q
   | _ :: "XCode" :: "against" :: q -> List.rev q
   | _ :: "in" :: q -> List.rev q
+  | [ "skills"; "MSDN"; "impressive"; "displaying"] -> []
   | _ -> q
 
 
@@ -83,6 +85,9 @@ let normalize_name ~warn = function
   | (["Khoo"; "Yit"; "Phang"] as q)
   | ("Github"|"github") :: "user" :: q
   | (["Xavier"; "Van"; "de"; "Woestyne" ] as q) ->  q
+    (* mixed format *)
+  | ["Leo";  "White"; "(#2269)"] -> ["Leo"; "White"]
+  | ["&"; "Mark"; "Shinwell" ] -> ["Mark"; "Shinwell" ]
   | x ->
     if warn then Format.eprintf "Complex name or error:%s@." (String.concat " " x);
     x
@@ -176,10 +181,68 @@ let split_section x = match strip_postfix (List.filter ((<>) "") x) with
     [Elt  ["Xavier"; "Leroy"]; Elt ["Guillaume"; "Munch-Maccagnoni";]]
   | ["caml-list"; "discussion"] ->
     [Sep "review"; elt ["caml-list"]]
+  | ["reported"; "on"; "caml-list"] | ["reported"; "on"; "caml-list"; "on"; _]  ->
+    [Sep "report"; elt ["caml-list"]]
   | [] -> []
   | q ->
     let warn = List.length q > 2 in
       [Elt (normalize_name ~warn q)]
+
+let known_non_authors = function
+  | "no cross ref to class after dump+load"
+  | "changes the generated sequences"
+  | "error message in french"
+  | "partially"
+  | "Windows"
+  | "PREFIX"
+  | "reported in private"
+  | "bytecode"
+  | "genprintval.ml"
+  | "camlp4 revised syntax"
+  | "ocamlopt, x86"
+  | "mingw"
+  | "crash"
+  | "less formatting in html code"
+  | "i.e. non-contractive"
+  | "duplicate of #6686"
+  | "CC0 1.0"
+  | "GADTs"
+  | "PACKLD is more complete"
+  | "with -g"
+  | "interface with Unix DBM key-value stores"
+  | "armhf" | "armel"
+  | "MAKE"
+  | "lazy"
+  | "Random.self_init()"
+  | "from #5318"
+  | "set|clear"
+  | "probably fixed"
+  | "or"
+  | "" | "_"  -> true
+  | s ->
+    if List.exists (fun prefix -> String.starts_with ~prefix s)
+      [ "module ";
+        "val ";
+        "fun ";
+        "i.e. ";
+        "e.g. ";
+        "flag ";
+        "More information in";
+        "Allow easy retrieval";
+        "ocamlc ";
+        "but does not";
+        "-runtime-";
+        "-with-debug";
+        "(val ";
+
+      ]
+    then
+      (
+        Format.eprintf "Prefix non author detection: %s@." s;
+        true
+      )
+    else
+      false
 
 module Dict = Map.Make(String)
 let merge l =
@@ -211,6 +274,15 @@ let remove_invalid_names l =
          [] sapients))
     l
 
+let validate_author s =
+  if known_non_authors s then Error [] else
+  match Angstrom.(parse_string ~consume:Prefix) Refs.parse_many s with
+  | Ok x ->
+    Format.eprintf "Old reference syntax detected: %s=%a@."
+       s Fmt.(Dump.list int) x;
+    Error x
+  | Error _ -> Ok ()
+
 let parse authors =
   let split_punct s =
     let len = String.length s in
@@ -221,8 +293,13 @@ let parse authors =
     else
       Seq.return s
   in
+  match validate_author authors with
+  | Error _ as x -> x
+  | Ok () ->
   let words =
-    String.split_on_char ' ' authors
+    authors
+    |> String.map (function '\n' -> ' ' | c -> c )
+    |> String.split_on_char ' '
     |> List.to_seq
     |> Seq.filter (function "" -> false | _ -> true)
     |> Seq.concat_map split_punct
@@ -234,54 +311,79 @@ let parse authors =
     |> Group_by.list ~debug:Fmt.(list string) ~and_then:Fun.id ~parent:"authors" Fun.id
     |> remove_invalid_names
     |> merge
-  in words
+  in Ok words
 
+let rec seq_parentheses stack pos s () =
+  if pos < 0 then Seq.Nil
+  else match s.[pos] with
+    | ')' ->
+      seq_parentheses (pos :: stack) (pos-1) s ()
+    | '(' ->
+      begin match stack with
+      | last :: stack ->
+        Seq.cons (pos,last) (seq_parentheses stack (pos-1) s) ()
+      | [] ->
+        Seq.cons (pos, String.length s) (seq_parentheses stack (pos-1) s) ()
+      end
+    | _ ->
+      seq_parentheses stack (pos-1) s ()
 
-let split_line s =
-  match String.rindex_opt s '(' with
-  | Some start ->
-      Some (String.sub s 0 start, String.sub s (start + 1) (String.length s - start -1))
-  | None -> None
+let seq_parentheses s () = seq_parentheses [] (String.length s - 1) s ()
 
-type split = { raw:string; sapients:(string * t) list; main:string}
+let cut_at_char s pos =
+  let gap = 1 in
+  String.sub s 0 pos,
+  String.sub s (pos + gap) (String.length s - pos - gap )
 
-let rec split after = function
-  | [] ->
-    { raw = ""; main = String.concat "" (List.rev after); sapients= []}
-  | next :: before ->
-    match split_line next with
-    | None -> split (next::after) before
-    | Some (b, a) ->
-      let raw = String.concat "" (a::after) in
-      let sapients = parse raw in
-      let main = String.concat "\n" (List.rev (b::before)) in
-      { raw; main; sapients }
+let split_middle s start stop =
+  let rest, last =
+    if stop >= String.length s then
+      s, ""
+    else cut_at_char s stop in
+  let before, mid =
+    if start >= String.length rest then
+      rest, ""
+    else
+      cut_at_char rest start in
+  before, mid, last
 
-let no_authors t expl  =
-  Format.eprintf "Entry without authors %t @." expl;
-  { raw = ""; main=String.concat "\n" (List.rev  t); sapients= []}
+let validate_parenthese s (first,last) =
+  let before, mid, last = split_middle s first last in
+  match parse mid with
+  | Error _ as x -> x
+  | Ok authors -> Ok (before,authors,last)
 
-let check_tail close last  =
-  let right = String.sub last (close + 1) (String.length last - close - 1) in
-  String.for_all (fun x -> x = '.' || Helpers.empty_char x) right, right
+type split = { main:string; refs: int list; sapients: groups}
 
-let split = function
-  | [] -> no_authors [] (Format.dprintf "no text")
-  | last :: q as rev_lines ->
-    match String.rindex_opt last ')', String.rindex_opt last '(' with
-    | Some close, Some open_ when open_ + 1 < close ->
-      let before = String.concat "\n" (List.rev @@ String.sub last 0 open_ :: q) in
-      let after = String.sub last (open_+1) (close - open_ - 1) in
-      let empty_tail, tail = check_tail close last in
-      if empty_tail then
-        { main=before; raw = after; sapients= parse after}
+let no_authors refs main expl  =
+  Format.eprintf "Entry without authors %t: %s @." expl main;
+  { refs; main; sapients= []}
+
+let rec punct_trim_right ~blank s pos =
+  if pos < 0 then ""
+  else match s.[pos] with
+    | '.' -> punct_trim_right ~blank:false s (pos-1)
+    | ' ' | '\t' | '\n' -> punct_trim_right ~blank:true s (pos-1)
+    | _ ->
+      if blank then
+        String.sub s 0 (1+pos)
       else
-        no_authors rev_lines (Format.dprintf "Closing ) is not last char in %S|%S|2" last tail)
-    | Some close, None ->
-      let empty_tail, tail = check_tail close last in
-      if empty_tail then
-        split [] (String.sub last 0 close :: q)
-      else
-        no_authors rev_lines (Format.dprintf "Closing ) is not last char in %S|%S" last tail)
-    | Some _, Some _ -> no_authors rev_lines (Format.dprintf "Ill matched ( and )")
-    | None, _ -> no_authors rev_lines (Format.dprintf "No closing ) in %s" last)
+        String.sub s 0 (2+pos)
+
+let trim_right s = punct_trim_right ~blank:true s (String.length s - 1)
+
+let (+?) s l = if String.trim s = "" then l else s :: l
+
+let rec find_sapients refs s seq =
+  match seq () with
+  | Seq.Nil -> no_authors refs s (Format.dprintf "No parenthesis group found")
+  | Seq.Cons(x, seq) ->
+    match validate_parenthese s x with
+    | Ok (before,sapients,after) ->
+      { refs; main = before ^ trim_right after; sapients }
+    | Error rmore ->
+      find_sapients (rmore@refs) s seq
+
+let split lines =
+  let text = String.concat "\n" lines in
+  find_sapients [] text (seq_parentheses text)
