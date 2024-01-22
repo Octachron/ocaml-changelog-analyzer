@@ -31,7 +31,7 @@ let by_connector = function
   | x -> Elt x
 
 let strip_postfix q = match List.rev q with
-  | ("Coq" | "testing") :: "for" :: q -> List.rev q
+  | ("Coq" | "Frama-C" | "testing") :: "for" :: q -> List.rev q
   | _ :: "XCode" :: "against" :: q -> List.rev q
   | _ :: "in" :: q -> List.rev q
   | [ "skills"; "MSDN"; "impressive"; "displaying"] -> []
