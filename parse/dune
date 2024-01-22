@@ -1,4 +1,4 @@
 (executable
  (name changelog_parse)
- (libraries changelog fmt angstrom yojson)
+ (libraries changelog fmt angstrom yojson re)
 )
