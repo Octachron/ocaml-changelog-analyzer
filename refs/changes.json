@@ -1,5 +1,5 @@
 {
-  "OCaml 5.2.0": {
+  "OCaml 5.2.0 (13 May 2024)": {
     "Release documentation": [
       {
         "doc": "(Changes that can break existing programs are marked with a \"*\")"
@@ -91,6 +91,13 @@
           [ "Andreas", "Rossberg" ],
           [ "Xavier", "Leroy" ]
         ]
+      },
+      {
+        "references": [ 13130 ],
+        "text": "minor fixes to pprintast for raw identifiers and local module open\n  syntax for types.",
+        "breaking change": false,
+        "authors": [ [ "Chet", "Murthy" ] ],
+        "review": [ [ "Gabriel", "Scherer" ] ]
       }
     ],
     " Type system:": [
@@ -105,13 +112,6 @@
     ],
     " Runtime system:": [
       {
-        "references": [ 12850 ],
-        "text": "Update Gc.quick_stat data at the end of major cycles and compaction\n  This PR adds an additional caml_collect_gc_stats_sample_stw to the major heap\n  cycling stw. This means that Gc.quick_stat now actually reflects the state of\n  the heap after a major cycle or compaction.",
-        "breaking change": false,
-        "authors": [ [ "Sadiq", "Jaffer" ] ],
-        "review": [ [ "Miod", "Vallat" ], [ "Gabriel", "Scherer" ] ]
-      },
-      {
         "references": [ 12193 ],
         "text": "Re-introduce GC compaction for shared pools\n  Adds a parallel compactor for the shared pools (which contain major heap\n  blocks sized less than 128 words). Explicit only for now, on calls to\n  `Gc.compact`.",
         "breaking change": false,
@@ -124,6 +124,27 @@
           [ "Artem", "Pianykh" ],
           [ "Stephen", "Dolan" ],
           [ "Mark", "Shinwell" ],
+          [ "KC", "Sivaramakrishnan" ]
+        ]
+      },
+      {
+        "references": [ 12850 ],
+        "text": "Update Gc.quick_stat data at the end of major cycles and compaction\n  This PR adds an additional caml_collect_gc_stats_sample_stw to the major heap\n  cycling stw. This means that Gc.quick_stat now actually reflects the state of\n  the heap after a major cycle or compaction.",
+        "breaking change": false,
+        "authors": [ [ "Sadiq", "Jaffer" ] ],
+        "review": [ [ "Miod", "Vallat" ], [ "Gabriel", "Scherer" ] ]
+      },
+      {
+        "references": [ 12859 ],
+        "text": "Ensure Gc.compact does a full major before the compactor runs",
+        "breaking change": false,
+        "authors": [ [ "Sadiq", "Jaffer" ] ],
+        "review": [
+          [ "Leo", "White" ],
+          [ "Mark", "Shinwell" ],
+          [ "Gabriel", "Scherer" ],
+          [ "Josh", "Berdine" ],
+          [ "David", "Allsopp" ],
           [ "KC", "Sivaramakrishnan" ]
         ]
       },
@@ -218,6 +239,16 @@
         ]
       },
       {
+        "references": [ 12875, 12879, 12882 ],
+        "text": "Execute preemptive systhread switching as a\n  delayed pending action. This ensures that one can reason within the\n  FFI that no mutation happens on the same domain when allocating on\n  the OCaml heap from C, consistently with OCaml 4. This also fixes\n  further bugs with the multicore systhreads implementation.",
+        "breaking change": false,
+        "authors": [
+          [ "Guillaume", "Munch-Maccagnoni" ], [ "bug", "reports" ]
+        ],
+        "review": [ [ "Nick", "Barnes" ], [ "Stephen", "Dolan" ] ],
+        "suggestion": [ [ "Mark", "Shinwell" ] ]
+      },
+      {
         "references": [ 12408 ],
         "text": "`Domain.spawn` no longer leaks its functional argument for\n  the whole duration of the children domain lifetime.",
         "breaking change": false,
@@ -248,9 +279,12 @@
       },
       {
         "references": [ 11911, 12381 ],
-        "text": "Restore statmemprof functionality in part\n   (API changes in Gc.Memprof).",
+        "text": "Restore statmemprof functionality in part, with\n  some API changes in Gc.Memprof.",
         "breaking change": false,
-        "authors": [ [ "Nick", "Barnes" ] ]
+        "authors": [ [ "Nick", "Barnes" ] ],
+        "review": [
+          [ "Jacques-Henri", "Jourdan" ], [ "Guillaume", "Munch-Maccagnoni" ]
+        ]
       },
       {
         "references": [ 12430 ],
@@ -273,7 +307,7 @@
       },
       {
         "references": [ 11307 ],
-        "text": "Finish adapting the implementation of asynchronous actions for\n  multicore: soundness, liveness, and performance issues.\n  Do not crash if a signal handler is  called from an unregistered C\n  thread, and other possible soundness issues. Prevent issues where join\n  on other domains could make the toplevel unresponsible to Ctrl-C. Avoid\n  needless repeated polling in C code when callbacks cannot run\n  immediately.",
+        "text": "Finish adapting the implementation of asynchronous actions for\n  multicore: soundness, liveness, and performance issues.\n  Do not crash if a signal handler is called from an unregistered C\n  thread, and other possible soundness issues. Prevent issues where join\n  on other domains could make the toplevel unresponsible to Ctrl-C. Avoid\n  needless repeated polling in C code when callbacks cannot run\n  immediately.",
         "breaking change": false,
         "authors": [ [ "Guillaume", "Munch-Maccagnoni" ] ],
         "review": [
@@ -317,6 +351,26 @@
         ]
       },
       {
+        "references": [ 12599 ],
+        "text": "Refactor Dynlink startup to avoid parsing bytecode sections twice",
+        "breaking change": false,
+        "authors": [ [ "Stephen", "Dolan" ] ],
+        "review": [
+          [ "David", "Allsopp" ],
+          [ "Hugo", "Heuzard" ],
+          [ "Damien", "Doligez" ],
+          [ "Xavier", "Leroy" ]
+        ]
+      },
+      {
+        "references": [ 12678, 12898 ],
+        "text": "free channel buffers on close rather than on finalization",
+        "breaking change": false,
+        "authors": [ [ "Damien", "Doligez" ] ],
+        "report": [ [ "Jan", "Midtgaard" ] ],
+        "review": [ [ "Jan", "Midtgaard" ], [ "Gabriel", "Scherer" ] ]
+      },
+      {
         "references": [ 12681 ],
         "text": "Fix TSan false positives due to volatile write handling",
         "breaking change": false,
@@ -352,14 +406,15 @@
       },
       {
         "references": [ 11911, 12382, 12383 ],
-        "text": "Restore statmemprof functionality in part\n  (backtrace buffers, per-thread and per-domain data\n  structures).",
+        "text": "Restore statmemprof functionality in part\n  (backtrace buffers, per-thread and per-domain data structures,\n  GC/allocation interface).",
         "breaking change": false,
         "authors": [ [ "Nick", "Barnes" ] ],
         "review": [
           [ "Gabriel", "Scherer" ],
           [ "Fabrice", "Buoro" ],
           [ "Sadiq", "Jaffer" ],
-          [ "Guillaume", "Munch-Maccagnoni" ]
+          [ "Guillaume", "Munch-Maccagnoni" ],
+          [ "Jacques-Henri", "Jourdan" ]
         ]
       },
       {
@@ -370,11 +425,25 @@
         "review": [ [ "Miod", "Vallat" ], [ "KC", "Sivaramakrishnan" ] ]
       },
       {
+        "references": [ 12746 ],
+        "text": "Simplify and clean up TSan annotations",
+        "breaking change": false,
+        "authors": [ [ "Olivier", "Nicole" ] ],
+        "review": [ [ "Miod", "Vallat" ], [ "Fabrice", "Buoro" ] ]
+      },
+      {
         "references": [ 12809 ],
         "text": "Add ThreadSanitizer support to FreeBSD/amd64",
         "breaking change": false,
         "authors": [ [ "Miod", "Vallat" ] ],
         "review": [ [ "Gabriel", "Scherer" ] ]
+      },
+      {
+        "references": [ 12810 ],
+        "text": "Port ThreadSanitizer support to Linux and macOS on arm64",
+        "breaking change": false,
+        "authors": [ [ "Miod", "Vallat" ] ],
+        "review": [ [ "Tim", "McGilchrist" ] ]
       },
       {
         "references": [ 12811 ],
@@ -396,6 +465,61 @@
         "breaking change": false,
         "authors": [ [ "David", "Allsopp" ] ],
         "review": [ [ "Gabriel", "Scherer" ] ]
+      },
+      {
+        "references": [ 12773, 12830, 12834 ],
+        "text": "Rewrite `caml_c_thread_(un)register` to fix\n  various bugs.",
+        "breaking change": false,
+        "authors": [ [ "Guillaume", "Munch-Maccagnoni" ] ],
+        "reported": [ [ "Miod", "Vallat" ] ],
+        "reviewed": [
+          [ "Fabrice", "Buoro" ],
+          [ "Gabriel", "Scherer" ],
+          [ "Miod", "Vallat" ]
+        ],
+        "suggested": [ [ "Hari", "Hara", "Naveen", "S" ] ]
+      },
+      {
+        "references": [ 12876 ],
+        "text": "Port ThreadSanitizer support to Linux on POWER",
+        "breaking change": false,
+        "authors": [ [ "Miod", "Vallat" ] ],
+        "review": [ [ "Tim", "McGilchrist" ] ]
+      },
+      {
+        "references": [ 12886 ],
+        "text": "Reinitialize IO mutexes after fork",
+        "breaking change": false,
+        "authors": [ [ "Max", "Slater" ] ],
+        "review": [
+          [ "Guillaume", "Munch-Maccagnoni" ], [ "Xavier", "Leroy" ]
+        ]
+      },
+      {
+        "references": [ 12907 ],
+        "text": "Port ThreadSanitizer support to Linux on RiscV",
+        "breaking change": false,
+        "authors": [ [ "Miod", "Vallat" ] ],
+        "review": [ [ "Nicolás", "Ojeda", "Bär" ], [ "Fabrice", "Buoro" ] ]
+      },
+      {
+        "references": [ 12915 ],
+        "text": "Port ThreadSanitizer support to Linux on s390x",
+        "breaking change": false,
+        "authors": [ [ "Miod", "Vallat" ] ],
+        "review": [ [ "Tim", "McGilchrist" ] ]
+      },
+      {
+        "references": [ 12934 ],
+        "text": "Fix data races between marking and sweeping functions",
+        "breaking change": false,
+        "authors": [ [ "Olivier", "Nicole" ] ],
+        "review": [
+          [ "Gabriel", "Scherer" ],
+          [ "Miod", "Vallat" ],
+          [ "Damien", "Doligez" ]
+        ],
+        "suggested": [ [ "Stephen", "Dolan" ] ]
       }
     ],
     " Code generation and optimizations:": [
@@ -414,11 +538,15 @@
         "review": [ [ "Anil", "Madhavapeddy" ], [ "Tim", "McGilchrist" ] ]
       },
       {
-        "references": [ 12551, 12608, 12782 ],
-        "text": "Overhaul of recursive value compilation.\n  Extend the Rec_check classification to handle constants, propagate the\n  classification through the compiler, compute sizes during classification.",
+        "references": [ 12551, 12608, 12782, 12596 ],
+        "text": "Overhaul of recursive value compilation.\n  Non-function recursive bindings are now forbidden from Lambda onwards,\n  and compiled using a new Value_rec_compiler module.",
         "breaking change": false,
         "authors": [ [ "Vincent", "Laviron" ], [ "Lunia", "Ayanides" ] ],
-        "review": [ [ "Gabriel", "Scherer" ] ]
+        "review": [
+          [ "Gabriel", "Scherer" ],
+          [ "Stefan", "Muenzel" ],
+          [ "Nathanaëlle", "Courant" ]
+        ]
       },
       {
         "references": [ 1809, 12181 ],
@@ -438,12 +566,6 @@
           [ "Xavier", "Leroy" ],
           [ "Vincent", "Laviron" ]
         ]
-      },
-      {
-        "references": [ 12854 ],
-        "text": "Add a test in the regression suite that flags the bug #12825.",
-        "breaking change": false,
-        "authors": [ [ "Luc", "Maranget" ] ]
       }
     ],
     " Standard library:": [
@@ -617,6 +739,13 @@
         "review": [ [ "Xavier", "Leroy" ] ]
       },
       {
+        "references": [ 12758, 12998 ],
+        "text": "Remove the `Marshal.Compression` flag to the\n  `Marshal.to_*` functions.  The compilers are still able to use\n  ZSTD compression for compilation artefacts.\n  This is a forward port and clean-up of the emergency fix that was introduced\n  in OCaml 5.1.1 by #12734.",
+        "breaking change": false,
+        "authors": [ [ "Xavier", "Leroy" ] ],
+        "review": [ [ "Damien", "Doligez" ] ]
+      },
+      {
         "references": [ 12784 ],
         "text": "Fix computation of minor-heap allocation in Gc.counters()\n  and Gc.allocated_bytes().",
         "breaking change": false,
@@ -728,7 +857,7 @@
         "references": [ 12615 ],
         "text": "ocamldoc: get rid of the odoc_literate and odoc_todo generators.",
         "breaking change": false,
-        "authors": [ [ "Sébaistien", "Hinderer" ] ],
+        "authors": [ [ "Sébastien", "Hinderer" ] ],
         "review": [ [ "Gabriel", "Scherer" ], [ "Florian", "Angeletti" ] ]
       },
       {
@@ -754,6 +883,14 @@
         "breaking change": false,
         "authors": [ [ "Nick", "Roberts" ] ],
         "review": [ [ "Nicolás", "Ojeda", "Bär" ] ]
+      },
+      {
+        "references": [ 12901 ],
+        "text": ", 12908: ocamllex: add overflow checks to prevent generating incorrect\n  lexers; use unsigned numbers in the table encoding when possible.",
+        "breaking change": false,
+        "authors": [ [ "Vincent", "Laviron" ] ],
+        "report": [ [ "Edwin", "Török" ] ],
+        "review": [ [ "Xavier", "Leroy" ] ]
       }
     ],
     " Manual and documentation:": [
@@ -822,6 +959,31 @@
           [ "Tim", "McGilchrist" ],
           [ "Thomas", "Leonard" ]
         ]
+      },
+      {
+        "references": [ 13066 ],
+        "text": ", update OCAMLRUNPARAM documentation for the stack size parameter l",
+        "breaking change": false,
+        "authors": [ [ "Florian", "Angeletti" ] ],
+        "review": [
+          [ "Nicolás", "Ojeda", "Bär" ],
+          [ "Tim", "McGilchrist" ],
+          [ "Miod", "Vallat" ]
+        ]
+      },
+      {
+        "references": [ 13078 ],
+        "text": "update Format tutorial on structural boxes to mention alignment\n  questions.",
+        "breaking change": false,
+        "authors": [ [ "Edwin", "Török" ] ],
+        "review": [ [ "Florian", "Angeletti" ] ]
+      },
+      {
+        "references": [ 13092 ],
+        "text": "document the existence of the `[@@poll error]` built-in attribute",
+        "breaking change": false,
+        "authors": [ [ "Florian", "Angeletti" ] ],
+        "review": [ [ "Gabriel", "Scherer" ] ]
       }
     ],
     " Compiler user-interface and warnings:": [
@@ -929,6 +1091,14 @@
         "breaking change": false,
         "authors": [ [ "Javier", "Chávarri" ] ],
         "review": [ [ "Gabriel", "Scherer" ], [ "Florian", "Angeletti" ] ]
+      },
+      {
+        "references": [ 12942 ],
+        "text": "Fix an line ordering in some module inclusion error messages",
+        "breaking change": true,
+        "authors": [ [ "Nick", "Roberts" ] ],
+        "report": [ [ "Carl", "Eastlund" ] ],
+        "review": [ [ "Florian", "Angeletti" ] ]
       }
     ],
     " Internal/compiler-libs changes:": [
@@ -1044,11 +1214,11 @@
         "review": [ [ "Xavier", "Leroy" ] ]
       },
       {
-        "references": [ 12389, 12544 ],
-        "text": "centralize the handling of metadata for compilation units and\n  artifacts in preparation for better unicode support for OCaml source files.",
+        "references": [ 12389, 12544, 12984, 12987 ],
+        "text": "centralize the handling of metadata for\n  compilation units and artifacts in preparation for better unicode support for\n  OCaml source files.",
         "breaking change": false,
         "authors": [ [ "Florian", "Angeletti" ] ],
-        "review": [ [ "Gabriel", "Scherer" ] ]
+        "review": [ [ "Vincent", "Laviron" ], [ "Gabriel", "Scherer" ] ]
       },
       {
         "references": [ 12532, 12553 ],
@@ -1122,11 +1292,37 @@
         "breaking change": false,
         "authors": [ [ "Antonin", "Décimo" ] ],
         "review": [ [ "Gabriel", "Scherer" ], [ "David", "Allsopp" ] ]
+      },
+      {
+        "references": [ 12508 ],
+        "text": "Add compiler-side support for project-wide occurrences in Merlin, by\n  generating index tables of all identifier occurrences. This extra data in .cmt\n  files is only added when the new flag -bin-annot-occurrences is passed.",
+        "breaking change": false,
+        "authors": [ [ "Ulysse", "Gérard" ], [ "Nathanaëlle", "Courant" ] ],
+        "review": [
+          [ "Florian", "Angeletti" ],
+          [ "Gabriel", "Scherer" ],
+          [ "Thomas", "Refis" ]
+        ],
+        "suggestions": [ [ "Gabriel", "Scherer" ], [ "Thomas", "Refis" ] ]
+      },
+      {
+        "references": [ 12914 ],
+        "text": "Slightly change the s390x assembly dialect in order to build with\n  Clang's integrated assembler.",
+        "breaking change": false,
+        "authors": [ [ "Miod", "Vallat" ] ],
+        "review": [ [ "Gabriel", "Scherer" ] ]
+      },
+      {
+        "references": [ 13001 ],
+        "text": "do not read_back entire shapes to get aliases' uids when building the\n  usages index",
+        "breaking change": false,
+        "authors": [ [ "Ulysse", "Gérard" ] ],
+        "review": [ [ "Gabriel", "Scherer" ], [ "Nathanaëlle", "Courant" ] ]
       }
     ],
     " Build system:": [
       {
-        "references": [ 12198, 12321, 12586, 12616, 12706 ],
+        "references": [ 12198, 12321, 12586, 12616, 12706, 13048 ],
         "text": "continue the merge of the\n  sub-makefiles into the root Makefile started with #11243, #11248,\n  #11268, #11420 and #11675.",
         "breaking change": false,
         "authors": [ [ "Sébastien", "Hinderer" ] ],
@@ -1152,7 +1348,18 @@
         ]
       },
       {
-        "references": [ 12768 ],
+        "references": [ 12751 ],
+        "text": "--with-target-bindir configure option implemented. This option\n  refers to the location of the runtime binaries on the target system for a\n  cross-compiler and is embedded in executables produced by ocamlc. It does\n  not affect the bytecode executables installed as part of the build. The old\n  mechanism `make TARGET_BINDIR=..` no longer works.",
+        "breaking change": true,
+        "authors": [ [ "David", "Allsopp" ] ],
+        "review": [
+          [ "Damien", "Doligez" ],
+          [ "Xavier", "Leroy" ],
+          [ "Olivier", "Nicole" ]
+        ]
+      },
+      {
+        "references": [ 12768, 13030 ],
         "text": "Detect mingw-w64 coupling with GCC or LLVM, detect clang-cl,\n  and fix C compiler feature detection on macOS.",
         "breaking change": false,
         "authors": [ [ "Antonin", "Décimo" ] ],
@@ -1322,6 +1529,14 @@
         "review": [ [ "Vincent", "Laviron" ] ]
       },
       {
+        "references": [ 12677, 12889 ],
+        "text": "make Domain.DLS thread-safe",
+        "breaking change": false,
+        "authors": [ [ "Gabriel", "Scherer" ] ],
+        "report": [ [ "Vesa", "Karvonen" ] ],
+        "review": [ [ "Olivier", "Nicole" ], [ "Damien", "Doligez" ] ]
+      },
+      {
         "references": [ 12561 ],
         "text": "Fix crash when combining TSan and frame-pointers",
         "breaking change": false,
@@ -1390,6 +1605,17 @@
         "review": [ [ "Gabriel", "Scherer" ] ]
       },
       {
+        "references": [ 12751 ],
+        "text": "Always keep within the 128 character limit for shebang lines. Previous\n  fix in #8622 handled building the compiler with a long prefix; this patch\n  extends this to the bytecode executables emitted by that compiler.",
+        "breaking change": true,
+        "authors": [ [ "David", "Allsopp" ] ],
+        "review": [
+          [ "Damien", "Doligez" ],
+          [ "Xavier", "Leroy" ],
+          [ "Olivier", "Nicole" ]
+        ]
+      },
+      {
         "references": [ 12755 ],
         "text": "Fix data race on global pools arrays of pool_freelist",
         "breaking change": false,
@@ -1430,6 +1656,119 @@
         "breaking change": true,
         "authors": [ [ "Jacques", "Garrigue" ] ],
         "review": [ [ "Richard", "Eisenberg" ] ]
+      },
+      {
+        "references": [ 12897 ],
+        "text": "fix locking bugs in Runtime_events",
+        "breaking change": false,
+        "authors": [ [ "Gabriel", "Scherer" ], [ "Thomas", "Leonard" ] ],
+        "report": [ [ "Thomas", "Leonard" ] ],
+        "review": [
+          [ "Olivier", "Nicole" ],
+          [ "Vincent", "Laviron" ],
+          [ "Damien", "Doligez" ]
+        ]
+      },
+      {
+        "references": [ 12851 ],
+        "text": "Fix race between runtime events teardown and event emission",
+        "breaking change": false,
+        "authors": [ [ "Olivier", "Nicole" ] ],
+        "review": [ [ "Miod", "Vallat" ], [ "Gabriel", "Scherer" ] ]
+      },
+      {
+        "references": [ 12860 ],
+        "text": "Fix an assertion that wasn't taking into account the possibility of an\n  ephemeron pointing at static data.",
+        "breaking change": false,
+        "authors": [ [ "Mark", "Shinwell" ] ],
+        "review": [ [ "Gabriel", "Scherer" ], [ "KC", "Sivaramakrishnan" ] ]
+      },
+      {
+        "references": [ 12861 ],
+        "text": "Fix a possible crash in the `threads` library.",
+        "breaking change": false,
+        "authors": [ [ "Mark", "Shinwell" ] ],
+        "review": [ [ "Gabriel", "Scherer" ], [ "KC", "Sivaramakrishnan" ] ]
+      },
+      {
+        "references": [ 11040, 12894 ],
+        "text": "Silence false data race observed between caml_shared_try_alloc\n  and oldify. Introduces macros to call tsan annotations which help annotate\n  a ``happens before'' relationship.",
+        "breaking change": false,
+        "authors": [
+          [ "Hari", "Hara", "Naveen", "S" ], [ "Olivier", "Nicole" ]
+        ],
+        "review": [ [ "Gabriel", "Scherer" ], [ "Miod", "Vallat" ] ]
+      },
+      {
+        "references": [ 12958 ],
+        "text": "Fix tail-modulo-cons compilation of try-with, && and ||\n  expressions.",
+        "breaking change": false,
+        "authors": [
+          [ "Gabriel", "Scherer" ], [ "Nicolás", "Ojeda", "Bär" ]
+        ],
+        "report": [ [ "Sylvain", "Boilard" ] ],
+        "review": [ [ "Gabriel", "Scherer" ] ]
+      },
+      {
+        "references": [ 12919 ],
+        "text": "Fix register corruption in caml_callback2_asm on s390x.",
+        "breaking change": false,
+        "authors": [ [ "Miod", "Vallat" ] ],
+        "review": [ [ "Gabriel", "Scherer" ] ]
+      },
+      {
+        "references": [ 12924, 12930 ],
+        "text": "Rework package constraint checking to improve interaction with\n  immediacy",
+        "breaking change": false,
+        "authors": [ [ "Chris", "Casinghino" ], [ "Florian", "Angeletti" ] ],
+        "review": [ [ "Florian", "Angeletti" ], [ "Richard", "Eisenberg" ] ]
+      },
+      {
+        "references": [ 12969 ],
+        "text": "Fix a data race in caml_darken_cont",
+        "breaking change": false,
+        "authors": [ [ "Fabrice", "Buoro" ], [ "Olivier", "Nicole" ] ],
+        "review": [ [ "Gabriel", "Scherer" ], [ "Miod", "Vallat" ] ]
+      },
+      {
+        "references": [ 12971, 12974 ],
+        "text": "fix an uncaught Ctype.Escape exception on some\n  invalid programs forming recursive types.",
+        "breaking change": false,
+        "authors": [ [ "Gabriel", "Scherer" ] ],
+        "report": [ [ "Neven", "Villani" ] ],
+        "review": [ [ "Florian", "Angeletti" ] ]
+      },
+      {
+        "references": [ 13019 ],
+        "text": "Remove linking instructions for the Unix library from threads.cma\n  (this was done for threads.cmxa in OCaml 3.11). Eliminates warnings from\n  new lld when using threads.cma of duplicated libraries.",
+        "breaking change": false,
+        "authors": [ [ "David", "Allsopp" ] ],
+        "review": [ [ "Nicolás", "Ojeda", "Bär" ] ]
+      },
+      {
+        "references": [ 13058 ],
+        "text": "Add TSan instrumentation to caml_call_gc(), since it may raise\n  exceptions.",
+        "breaking change": false,
+        "authors": [
+          [ "Fabrice", "Buoro" ],
+          [ "Olivier", "Nicole" ],
+          [ "Gabriel", "Scherer" ],
+          [ "Miod", "Vallat" ]
+        ]
+      },
+      {
+        "references": [ 13079 ],
+        "text": "Save and restore frame pointer across Iextcall on ARM64",
+        "breaking change": false,
+        "authors": [ [ "Tim", "McGilchrist" ] ],
+        "review": [ [ "KC", "Sivaramakrishnan" ], [ "Miod", "Vallat" ] ]
+      },
+      {
+        "references": [ 13094 ],
+        "text": "Fix undefined behavior of left-shifting a negative number.",
+        "breaking change": false,
+        "authors": [ [ "Antonin", "Décimo" ] ],
+        "review": [ [ "Miod", "Vallat" ], [ "Nicolás", "Ojeda", "Bär" ] ]
       }
     ]
   },
@@ -1614,7 +1953,7 @@
         "references": [ 11848 ],
         "text": "Add `List.find_mapi`,\n  `List.find_index: ('a -> bool) -> 'a list -> int option`,\n  `Seq.find_mapi`, `Seq.find_index`, `Array.find_mapi`, `Array.find_index`,\n  `Float.Array.find_opt`, `Float.Array.find_index`, `Float.Array.find_map`,\n  `Float.Array.find_mapi`.",
         "breaking change": false,
-        "authors": [ [ "Sima", "Kinsart" ] ],
+        "authors": [ [ "Tima", "Kinsart" ] ],
         "review": [
           [ "Daniel", "Bünzli" ], [ "Nicolás", "Ojeda", "Bär" ]
         ]
@@ -2033,10 +2372,7 @@
         "text": "fix quadratic behavior in natdynlink by using a STW section\n  for frame-descriptor updates.",
         "breaking change": false,
         "authors": [ [ "Gabriel", "Scherer" ] ],
-        "report": [
-          [ "André", "Maroneze", "for", "Frama-C" ],
-          [ "Guillaume", "Melquiond" ]
-        ],
+        "report": [ [ "André", "Maroneze" ], [ "Guillaume", "Melquiond" ] ],
         "review": [ [ "Sadiq", "Jaffer" ] ]
       },
       {
@@ -2683,13 +3019,6 @@
         "review": [ [ "Sadiq", "Jaffer" ] ]
       },
       {
-        "references": [ 11764 ],
-        "text": "add prototypes to old-style C function definitions and declarations",
-        "breaking change": false,
-        "authors": [ [ "Antonin", "Décimo" ] ],
-        "review": [ [ "Xavier", "Leroy" ] ]
-      },
-      {
         "references": [ 11693 ],
         "text": "Remove use of C99 Variable Length Arrays (VLAs) in the runtime.",
         "breaking change": false,
@@ -2814,17 +3143,6 @@
         ]
       },
       {
-        "references": [ 11763, 11759, 11861 ],
-        "text": "Enable stricter C compilation warnings, use\n  strict prototypes on primitives.",
-        "breaking change": false,
-        "authors": [ [ "Antonin", "Décimo" ] ],
-        "review": [
-          [ "Xavier", "Leroy" ],
-          [ "David", "Allsopp" ],
-          [ "Sébastien", "Hinderer" ]
-        ]
-      },
-      {
         "references": [ 11933 ],
         "text": "Use the correct machtype when reading the code pointer from closures",
         "breaking change": false,
@@ -2897,13 +3215,6 @@
         "breaking change": false,
         "authors": [ [ "Stefan", "Muenzel" ] ],
         "review": [ [ "Florian", "Angeletti" ] ]
-      },
-      {
-        "references": [ 12509 ],
-        "text": "Use strict prototypes on primitives when generating a standalone\n  bytecode executable (`ocamlc -custom`).",
-        "breaking change": false,
-        "authors": [ [ "Antonin", "Décimo" ] ],
-        "review": [ [ "Xavier", "Leroy" ] ]
       }
     ],
     " Build system:": [
@@ -2913,13 +3224,6 @@
         "breaking change": false,
         "authors": [ [ "Xavier", "Leroy" ], [ "Nicolás", "Ojeda", "Bär" ] ],
         "review": [ [ "Sébastien", "Hinderer" ] ]
-      },
-      {
-        "references": [ 11590 ],
-        "text": "Allow installing to a destination path containing spaces.",
-        "breaking change": false,
-        "authors": [ [ "Élie", "Brami" ] ],
-        "review": [ [ "Sébastien", "Hinderer" ], [ "David", "Allsopp" ] ]
       },
       {
         "references": [ 11243, 11248, 11268, 11420, 11675 ],
@@ -2941,15 +3245,6 @@
         "breaking change": false,
         "authors": [ [ "David", "Allsopp" ] ],
         "review": [ [ "Sébastien", "Hinderer" ] ]
-      },
-      {
-        "references": [ 12372 ],
-        "text": "Pass option -no-execute-only to the linker for OpenBSD >= 7.3\n  so that code sections remain readable, as needed for closure marshaling.",
-        "breaking change": false,
-        "authors": [ [ "Xavier", "Leroy" ], [ "Anil", "Madhavapeddy" ] ],
-        "review": [
-          [ "Anil", "Madhavapeddy" ], [ "Sébastien", "Hinderer" ]
-        ]
       }
     ],
     " Bug fixes:": [
@@ -3095,7 +3390,7 @@
       },
       {
         "references": [ 11846 ],
-        "text": "Mark rbx as destroyed at C call for Win64 (mingw-w64 and Cygwin64).\n  Reserve the shadow store for the ABI in the c_stack_link struct instead of\n  explictly when calling C functions. This simultaneously reduces the number of\n  stack pointer manipulations and also fixes a bug when calling noalloc\n  functions where the shadow store was not being reserved.",
+        "text": "Mark rbx as destroyed at C call for Win64 (mingw-w64 and Cygwin64).\n  Reserve the shadow store for the ABI in the c_stack_link struct instead of\n  explicitly when calling C functions. This simultaneously reduces the number of\n  stack pointer manipulations and also fixes a bug when calling noalloc\n  functions where the shadow store was not being reserved.",
         "breaking change": false,
         "authors": [ [ "David", "Allsopp" ] ],
         "report": [ [ "Vesa", "Karvonen" ] ],
@@ -3608,13 +3903,6 @@
           [ "Stephen", "Dolan" ],
           [ "Gabriel", "Scherer" ]
         ]
-      },
-      {
-        "references": [ 10845 ],
-        "text": "Emit frametable size on amd64 BSD (OpenBSD, FreeBSD, NetBSD) systems\n  (emitted for Linux in #8805)",
-        "breaking change": true,
-        "authors": [ [ "Hannes", "Mehnert" ] ],
-        "review": [ [ "Nicolás", "Ojeda", "Bär" ] ]
       }
     ],
     " Standard library:": [
@@ -3927,13 +4215,6 @@
         ]
       },
       {
-        "references": [ 11184, 11670 ],
-        "text": "Stop calling ranlib on created / installed libraries",
-        "breaking change": false,
-        "authors": [ [ "Sébastien", "Hinderer" ], [ "Xavier", "Leroy" ] ],
-        "review": [ [ "Author group review" ] ]
-      },
-      {
         "references": [ 11253 ],
         "text": "Deprecate `ocaml script` and `ocamlnat` script where `script` has no\n  extension and is an implicit basename.",
         "breaking change": false,
@@ -4075,21 +4356,6 @@
         "review": [ [ "Xavier", "Leroy" ] ]
       },
       {
-        "references": [ 11370, 11373 ],
-        "text": "Don't pass CFLAGS to flexlink during configure.",
-        "breaking change": false,
-        "authors": [ [ "David", "Allsopp" ] ],
-        "report": [ [ "William", "Hu" ] ],
-        "review": [ [ "Xavier", "Leroy" ], [ "Sébastien", "Hinderer" ] ]
-      },
-      {
-        "references": [ 11487 ],
-        "text": "Thwart FMA test optimization during configure",
-        "breaking change": false,
-        "authors": [ [ "William", "Hu" ] ],
-        "review": [ [ "David", "Allsopp" ], [ "Sébastien", "Hinderer" ] ]
-      },
-      {
         "references": [ 11097 ],
         "text": "Build native-code compilers on NetBSD/aarch64",
         "breaking change": false,
@@ -4098,14 +4364,6 @@
       }
     ],
     " Bug fixes:": [
-      {
-        "references": [ 10768, 11340 ],
-        "text": "Fix typechecking regression when combining first class\n  modules and GADTs.",
-        "breaking change": false,
-        "authors": [ [ "Jacques", "Garrigue" ] ],
-        "report": [ [ "François", "Thiré" ] ],
-        "review": [ [ "Matthew", "Ryan" ] ]
-      },
       {
         "references": [ 10790 ],
         "text": "don't drop variance and injectivity annotations when pretty printing\n  `with` constraints (for example, `with type +!'a t = ...`).",
@@ -4177,31 +4435,6 @@
         "review": [ [ "Xavier", "Leroy" ] ]
       },
       {
-        "references": [ 11194, 11609 ],
-        "text": "Fix inconsistent type variable names in \"unbound type var\"\n  messages",
-        "breaking change": false,
-        "authors": [ [ "Ulysse", "Gérard" ], [ "Florian", "Angeletti" ] ],
-        "review": [ [ "Florian", "Angeletti" ], [ "Gabriel", "Scherer" ] ]
-      },
-      {
-        "references": [ 11204 ],
-        "text": "Fix regression introduced in 4.14.0 that would trigger Warning 17 when\n  calling virtual methods introduced by constraining the self type from within\n  the class definition.",
-        "breaking change": false,
-        "authors": [ [ "Nicolás", "Ojeda", "Bär" ] ],
-        "review": [ [ "Leo", "White" ] ]
-      },
-      {
-        "references": [ 11263, 11267 ],
-        "text": "caml/misc.h: check whether `_MSC_VER` is defined before using\n  it to ensure that the headers can always be used in code which turns on\n  -Wundef (or equivalent).",
-        "breaking change": false,
-        "authors": [
-          [ "David", "Allsopp" ], [ "Nicolás", "Ojeda", "Bär" ]
-        ],
-        "review": [
-          [ "Nicolás", "Ojeda", "Bär" ], [ "Sébastien", "Hinderer" ]
-        ]
-      },
-      {
         "references": [ 11289, 11405 ],
         "text": "fix some leaks on systhread termination",
         "breaking change": false,
@@ -4238,6 +4471,185 @@
         "review": [ [ "Gabriel", "Scherer" ] ]
       },
       {
+        "references": [ 11482, 11542 ],
+        "text": "Fix random crash in large closure allocation",
+        "breaking change": false,
+        "authors": [ [ "Damien", "Doligez" ] ],
+        "report": [ [ "Thierry", "Martinez" ], [ "Vincent", "Laviron" ] ],
+        "review": [ [ "Xavier", "Leroy" ] ]
+      },
+      {
+        "references": [ 11508, 11509 ],
+        "text": "make Bytes.escaped domain-safe",
+        "breaking change": false,
+        "authors": [
+          [ "Christiano", "Haesbaert" ], [ "Gabriel", "Scherer" ]
+        ],
+        "report": [ [ "Jan", "Midtgaard" ], [ "Tom", "Kelly" ] ],
+        "review": [ [ "Xavier", "Leroy" ] ]
+      },
+      {
+        "references": [ 11576 ],
+        "text": "Fix bug in Bigarray.Genarray.init in the the case of zero-dimensional\n  arrays.",
+        "breaking change": false,
+        "authors": [
+          [ "Nicolás", "Ojeda", "Bär" ], [ "Jeremy", "Yallop" ]
+        ],
+        "report": [ [ "Masayuki", "Takeda" ] ],
+        "review": [ [ "Jeremy", "Yallop" ], [ "Florian", "Angeletti" ] ]
+      },
+      {
+        "references": [ 11587 ],
+        "text": "Prevent integer comparison from being used on pointers",
+        "breaking change": false,
+        "authors": [ [ "Vincent", "Laviron" ] ],
+        "review": [ [ "Gabriel", "Scherer" ] ]
+      },
+      {
+        "references": [ 11662, 11673 ],
+        "text": "fix a memory leak when using Dynlink,\n  the bug was only present in development version of OCaml 5.",
+        "breaking change": false,
+        "authors": [ [ "Stephen", "Dolan" ] ],
+        "report": [ [ "Andre", "Maroneze" ] ],
+        "review": [ [ "Gabriel", "Scherer" ] ]
+      }
+    ]
+  },
+  "OCaml 4.14 maintenance version": {
+    " Runtime system:": [
+      {
+        "references": [ 11764, 12577 ],
+        "text": "Add prototypes to old-style C function definitions\n   and declarations.",
+        "breaking change": false,
+        "authors": [ [ "Antonin", "Décimo" ] ],
+        "review": [ [ "Xavier", "Leroy" ], [ "Nick", "Barnes" ] ]
+      },
+      {
+        "references": [ 11763, 11759, 11861, 12509, 12577 ],
+        "text": "Use strict prototypes on primitives.",
+        "breaking change": false,
+        "authors": [ [ "Antonin", "Décimo" ] ],
+        "review": [
+          [ "Xavier", "Leroy" ],
+          [ "David", "Allsopp" ],
+          [ "Sébastien", "Hinderer" ],
+          [ "Nick", "Barnes" ]
+        ]
+      }
+    ],
+    " Build system:": [
+      {
+        "references": [ 11590 ],
+        "text": "Allow installing to a destination path containing spaces.",
+        "breaking change": false,
+        "authors": [ [ "Élie", "Brami" ] ],
+        "review": [ [ "Sébastien", "Hinderer" ], [ "David", "Allsopp" ] ]
+      },
+      {
+        "references": [ 12372 ],
+        "text": "Pass option -no-execute-only to the linker for OpenBSD >= 7.3\n  so that code sections remain readable, as needed for closure marshaling.",
+        "breaking change": false,
+        "authors": [ [ "Xavier", "Leroy" ], [ "Anil", "Madhavapeddy" ] ],
+        "review": [
+          [ "Anil", "Madhavapeddy" ], [ "Sébastien", "Hinderer" ]
+        ]
+      },
+      {
+        "references": [ 12903 ],
+        "text": "Disable control flow integrity on OpenBSD >= 7.4 to avoid\n  illegal instruction errors on certain CPUs.",
+        "breaking change": false,
+        "authors": [ [ "Michael", "Hendricks" ] ],
+        "review": [ [ "Miod", "Vallat" ] ]
+      }
+    ],
+    " Bug fixes:": [
+      {
+        "references": [ 12878 ],
+        "text": "fix incorrect treatment of injectivity for private recursive types.",
+        "breaking change": false,
+        "authors": [ [ "Jeremy", "Yallop" ] ],
+        "review": [ [ "Gabriel", "Scherer" ], [ "Jacques", "Garrigue" ] ]
+      },
+      {
+        "references": [ 12971, 12974 ],
+        "text": "fix an uncaught Ctype.Escape exception on some\n  invalid programs forming recursive types.",
+        "breaking change": false,
+        "authors": [ [ "Gabriel", "Scherer" ] ],
+        "report": [ [ "Neven", "Villani" ] ],
+        "review": [ [ "Florian", "Angeletti" ] ]
+      },
+      {
+        "references": [ 12264, 12289 ],
+        "text": "Fix compact_allocate to avoid a pathological case\n  that causes very slow compaction.",
+        "breaking change": false,
+        "authors": [ [ "Damien", "Doligez" ] ],
+        "report": [ [ "Arseniy", "Alekseyev" ] ],
+        "review": [ [ "Sadiq", "Jaffer" ] ]
+      },
+      {
+        "references": [ 10845 ],
+        "text": "Emit frametable size on amd64 BSD (OpenBSD, FreeBSD, NetBSD) systems\n  (emitted for Linux in #8805)",
+        "breaking change": true,
+        "authors": [ [ "Hannes", "Mehnert" ] ],
+        "review": [ [ "Nicolás", "Ojeda", "Bär" ] ]
+      }
+    ]
+  },
+  "OCaml 4.14.1 (20 December 2022)": {
+    " Compiler user-interface and warnings:": [
+      {
+        "references": [ 11184, 11670 ],
+        "text": "Stop calling ranlib on created / installed libraries",
+        "breaking change": false,
+        "authors": [ [ "Sébastien", "Hinderer" ], [ "Xavier", "Leroy" ] ],
+        "review": [ [ "Author group review" ] ]
+      }
+    ],
+    " Build system:": [
+      {
+        "references": [ 11370, 11373 ],
+        "text": "Don't pass CFLAGS to flexlink during configure.",
+        "breaking change": false,
+        "authors": [ [ "David", "Allsopp" ] ],
+        "report": [ [ "William", "Hu" ] ],
+        "review": [ [ "Xavier", "Leroy" ], [ "Sébastien", "Hinderer" ] ]
+      },
+      {
+        "references": [ 11487 ],
+        "text": "Thwart FMA test optimization during configure",
+        "breaking change": false,
+        "authors": [ [ "William", "Hu" ] ],
+        "review": [ [ "David", "Allsopp" ], [ "Sébastien", "Hinderer" ] ]
+      }
+    ],
+    " Bug fixes:": [
+      {
+        "references": [ 10768, 11340 ],
+        "text": "Fix typechecking regression when combining first class\n  modules and GADTs.",
+        "breaking change": false,
+        "authors": [ [ "Jacques", "Garrigue" ] ],
+        "report": [ [ "François", "Thiré" ] ],
+        "review": [ [ "Matthew", "Ryan" ] ]
+      },
+      {
+        "references": [ 11204 ],
+        "text": "Fix regression introduced in 4.14.0 that would trigger Warning 17 when\n  calling virtual methods introduced by constraining the self type from within\n  the class definition.",
+        "breaking change": false,
+        "authors": [ [ "Nicolás", "Ojeda", "Bär" ] ],
+        "review": [ [ "Leo", "White" ] ]
+      },
+      {
+        "references": [ 11263, 11267 ],
+        "text": "caml/{memory,misc}.h: check whether `_MSC_VER` is defined\n  before using it to ensure that the headers can always be used in code which\n  turns on -Wundef (or equivalent).",
+        "breaking change": false,
+        "authors": [
+          [ "David", "Allsopp" ], [ "Nicolás", "Ojeda", "Bär" ]
+        ],
+        "review": [
+          [ "Nicolás", "Ojeda", "Bär" ], [ "Sébastien", "Hinderer" ]
+        ]
+      },
+      {
         "references": [ 11392, 11392 ],
         "text": "assertion failure with -rectypes and external definitions",
         "breaking change": false,
@@ -4260,22 +4672,12 @@
         "review": [ [ "Xavier", "Leroy" ], [ "Sébastien", "Hinderer" ] ]
       },
       {
-        "references": [ 11482, 11542 ],
-        "text": "Fix random crash in large closure allocation",
+        "references": [ 11489, 11496 ],
+        "text": "More prudent deallocation of alternate signal stack",
         "breaking change": false,
-        "authors": [ [ "Damien", "Doligez" ] ],
-        "report": [ [ "Thierry", "Martinez" ], [ "Vincent", "Laviron" ] ],
-        "review": [ [ "Xavier", "Leroy" ] ]
-      },
-      {
-        "references": [ 11508, 11509 ],
-        "text": "make Bytes.escaped domain-safe",
-        "breaking change": false,
-        "authors": [
-          [ "Christiano", "Haesbaert" ], [ "Gabriel", "Scherer" ]
-        ],
-        "report": [ [ "Jan", "Midtgaard" ], [ "Tom", "Kelly" ] ],
-        "review": [ [ "Xavier", "Leroy" ] ]
+        "authors": [ [ "Xavier", "Leroy" ] ],
+        "report": [ [ "@rajdakin" ] ],
+        "review": [ [ "Florian", "Angeletti" ] ]
       },
       {
         "references": [ 11516, 11524 ],
@@ -4287,35 +4689,17 @@
         ]
       },
       {
-        "references": [ 11576 ],
-        "text": "Fix bug in Bigarray.Genarray.init in the the case of zero-dimensional\n  arrays.",
+        "references": [ 11194, 11609 ],
+        "text": "Fix inconsistent type variable names in \"unbound type var\"\n  messages",
         "breaking change": false,
-        "authors": [
-          [ "Nicolás", "Ojeda", "Bär" ], [ "Jeremy", "Yallop" ]
-        ],
-        "report": [ [ "Masayuki", "Takeda" ] ],
-        "review": [ [ "Jeremy", "Yallop" ], [ "Florian", "Angeletti" ] ]
-      },
-      {
-        "references": [ 11587 ],
-        "text": "Prevent integer comparison from being used on pointers",
-        "breaking change": false,
-        "authors": [ [ "Vincent", "Laviron" ] ],
-        "review": [ [ "Gabriel", "Scherer" ] ]
+        "authors": [ [ "Ulysse", "Gérard" ], [ "Florian", "Angeletti" ] ],
+        "review": [ [ "Florian", "Angeletti" ], [ "Gabriel", "Scherer" ] ]
       },
       {
         "references": [ 11622 ],
         "text": "Prevent stack overflow when printing a constructor or record\n  mismatch error involving recursive types.",
         "breaking change": false,
         "authors": [ [ "Florian", "Angeletti" ] ],
-        "review": [ [ "Gabriel", "Scherer" ] ]
-      },
-      {
-        "references": [ 11662, 11673 ],
-        "text": "fix a memory leak when using Dynlink,\n  the bug was only present in development version of OCaml 5.",
-        "breaking change": false,
-        "authors": [ [ "Stephen", "Dolan" ] ],
-        "report": [ [ "Andre", "Maroneze" ] ],
         "review": [ [ "Gabriel", "Scherer" ] ]
       },
       {
@@ -4346,6 +4730,22 @@
         "authors": [ [ "Gabriel", "Scherer" ] ],
         "report": [ [ "Yaron", "Minsky" ] ],
         "review": [ [ "Jacques", "Garrigue" ], [ "Florian", "Angeletti" ] ]
+      },
+      {
+        "references": [ 11768, 11788 ],
+        "text": "Fix crash at start-up of bytecode programs in\n  no-naked-pointers mode caused by wrong initialization of caml_global_data",
+        "breaking change": false,
+        "authors": [ [ "Xavier", "Leroy" ] ],
+        "report": [ [ "Etienne", "Millon" ] ],
+        "review": [ [ "Gabriel", "Scherer" ] ]
+      },
+      {
+        "references": [ 11803, 11808 ],
+        "text": "on x86, the destination of an integer comparison must be\n  a register, it cannot be a stack slot.",
+        "breaking change": false,
+        "authors": [ [ "Vincent", "Laviron" ] ],
+        "report": [ [ "Emilio", "Jesús", "Gallego", "Arias" ] ],
+        "review": [ [ "Xavier", "Leroy" ] ]
       }
     ]
   },
@@ -4938,7 +5338,7 @@
       },
       {
         "references": [ 9444 ],
-        "text": "-dtypedtree, print more explictly extra nodes in pattern ast.",
+        "text": "-dtypedtree, print more explicitly extra nodes in pattern ast.",
         "breaking change": false,
         "authors": [ [ "Frédéric", "Bour" ] ],
         "review": [ [ "Gabriel", "Scherer" ] ]
@@ -5715,7 +6115,7 @@
         "text": "Dynamically allocate alternate signal stacks to\n   accommodate changes in Glibc 2.34.",
         "breaking change": false,
         "authors": [ [ "Xavier", "Leroy" ] ],
-        "reports": [ [ "Tomasz", "Kłoczko" ], [ "R.W.M" ], [ "Jones" ] ],
+        "reports": [ [ "Tomasz", "Kłoczko" ], [ "Richard", "Jones" ] ],
         "review": [
           [ "Anil", "Madhavapeddy" ],
           [ "Stephen", "Dolan" ],
@@ -6582,9 +6982,8 @@
         "text": "Standard Library documentation build no longer fails if\n  optional libraries have been disabled.",
         "breaking change": false,
         "authors": [ [ "David", "Allsopp" ] ],
-        "report": [
-          [ "Yuri", "Victorovich", "review", "by", "Florian", "Angeletti" ]
-        ]
+        "report": [ [ "Yuri", "Victorovich" ] ],
+        "review": [ [ "Florian", "Angeletti" ] ]
       },
       {
         "references": [ 10593 ],
@@ -8917,7 +9316,7 @@
         "text": "Allow linking .cmxa files with no units on MSVC by not requiring the\n  .lib file to be present.",
         "breaking change": false,
         "authors": [ [ "David", "Allsopp" ] ],
-        "report": [ [ "Dimitry", "Bely" ] ],
+        "report": [ [ "Dmitry", "Bely" ] ],
         "review": [ [ "Xavier", "Leroy" ] ]
       },
       {
@@ -13678,7 +14077,7 @@
         "text": "The toplevel prints some concrete types as abstract.",
         "breaking change": false,
         "authors": [ [ "Jacques", "Garrigue" ] ],
-        "report": [ [ "Matej", "Kosik" ] ]
+        "report": [ [ "Matej", "Košík" ] ]
       },
       {
         "references": [ 7765, 1718 ],
@@ -14968,7 +15367,7 @@
         "text": "Warn on type constraints in GADT declarations",
         "breaking change": false,
         "authors": [ [ "Jacques", "Garrigue" ] ],
-        "report": [ [ "Fabrice", "Le", "Botlan" ] ]
+        "report": [ [ "Didier", "Le", "Botlan" ] ]
       },
       {
         "references": [ 7321 ],
@@ -21203,7 +21602,7 @@
         "references": [ 4812 ],
         "text": "otherlibs/unix: add extern int code_of_unix_error (value error);",
         "breaking change": false,
-        "authors": [ [ "Goswin", "von", "Berdelow" ] ]
+        "authors": [ [ "Goswin", "von", "Brederlow" ] ]
       },
       {
         "references": [ 4887 ],
@@ -21295,7 +21694,7 @@
         "text": "ocamlbuild should preserve order of parametric tags",
         "breaking change": false,
         "authors": [ [ "Wojciech", "Meyer" ] ],
-        "report": [ [ "Dario", "Texeira" ] ]
+        "report": [ [ "Dario", "Teixeira" ] ]
       },
       {
         "references": [ 5551 ],
