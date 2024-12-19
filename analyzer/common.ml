@@ -163,6 +163,7 @@ module Scanning = struct
       one_of s [
           "OCaml %d.%02d.%d (%s %s %s@)", mk;
           "OCaml %d.%d maintenance branch", mkm;
-          "OCaml %d.%d, maintenance version", mkm
+          "OCaml %d.%d, maintenance version", mkm;
+          "OCaml %d.%d maintenance version", mkm;
         ]
 end
