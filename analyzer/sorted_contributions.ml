@@ -1,7 +1,7 @@
 open Common
 
 
-let pp_contrib ids  ppf (name, {AR.Vect.author; review}) =
+let pp_contrib ids  ppf (name, {AR.Vect.author; review; any=_}) =
   let id = Name_map.find name ids in
   Fmt.pf ppf "@[%g %g %d %a@]" author review id
     Changelog.Def.Pp.name name

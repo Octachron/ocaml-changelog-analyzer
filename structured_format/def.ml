@@ -127,6 +127,14 @@ module Pp = struct
     in
     Fmt.pf ppf {|"%s"|} escape
 
+  let name_len x = List.fold_left (fun l x -> l + 1 + String.length x) (-1) x
+
+  let padded_name max ppf x =
+    let diff = max - name_len x in
+    if diff <= 0 then name ppf x else
+      name ppf x;
+      Fmt.string ppf (String.make diff ' ')
+
   let sapient ppf x =
     Format.fprintf ppf "[%a]" name x
 

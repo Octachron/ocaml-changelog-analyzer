@@ -18,8 +18,10 @@ let () =
   let template = Scanf.format_from_string Sys.argv.(2) "%d%d%d" in
   let changelog = changelog_from_file filename in
   let history = contribution_by_release changelog in
-  let pp_author ppf (name, {AR.Vect.author; review}) =
-    Fmt.pf ppf "%a %g %g" Changelog.Def.Pp.name name author review
+  let pp_author padding ppf (name, {AR.Vect.author; review; any}) =
+    Fmt.pf ppf "%a\t%g\t%g\t%g"
+      (Changelog.Def.Pp.padded_name padding) name
+      author review any
   in
   let output_release (r,l) =
     let version = parse_release_name r in
@@ -28,10 +30,11 @@ let () =
     | Normal v ->
       let filename = Fmt.str template v.major v.minor v.patch in
       let contributions = AR.sort l in
+      let padding = Name_map.fold (fun k _ m -> max m (Changelog.Def.Pp.name_len k)) l 0 in
       Out_channel.with_open_bin filename (fun f ->
           let ppf = Format.formatter_of_out_channel f in
           Fmt.pf ppf "@[<v># OCaml %d.%d.%d@;%a@]@." v.major v.minor v.patch
-            (Fmt.list pp_author) contributions
+            (Fmt.list @@ pp_author padding) contributions
         )
     in
     List.iter output_release history

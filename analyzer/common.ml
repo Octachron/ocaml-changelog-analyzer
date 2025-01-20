@@ -59,19 +59,23 @@ let changelog_from_file filename =
 
 module AR = struct
   module Vect = struct
-    type t = { author:float; review:float }
+    type t = { author:float; review:float; any:float }
     let linear alpha x y = x +. alpha *. (y -. x)
     let interpolate alpha x y =
       { author = linear alpha x.author y.author;
         review = linear alpha x.review y.review;
+        any = linear alpha x.any y.any
       }
 
     let compare x y =
-      let d = x.review -. y.review in
-      if d = 0. then x.author -. y.author else d
-    let (+) x y = {author=x.author +. y.author; review=x.review +. y.review}
-    let (/.) x n = {author= x.author /. n; review = x.review /. n  }
-    let zero = { author=0.; review=0. }
+      let d_any = x.any -. y.any in
+      let d_author = x.author -. y.author in
+      let d_review = x.review -. y.review in
+      let d = 100.*. d_any +. 10. *. d_author +. d_review in
+      if d = 0. then d_any else d
+    let (+) x y = {author=x.author +. y.author; review=x.review +. y.review; any = x.any +. y.any}
+    let (/.) x n = {author= x.author /. n; review = x.review /. n; any = x.any /. n  }
+    let zero = { author=0.; review=0.; any = 0. }
   end
 
   module Count= Count(Vect)
@@ -83,12 +87,23 @@ module AR = struct
       let add_cat cat x map  =
         let set = s.%(cat) in
         let many = float @@ List.length @@ set in
-        List.fold_left (fun map name -> Count.add map name Vect.(x/. many))
+        let _normalized = Vect.(x /.many) in
+        List.fold_left (fun map name -> Count.add map name x)
           map set
       in
+      let or_cat cat1 cat2 x map =
+        let set1 = Name_set.of_list s.%(cat1) in
+        let set2 = Name_set.of_list s.%(cat2) in
+        let set = Name_set.union set1 set2 in
+        let many = float_of_int @@ Name_set.cardinal set in
+        let _normalized = Vect.(x /.many) in
+        Name_set.fold (fun name map -> Count.add map name x)
+          set map
+      in
       map
-      |> add_cat "authors" Vect.{author=1.; review=0. }
-      |> add_cat "review" Vect.{review=1.; author =0. }
+      |> add_cat "authors" Vect.{author=1.; review=0.; any = 0. }
+      |> add_cat "review" Vect.{review=1.; author =0.; any = 0.  }
+      |> or_cat "review" "authors" Vect.{ review = 0.; author = 0.; any = 1. }
 
   let count changelog =
     fold_entry ~f:(fun map _ _ x -> add map x) Name_map.empty changelog

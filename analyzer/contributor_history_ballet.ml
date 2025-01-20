@@ -46,7 +46,7 @@ let (.!()) map x = match Name_map.find_opt x map with
   | Some x -> x
   | None -> Fmt.epr "Not found: %a@." Changelog.Def.Pp.name x; exit 2
 
-let pp_author ids ppf (name, {AR.Vect.author; review}) =
+let pp_author ids ppf (name, {AR.Vect.author; review; any=_}) =
   Fmt.pf ppf "%g %g %d %a" author review ids.!(name) Changelog.Def.Pp.name name
 
 let pp_version ppf (mj,mn) =
