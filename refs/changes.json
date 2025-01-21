@@ -1786,7 +1786,7 @@
         "references": [ 13400 ],
         "text": "Initialize th->signal_stack to avoid free of uninitialized data\n  if the user calls caml_c_thread_unregister on the main thread.",
         "breaking change": false,
-        "authors": [ [ "Richard", "W.M" ], [ "Jones" ] ],
+        "authors": [ [ "Richard", "Jones" ] ],
         "review": [
           [ "Guillaume", "Munch-Maccagnoni" ], [ "Gabriel", "Scherer" ]
         ]

@@ -65,6 +65,8 @@ let normalize_name ~warn = function
   | ["Demi"; "Obenour"] -> ["Demi"; "Marie"; "Obenour"]
   | ["Fuyong"; "Quah"] -> ["Fu"; "Yong"; "Quah"]
   | ["Mekhrubon"; "Tuarev"] -> ["Mekhrubon"; "Turaev"]
+  (* variants *)
+  | ["Richard"; "W.M."; "Jones"] -> ["Richard"; "Jones"]
   (* Long names*)
   | (["Perry"; "E."; "Metzger"] as q)
   | (["Hezekiah"; "M."; "Carty"] as q)
@@ -258,11 +260,16 @@ let validate_author s =
   | Error _ -> Ok ()
 
 let parse authors =
+  let initial s =
+    let len = String.length s in
+    len = 2 && s.[1] = '.'
+    || len = 4 && s.[1] = '.' && s.[3] = '.'
+  in
   let split_punct s =
     let len = String.length s in
     let last = s.[len-1] in
     if (len > 1 && (last = ',' || last = ';')) ||
-       (len > 2 && last = '.') then
+       (not (initial s) && len > 2 && last = '.') then
       Seq.cons (String.sub s 0 (len-1))  (Seq.return ",")
     else
       Seq.return s
