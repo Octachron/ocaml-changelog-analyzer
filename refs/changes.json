@@ -111,6 +111,21 @@
         "authors": [ [ "Stephen", "Dolan" ], [ "David", "Allsopp" ] ],
         "report": [ [ "Thomas", "Leonard" ] ],
         "review": [ [ "Tim", "McGilchrist" ], [ "Fabrice", "Buoro" ] ]
+      },
+      {
+        "references": [ 13701 ],
+        "text": "optimize `caml_continuation_use` based on #12735",
+        "breaking change": false,
+        "authors": [ [ "Hugo", "Heuzard" ] ],
+        "review": [ [ "KC", "Sivaramakrishnan" ] ]
+      },
+      {
+        "references": [ 13227, 13714 ],
+        "text": "Review of locking in the multicore runtime. Fix\n  deadlocks in runtime events and potential deadlocks with named\n  values.",
+        "breaking change": false,
+        "authors": [ [ "Guillaume", "Munch-Maccagnoni" ] ],
+        "review": [ [ "Gabriel", "Scherer" ] ],
+        "tests": [ [ "Jan", "Midtgaard" ] ]
       }
     ],
     " Code generation and optimizations:": [
@@ -143,9 +158,52 @@
         "authors": [ [ "Pierre", "Chambart" ] ],
         "report": [ [ "Patrick", "Nicodemus" ] ],
         "review": [ [ "Gabriel", "Scherer" ], [ "Xavier", "Leroy" ] ]
+      },
+      {
+        "references": [ 13667 ],
+        "text": "(originally #11162) Fix instr_size computation on arm64.",
+        "breaking change": false,
+        "authors": [ [ "Stephen", "Dolan" ], [ "Tim", "McGilchrist" ] ],
+        "review": [ [ "Xavier", "Leroy" ], [ "David", "Allsopp" ] ]
       }
     ],
     " Standard library:": [
+      {
+        "references": [ 13729 ],
+        "text": "Add Either.retract",
+        "breaking change": false,
+        "authors": [ [ "Daniel", "Bünzli" ] ],
+        "review": [ [ "Nicolás", "Ojeda", "Bär" ], [ "David", "Allsopp" ] ]
+      },
+      {
+        "references": [ 13729 ],
+        "text": "Add Seq.filteri",
+        "breaking change": false,
+        "authors": [ [ "Tima", "Kinsart" ] ],
+        "review": [
+          [ "Nicolás", "Ojeda", "Bär" ], [ "Daniel", "Bünzli" ]
+        ]
+      },
+      {
+        "references": [ 13721 ],
+        "text": "Add Result.retract",
+        "breaking change": false,
+        "authors": [ [ "Daniel", "Bünzli" ] ],
+        "review": [
+          [ "Gabriel", "Scherer" ],
+          [ "Nicolás", "Ojeda", "Bär" ],
+          [ "David", "Allsopp" ]
+        ]
+      },
+      {
+        "references": [ 13695 ],
+        "text": "Add Stdlib.Char.Ascii",
+        "breaking change": false,
+        "authors": [ [ "Daniel", "Bünzli" ] ],
+        "review": [
+          [ "by", "Nicolás", "Ojeda", "Bär" ], [ "Jeremy", "Yallop" ]
+        ]
+      },
       {
         "references": [ 13310 ],
         "text": "Add Stdlib.Pair",
@@ -183,6 +241,20 @@
           [ "Gabriel", "Scherer" ],
           [ "Hugo", "Heuzard" ]
         ]
+      },
+      {
+        "references": [ 13737 ],
+        "text": "Avoid closure allocations in Weak.Make.add when resizing the\n  table",
+        "breaking change": false,
+        "authors": [ [ "Vincent", "Laviron" ] ],
+        "review": [ [ "Gabriel", "Scherer" ], [ "Daniel", "Bünzli" ] ]
+      },
+      {
+        "references": [ 13740 ],
+        "text": "Improve performance of Weak.find_aux",
+        "breaking change": false,
+        "authors": [ [ "Josh", "Berdine" ] ],
+        "review": [ [ "Gabriel", "Scherer" ] ]
       }
     ],
     " Other libraries:": [
@@ -263,6 +335,14 @@
           [ "Gabriel", "Scherer" ],
           [ "Antonin", "Décimo" ]
         ]
+      }
+    ],
+    " Manual and documentation:": [
+      {
+        "references": [ 13694 ],
+        "text": "Fix name for caml_hash_variant in the C interface.",
+        "breaking change": false,
+        "authors": [ [ "Michael", "Hendricks" ] ]
       }
     ],
     " Compiler user-interface and warnings:": [
@@ -387,6 +467,19 @@
         "breaking change": false,
         "authors": [ [ "Mark", "Shinwell" ] ],
         "review": [ [ "Vincent", "Laviron" ] ]
+      },
+      {
+        "references": [ 13612 ],
+        "text": "Refactor `type_application`",
+        "breaking change": false,
+        "authors": [ [ "Ulysse", "Gérard" ], [ "Leo", "White" ] ],
+        "review": [
+          [ "Antonin", "Décimo" ],
+          [ "Gabriel", "Scherer" ],
+          [ "Samuel", "Vivien" ],
+          [ "Florian", "Angeletti" ],
+          [ "Jacques", "Garrigue" ]
+        ]
       }
     ],
     " Build system:": [
@@ -396,6 +489,15 @@
         "breaking change": false,
         "authors": [ [ "Nathan", "Rebours" ] ],
         "review": [ [ "Florian", "Angeletti" ] ]
+      },
+      {
+        "references": [ 13494 ],
+        "text": "Use native symlinks on Windows for the OCaml installation, reducing\n  disk usage considerably.",
+        "breaking change": false,
+        "authors": [ [ "David", "Allsopp" ] ],
+        "review": [
+          [ "Nicolás", "Ojeda", "Bär" ], [ "Gabriel", "Scherer" ]
+        ]
       },
       {
         "references": [ 13526 ],
@@ -411,6 +513,13 @@
       }
     ],
     " Bug fixes:": [
+      {
+        "references": [ 13691 ],
+        "text": "Make four globals underlying Gc.control atomic to avoid C data\n  races against them",
+        "breaking change": false,
+        "authors": [ [ "Jan", "Midtgaard" ] ],
+        "review": [ [ "Miod", "Vallat" ], [ "Sadiq", "Jaffer" ] ]
+      },
       {
         "references": [ 13454 ],
         "text": "Output a correct trace of the C_CALLN bytecode.",
@@ -433,10 +542,25 @@
         "authors": [ [ "Gabriel", "Scherer" ] ],
         "report": [ [ "Jan", "Midtgaard" ] ],
         "review": [ [ "Jan", "Midtgaard" ], [ "Miod", "Vallat" ] ]
+      },
+      {
+        "references": [ 13703 ],
+        "text": "wrong explanation for some polymorphic-variant subtyping errors",
+        "breaking change": false,
+        "authors": [ [ "Gabriel", "Scherer" ] ],
+        "report": [ [ "Wiktor", "Kuchta" ], [ "Richard", "Eisenberg" ] ],
+        "review": [ [ "Jacques", "Garrigue" ] ]
+      },
+      {
+        "references": [ 13710 ],
+        "text": "Support unicode identifiers in comments.",
+        "breaking change": false,
+        "authors": [ [ "Pieter", "Goetschalckx" ] ],
+        "review": [ [ "Florian", "Angeletti" ], [ "Gabriel", "Scherer" ] ]
       }
     ]
   },
-  "OCaml 5.3.0 (1 January 2025)": {
+  "OCaml 5.3.0 (8 January 2025)": {
     "Release documentation": [
       {
         "doc": "(Changes that can break existing programs are marked with a \"*\")"
@@ -922,10 +1046,10 @@
         "text": "Dynarray.blit, which allows to extend the destination\n  dynarray (0 <= dst_pos <= dst_length).",
         "breaking change": false,
         "authors": [ [ "Gabriel", "Scherer" ] ],
-        "report": [ [ "Hazem", "Elmasry" ] ],
+        "report": [ [ "Hazem", "ElMasry" ] ],
         "review": [
           [ "Olivier", "Nicole" ],
-          [ "Hazem", "Elmasry" ],
+          [ "Hazem", "ElMasry" ],
           [ "Nicolás", "Ojeda", "Bär" ]
         ]
       },
@@ -1122,7 +1246,7 @@
         "references": [ 13469, 13474, 13535 ],
         "text": "Document that [Hashtbl.create n] creates a hash table\n  with a default minimal size, even if [n] is very small or negative.",
         "breaking change": false,
-        "authors": [ [ "Antonin", "Décimo" ], [ "Nick", "Bares" ] ],
+        "authors": [ [ "Antonin", "Décimo" ], [ "Nick", "Barnes" ] ],
         "report": [ [ "Nikolaus", "Huber" ], [ "Jan", "Midtgaard" ] ],
         "review": [
           [ "Florian", "Angeletti" ],
@@ -1329,7 +1453,7 @@
         "text": "rework volatile memory access rules under TSan to consider properly\n  aligned smaller-than-register read operations as atomic, which gets rid of\n  false positives on s390x",
         "breaking change": false,
         "authors": [ [ "Miod", "Vallat" ] ],
-        "review": [ [ "Fabien", "Buoro" ] ]
+        "review": [ [ "Fabrice", "Buoro" ] ]
       },
       {
         "references": [ 13162 ],
@@ -1729,7 +1853,7 @@
         "authors": [ [ "Jacques", "Garrigue" ] ],
         "report": [ [ "Nicolás", "Ojeda", "Bär" ] ],
         "review": [
-          [ "Nicolas", "Ojeda", "Bär" ],
+          [ "Nicolás", "Ojeda", "Bär" ],
           [ "Gabriel", "Scherer" ],
           [ "Stephen", "Dolan" ],
           [ "Florian", "Angeletti" ]
