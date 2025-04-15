@@ -26,7 +26,7 @@ let rec ligature = function
 
 let by_connector = function
   | "," -> Group_by.Sep Comma
-  | "and" -> Group_by.Sep And
+  | "and" | "via" | "through" -> Group_by.Sep And
   | ";" -> Sep Semi
   | x -> Elt x
 
@@ -37,6 +37,12 @@ let strip_postfix q = match List.rev q with
   | [ "skills"; "MSDN"; "impressive"; "displaying"] -> []
   | _ -> q
 
+let cut_for =
+  let rec iter acc = function
+  | [] | "for" :: _ -> List.rev acc
+  | h :: q -> iter (h::acc) q
+  in
+  iter []
 
 let normalize_name ~warn = function
   (* groups *)
@@ -89,6 +95,7 @@ let normalize_name ~warn = function
   | ["Leo";  "White"; "(#2269)"] -> ["Leo"; "White"]
   | ["&"; "Mark"; "Shinwell" ] -> ["Mark"; "Shinwell" ]
   | x ->
+    let x = cut_for x in
     if warn then Format.eprintf "Complex name or error:%s@." (String.concat " " x);
     x
 
@@ -159,6 +166,7 @@ let split_section x = match strip_postfix (List.filter ((<>) "") x) with
   | ("feature" | "original") :: "request" :: ("from"|"by") :: q ->
     [Group_by.Sep "feature request"; elt q]
   | "bug" :: "reported" :: q
+  | "regression" :: "spotted" :: "by" :: q
   | "regression" :: "spotted" :: q ->
     [Group_by.Sep "report"; elt q]
   | "stealth" :: "commit" :: "by" :: q ->
@@ -247,6 +255,31 @@ module Dict = Map.Make(String)
 let merge l =
   l |> Dict.of_list |> Dict.bindings
 
+let is_valid_name =
+  (* a re to reject invalid names *)
+  let bad = Re.[
+      (* name starting by a special character  *)
+      seq [set "^=<>+-()[]{}/*&~#|`_\\$%!:/;.,?0123456789"; rep any] ;
+      (* arg is not valid name *)
+      str "arg" ;
+    ]
+  in
+  let re = Re.(compile (seq [start ; alt bad ; stop])) in
+  fun str ->
+    match Re.exec_opt re str with
+    | None -> true
+    | Some _ -> false
+
+let remove_invalid_names l =
+  List.map
+    (fun (x, sapients) ->
+       (x, List.fold_left
+         (fun acc names ->
+            match List.filter is_valid_name names with
+            | [] -> acc
+            | res -> res :: acc)
+         [] sapients))
+    l
 
 let validate_author s =
   if known_non_authors s then Error [] else
@@ -283,9 +316,9 @@ let parse authors =
     |> List.map snd
     |> List.concat_map split_section
     |> Group_by.list ~debug:Fmt.(list string) ~and_then:Fun.id ~parent:"authors" Fun.id
+    |> remove_invalid_names
     |> merge
   in Ok words
-
 
 let rec seq_parentheses stack pos s () =
   if pos < 0 then Seq.Nil
@@ -303,7 +336,6 @@ let rec seq_parentheses stack pos s () =
       seq_parentheses stack (pos-1) s ()
 
 let seq_parentheses s () = seq_parentheses [] (String.length s - 1) s ()
-
 
 let cut_at_char s pos =
   let gap = 1 in
