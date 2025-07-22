@@ -7,8 +7,408 @@
     ],
     " Language features:": [
       {
+        "references": [ 14009 ],
+        "text": "infix extension points/attributes appearing in local structure items,\n  eg `let module%foo[@bar] ... in ...` are attached to the AST node of the\n  corresponding structure item (similar to their global counterparts) and no\n  longer to the enclosing `let` expression.  Extension points/attributes that\n  are to be attached to the enclosing `let` expression are to be written next to\n  the `let` keyword, eg `let%foo[@bar] module ... in ...`. The same holds for\n  `let exception` and `let open`.",
+        "breaking change": true,
+        "authors": [ [ "Nicolás", "Ojeda", "Bär" ] ],
+        "review": [ [ "Gabriel", "Scherer" ] ]
+      },
+      {
+        "references": [ 13712 ],
+        "text": "Introduce a new kind `Type_external` and syntax\n  `type t = external \"name\"` to discriminate external types from other types\n  and each other.  This PR turns primitive types into external and removes the\n  past behavior of discriminating abstract types defined in the current module.",
+        "breaking change": true,
+        "authors": [ [ "Takafumi", "Saikawa" ], [ "Jacques", "Garrigue" ] ],
+        "review": [ [ "Richard", "Eisenberg" ] ]
+      }
+    ],
+    " Runtime system:": [
+      {
+        "references": [ 14035 ],
+        "text": "Fix the alignment of _Atomic long long unsigned int fields\n  before GCC 11.1 on i686. Silence GCC note on newer versions.",
+        "breaking change": false,
+        "authors": [ [ "Antonin", "Décimo" ] ],
+        "review": [ [ "Sadiq", "Jaffer" ] ]
+      },
+      {
+        "references": [ 13574, 13594 ],
+        "text": "Generational scanning of stack frames for ARM 64 bits, POWER,\n  and RISC-V.  This reduces minor GC work in the presence of deep call stacks.",
+        "breaking change": false,
+        "authors": [ [ "Xavier", "Leroy" ] ],
+        "review": [
+          [ "Miod", "Vallat" ],
+          [ "Gabriel", "Scherer" ],
+          [ "Olivier", "Nicole" ]
+        ]
+      }
+    ],
+    " Standard library:": [
+      {
+        "references": [ 13728 ],
+        "text": "Add Sys.runtime_executable containing the full path (if available) to\n  the currently executing runtime.",
+        "breaking change": false,
+        "authors": [ [ "David", "Allsopp" ] ],
+        "review": [ [ "Nicolás", "Ojeda", "Bär" ], [ "Daniel", "Bünzli" ] ]
+      },
+      {
+        "references": [ 13916 ],
+        "text": "Add Option.product and Option.Syntax.",
+        "breaking change": false,
+        "authors": [ [ "Nicolás", "Ojeda", "Bär" ] ],
+        "review": [
+          [ "Daniel", "Bünzli" ],
+          [ "Gabriel", "Scherer" ],
+          [ "David", "Allsopp" ]
+        ]
+      },
+      {
+        "references": [ 13995 ],
+        "text": "Add Option.blend.",
+        "breaking change": false,
+        "authors": [ [ "Kate", "Deplaix" ] ],
+        "review": [
+          [ "Daniel", "Bünzli" ],
+          [ "Gabriel", "Scherer" ],
+          [ "Nicolás", "Ojeda", "Bär" ],
+          [ "Florian", "Angeletti" ],
+          [ "Josh", "Berdine" ]
+        ]
+      },
+      {
+        "references": [ 14086 ],
+        "text": "Add Domain.count.",
+        "breaking change": false,
+        "authors": [ [ "Nicolás", "Ojeda", "Bär" ] ],
+        "review": [
+          [ "David", "Allsopp" ],
+          [ "Gabriel", "Scherer" ],
+          [ "Daniel", "Bünzli" ],
+          [ "KC", "Sivaramakrishnan" ]
+        ]
+      },
+      {
+        "references": [ 13920 ],
+        "text": "add Option.{for_all, exists}",
+        "breaking change": false,
+        "authors": [ [ "Gabriel", "Scherer" ] ],
+        "review": [
+          [ "Kate", "Deplaix" ],
+          [ "Nicolás", "Ojeda", "Bär" ],
+          [ "Richard", "Eisenberg" ],
+          [ "Jeremy", "Yallop" ]
+        ]
+      },
+      {
+        "references": [ 12877 ],
+        "text": "Dynarray.rev_iter, Dynarray.rev_iteri",
+        "breaking change": false,
+        "authors": [ [ "Gabriel", "Scherer" ] ],
+        "review": [
+          [ "Léo", "Andrès" ],
+          [ "Jeremy", "Yallop" ],
+          [ "Nicolás", "Ojeda", "Bär" ]
+        ]
+      },
+      {
+        "references": [ 14118 ],
+        "text": "Add {Set,Map}.S.is_singleton",
+        "breaking change": false,
+        "authors": [ [ "Kate", "Deplaix" ] ],
+        "review": [
+          [ "Daniel", "Bünzli" ],
+          [ "Vincent", "Laviron" ],
+          [ "Nicolás", "Ojeda", "Bär" ],
+          [ "Stephen", "Dolan" ]
+        ]
+      }
+    ],
+    " Type system:": [
+      {
+        "references": [ 13781 ],
+        "text": "Set scope of internal type nodes during abbreviation expansion\n  rather than recursing during unification.",
+        "breaking change": false,
+        "authors": [ [ "Jacques", "Garrigue" ] ],
+        "review": [ [ "Gabriel", "Scherer" ] ]
+      },
+      {
+        "references": [ 14066 ],
+        "text": "catch invalid aliases introduced by signature constraints during\n  merging rather than in subtyping:\n  ```ocaml\n    module X = struct end module F (_:sig end) = struct end\n    module type T = (sig module X0 : sig end module X1 = X0 end)\n      with module X0 := F(X)\n  ```\n  Before, it failed with a subtyping error. Now, it fails with a proper error,\n  explaining that `X1` would keep an invalid alias to `F(X)`",
+        "breaking change": true,
+        "authors": [ [ "Clement", "Blaudeau" ] ],
+        "review": [ [ "Florian", "Angeletti" ] ]
+      },
+      {
+        "references": [ 14100 ],
+        "text": "Do not ignore type-constraints and module-constraints when building\n  the approximated signature of recursive modules. Ignoring those constraints\n  resulted in incorrect (wrong set of fields, wrong shadowing between fields)\n  approximated signatures, failing to typecheck, as in:\n  ```ocaml\n  module X0 : sig type t end\n  module rec X : ((sig module A : sig end end) with module A := X0)\n  and Y : sig type t = X.A.t end (* Unbound type constructor X.A.t *)\n  ```\n  Now, type and module constraints are properly merged during approximation ,\n  reusing the infrastructure for normal merging of constraints, but disabling\n  any wellformedness check.",
+        "breaking change": true,
+        "authors": [ [ "Clement", "Blaudeau" ], [ "Ryan", "Tjoa" ] ],
+        "review": [ [ "Florian", "Angeletti" ] ]
+      }
+    ],
+    " Other libraries:": [
+      {
+        "references": [ 14046 ],
+        "text": "On Windows, `Unix.kill pid Sys.sigkill` causes the receiving process\n  to exit with code ERROR_PROCESS_ABORTED (1067) instead of 0.",
+        "breaking change": true,
+        "authors": [ [ "Nicolás", "Ojeda", "Bär" ] ],
+        "review": [
+          [ "Miod", "Vallat" ],
+          [ "Antonin", "Décimo" ],
+          [ "David", "Allsopp" ]
+        ]
+      },
+      {
+        "references": [ 14020 ],
+        "text": "Add Unix.unsetenv.",
+        "breaking change": false,
+        "authors": [ [ "Nicolás", "Ojeda", "Bär" ] ],
+        "review": [ [ "Antonin", "Décimo" ], [ "David", "Allsopp" ] ]
+      },
+      {
+        "references": [ 13447 ],
+        "text": "Symmetrize shared `Sys` and `Unix` functions. Apply fixes\n  of #12072, #12184, #12320, and #13166, from `Sys.rename` to\n  `Unix.rename`.  Make `caml_sys_close` raise on error, allowing\n  `Filename.temp_file` retries if close fails. Flush buffers when\n  calling `caml_sys_system_command` on Windows. Error with EINVAL\n  instead of ENOENT if the command string is not a valid C string.",
+        "breaking change": false,
+        "authors": [ [ "Antonin", "Décimo" ] ],
+        "review": [ [ "Gabriel", "Scherer" ], [ "Nicolás", "Ojeda", "Bär" ] ]
+      }
+    ],
+    " Tools:": [
+      {
+        "references": [ 12139 ],
+        "text": "BUILD_PATH_PREFIX_MAP rewriting in debug-event locations.",
+        "breaking change": false,
+        "authors": [ [ "Richard", "L.", "Ford" ] ],
+        "review": [ [ "Gabriel", "Scherer" ] ]
+      },
+      {
+        "references": [ 13638 ],
+        "text": "ocamlmklib exits with code 4 if passed an unrecognised option, as it\n  does with an unrecognised file.",
+        "breaking change": true,
+        "authors": [ [ "David", "Allsopp" ] ],
+        "review": [ [ "Antonin", "Décimo" ], [ "Sébastien", "Hinderer" ] ]
+      },
+      {
+        "references": [ 13941, 13961 ],
+        "text": "Fix `ocamltest` variable handing.",
+        "breaking change": false,
+        "authors": [ [ "Damien", "Doligez" ] ],
+        "report": [ [ "Olivier", "Nicole" ] ],
+        "review": [ [ "Gabriel", "Scherer" ] ]
+      },
+      {
+        "references": [ 13962 ],
+        "text": "Little ocamltest refactors. Fix error handling in C code,\n  leaking file descriptors, code style.",
+        "breaking change": false,
+        "authors": [ [ "Antonin", "Décimo" ] ],
+        "review": [ [ "Gabriel", "Scherer" ] ]
+      },
+      {
+        "references": [ 14059 ],
+        "text": "Fix flaky TSan tests",
+        "breaking change": false,
+        "authors": [ [ "Fabrice", "Buoro" ], [ "Olivier", "Nicole" ] ],
+        "review": [ [ "Gabriel", "Scherer" ] ]
+      },
+      {
+        "references": [ 13966, 13969 ],
+        "text": "Enable \"generalized polymorphic #install_printer\"\n  in the debugger",
+        "breaking change": false,
+        "authors": [ [ "Pierre", "Boutillier" ], [ "Gabriel", "Scherer" ] ],
+        "review": [ [ "Florian", "Angeletti" ] ]
+      },
+      {
+        "references": [ 14063 ],
+        "text": "Debugger fallbacks to \"looking for 'module_name'.ml in the\n  loadpath\" when seeking source files. It improves hit rate for\n  sources of installed packages.",
+        "breaking change": false,
+        "authors": [ [ "Pierre", "Boutillier" ] ],
+        "review": [ [ "Gabriel", "Scherer" ] ]
+      }
+    ],
+    " Manual and documentation:": [
+      {
+        "references": [ 13975 ],
+        "text": "documented the `[@remove_aliases]` built-in attribute for signatures\n  (introduced by #1652 in 2018). Small refactor of the code that fetches the\n  attribute.",
+        "breaking change": true,
+        "authors": [ [ "Clement", "Blaudeau" ] ],
+        "review": [ [ "Gabriel", "Scherer" ] ]
+      },
+      {
+        "references": [ 14002 ],
+        "text": "Add anchors to items and headings of the web version of the API\n  documentation for easier linking.",
+        "breaking change": false,
+        "authors": [ [ "Nicolás", "Ojeda", "Bär" ] ],
+        "report": [ [ "Louis", "Roché" ] ],
+        "review": [ [ "Gabriel", "Scherer" ], [ "Florian", "Angeletti" ] ]
+      },
+      {
+        "references": [ 14023 ],
+        "text": "Add documentation for the [row_more] function.",
+        "breaking change": false,
+        "authors": [ [ "Richard", "Eisenberg" ] ],
+        "review": [ [ "Jacques", "Garrigue" ] ]
+      },
+      {
+        "references": [ 14038 ],
+        "text": "Fall back immediately to user-agent-defined fonts when web fonts\n  fail to load.",
+        "breaking change": false,
+        "authors": [ [ "toastal" ] ]
+      },
+      {
+        "references": [ 14077 ],
+        "text": "Add missing `item-attribute` rule for `let-binding`s in documentation\n  for attributes.",
+        "breaking change": false,
+        "authors": [ [ "Shon", "Feder" ] ]
+      }
+    ],
+    " Compiler user-interface and warnings:": [
+      {
+        "references": [ 12628 ],
+        "text": "Improved error message for unsafe values: print out the full path for\n  the value that is unsafe when they are detected during the compilation of\n  recursive modules.",
+        "breaking change": false,
+        "authors": [ [ "Shivam", "Acharya" ] ],
+        "review": [ [ "Gabriel", "Scherer" ], [ "Florian", "Angeletti" ] ]
+      },
+      {
+        "references": [ 14076 ],
+        "text": "error messages, add a short explanation for mismatched universal\n  variables.",
+        "breaking change": false,
+        "authors": [ [ "Florian", "Angeletti" ] ],
+        "review": [ [ "Gabriel", "Scherer" ] ]
+      },
+      {
+        "references": [ 14146 ],
+        "text": "add an error message for external declaration with\n  a non-syntactic arity\n  ```\n   external fail: (int -> int as 'a) -> 'a = \"%identity\"\n  ```\n  rather than failing with an internal error.",
+        "breaking change": false,
+        "authors": [ [ "Florian", "Angeletti" ] ],
+        "review": [ [ "Gabriel", "Scherer" ] ]
+      }
+    ],
+    " Internal/compiler-libs changes:": [
+      {
+        "references": [ 13839, 14008 ],
+        "text": "Reimplement `let open`, `let module` and `let exception` in\n  terms of a single construct.",
+        "breaking change": false,
+        "authors": [ [ "Nicolás", "Ojeda", "Bär" ] ],
+        "review": [
+          [ "Gabriel", "Scherer" ],
+          [ "Samuel", "Vivien" ],
+          [ "Ulysse", "Gérard" ],
+          [ "Vincent", "Laviron" ]
+        ]
+      },
+      {
+        "references": [ 13911, 14117, 14127 ],
+        "text": "Refactor the merging of signature constraints, by\n  splitting the monolithic merge function into separate, specialized functions\n  (for merging types, modules and module types) - sharing only the recursive\n  part for handling deep constraints.",
+        "breaking change": false,
+        "authors": [ [ "Clement", "Blaudeau" ] ],
+        "fix": [ [ "Ryan", "Tjoa" ] ],
+        "review": [ [ "Florian", "Angeletti" ], [ "Samuel", "Vivien" ] ]
+      },
+      {
+        "references": [ 13980 ],
+        "text": "Refactor `type-approx` and improve some errors' locations.",
+        "breaking change": false,
+        "authors": [ [ "Leo", "White" ], [ "Ulysse", "Gérard" ] ],
+        "review": [ [ "Samuel", "Vivien" ], [ "Florian", "Angeletti" ] ]
+      },
+      {
+        "references": [ 14024 ],
+        "text": "Fix unterminated-string-initialization warnings from the C compiler.",
+        "breaking change": false,
+        "authors": [ [ "Antonin", "Décimo" ] ],
+        "review": [ [ "David", "Allsopp" ], [ "Miod", "Vallat" ] ]
+      },
+      {
+        "references": [ 14094 ],
+        "text": "toplevel, simplify check on installed printer types",
+        "breaking change": false,
+        "authors": [ [ "Florian", "Angeletti" ] ],
+        "review": [ [ "Gabriel", "Scherer" ] ]
+      },
+      {
+        "references": [ 13656, 14114 ],
+        "text": "Use C99 stdint.h/inttypes.h fixed-width integer types and\n  macros to define OCaml integers.",
+        "breaking change": false,
+        "authors": [ [ "Antonin", "Décimo" ] ],
+        "review": [ [ "Nick", "Barnes" ] ]
+      },
+      {
+        "references": [ 14148 ],
+        "text": "Remove an unused field from package_type in typedtree",
+        "breaking change": false,
+        "authors": [ [ "Samuel", "Vivien" ] ],
+        "review": [ [ "Gabriel", "Scherer" ] ]
+      },
+      {
+        "references": [ 14141 ],
+        "text": "Rename cstrs to constraints when it refers to constraints to avoid\n  confusing it with constructors.",
+        "breaking change": false,
+        "authors": [ [ "Stefan", "Muenzel" ] ],
+        "review": [ [ "Nicolás", "Ojeda", "Bär" ] ]
+      }
+    ],
+    " Build system:": [
+      {
+        "references": [ 13810 ],
+        "text": "Support build of cross compilers to native freestanding targets",
+        "breaking change": false,
+        "authors": [ [ "Samuel", "Hym" ] ],
+        "review": [ [ "Antonin", "Décimo" ], [ "Romain", "Calascibetta" ] ]
+      }
+    ],
+    " Bug fixes:": [
+      {
+        "references": [ 14071 ],
+        "text": "Fix exception name in Dynlink.Error printer.",
+        "breaking change": false,
+        "authors": [ [ "Etienne", "Millon" ] ],
+        "review": [ [ "Nicolás", "Ojeda", "Bär" ] ]
+      },
+      {
+        "references": [ 13853 ],
+        "text": "Format breaks some line too early when there\n  is a break hint at the end.",
+        "breaking change": false,
+        "authors": [ [ "Florian", "Angeletti" ] ],
+        "review": [ [ "Gabriel", "Scherer" ] ]
+      },
+      {
+        "references": [ 10570 ],
+        "text": "Fix handling of caml_sys_argv when exposed directly as an\n  external",
+        "breaking change": false,
+        "authors": [ [ "Keryan", "Didier" ] ],
+        "review": [ [ "Vincent", "Laviron" ], [ "Gabriel", "Scherer" ] ]
+      },
+      {
+        "references": [ 14155 ],
+        "text": "Audit unexecuted phrases in compiler expect tests and\n  fix all occurences",
+        "breaking change": false,
+        "authors": [ [ "Stefan", "Muenzel" ] ],
+        "review": [ [ "Gabriel", "Scherer" ] ]
+      }
+    ]
+  },
+  "OCaml 5.4.0": {
+    "Release documentation": [
+      {
+        "doc": "(Changes that can break existing programs are marked with a \"*\")"
+      }
+    ],
+    " Language features:": [
+      {
+        "references": [ 13097 ],
+        "text": "added immutable arrays (`'a iarray` type, Iarray stdlib module)",
+        "breaking change": false,
+        "authors": [
+          [ "Antal", "Spector-Zabusky" ], [ "Olivier", "Nicole" ]
+        ],
+        "review": [
+          [ "Gabriel", "Scherer" ],
+          [ "Jeremy", "Yallop" ],
+          [ "Vincent", "Laviron" ]
+        ]
+      },
+      {
         "references": [ 13340 ],
-        "text": "Array literal syntax can now be used to denote values of type `'a\n  array` and `floatarray`, both in expressions and patterns. The compiler\n  disambiguates each case by using contextual type information (assuming `'a\n  array` by default).",
+        "text": "Array literal syntax [| e1; ...; en |] can now be used to\n  denote values of type `'a array` and `'a iarray` and `floatarray`,\n  both in expressions and patterns. The compiler disambiguates each\n  case by using contextual type information (assuming `'a array`\n  by default).",
         "breaking change": false,
         "authors": [ [ "Nicolás", "Ojeda", "Bär" ] ],
         "review": [
@@ -17,9 +417,408 @@
           [ "Jacques", "Garrigue" ],
           [ "Gabriel", "Scherer" ]
         ]
+      },
+      {
+        "references": [ 13498 ],
+        "text": "Tuple fields are now optionally labeled:\n  `(x:42, y:0)` and `let (~x, ~y) = ... in ...`.",
+        "breaking change": false,
+        "authors": [ [ "Ryan", "Tjoa" ], [ "Chris", "Casinghino" ] ],
+        "review": [
+          [ "Gabriel", "Scherer" ],
+          [ "Chris", "Casinghino" ],
+          [ "Leo", "White" ]
+        ]
+      },
+      {
+        "references": [ -1 ],
+        "text": "s#39, #13404: atomic record fields\n    `{ ...; mutable readers : int [@atomic]; ... }`\n    `Atomic.Loc.fetch_and_add [%atomic.loc data.readers] 1`",
+        "breaking change": false,
+        "authors": [ [ "Clément", "Allain" ], [ "Gabriel", "Scherer" ] ],
+        "review": [
+          [ "KC", "Sivaramakrishnan" ],
+          [ "Basile", "Clément" ],
+          [ "Olivier", "Nicole" ]
+        ]
+      },
+      {
+        "references": [ 13806 ],
+        "text": "Enable the use of function parameters with polymorphic types.",
+        "breaking change": false,
+        "authors": [ [ "Ulysse", "Gérard" ], [ "Leo", "White" ] ],
+        "review": [
+          [ "Florian", "Angeletti" ],
+          [ "Samuel", "Vivien" ],
+          [ "Gabriel", "Scherer" ],
+          [ "Jacques", "Garrigue" ]
+        ]
+      }
+    ],
+    " Standard library:": [
+      {
+        "references": [ 14124 ],
+        "text": "Do not raise Invalid_argument on negative List.{drop,take}.",
+        "breaking change": true,
+        "authors": [ [ "Daniel", "Bünzli" ] ],
+        "review": [ [ "Gabriel", "Scherer" ], [ "Nicolás", "Ojeda", "Bär" ] ]
+      },
+      {
+        "references": [ 13696 ],
+        "text": "Add Result.product and Result.Syntax:\n  `let open Result.Syntax in let* x = ... in ...`",
+        "breaking change": false,
+        "authors": [ [ "Daniel", "Bünzli" ] ],
+        "review": [ [ "Gabriel", "Scherer" ], [ "Nicolás", "Ojeda", "Bär" ] ]
+      },
+      {
+        "references": [ 12871 ],
+        "text": "Add the Pqueue module to the stdlib. It implements priority queues.",
+        "breaking change": false,
+        "authors": [ [ "Jean-Christophe", "Filliâtre" ] ],
+        "review": [
+          [ "Daniel", "Bünzli" ],
+          [ "Léo", "Andrès" ],
+          [ "Gabriel", "Scherer" ]
+        ]
+      },
+      {
+        "references": [ 13760 ],
+        "text": "Add String.{edit_distance,spellcheck}",
+        "breaking change": false,
+        "authors": [ [ "Daniel", "Bünzli" ] ],
+        "review": [
+          [ "wikku" ],
+          [ "Nicolás", "Ojeda", "Bär" ],
+          [ "Gabriel", "Scherer" ],
+          [ "Florian", "Angeletti" ]
+        ]
+      },
+      {
+        "references": [ 13753, 13755 ],
+        "text": "Add Stdlib.Repr:\n  Repr.phys_equal and Repr.compare are more explicit than (==) and `compare`.",
+        "breaking change": false,
+        "authors": [
+          [ "Kate", "Deplaix" ], [ "Thomas", "Blanc" ], [ "Léo", "Andrès" ]
+        ],
+        "review": [
+          [ "Gabriel", "Scherer" ],
+          [ "Florian", "Angeletti" ],
+          [ "Nicolás", "Ojeda", "Bär" ],
+          [ "Daniel", "Bünzli" ],
+          [ "Jeremy", "Yallop" ]
+        ]
+      },
+      {
+        "references": [ 13695 ],
+        "text": "Add Stdlib.Char.Ascii",
+        "breaking change": false,
+        "authors": [ [ "Daniel", "Bünzli" ] ],
+        "review": [
+          [ "by", "Nicolás", "Ojeda", "Bär" ], [ "Jeremy", "Yallop" ]
+        ]
+      },
+      {
+        "references": [ 13720 ],
+        "text": "Add Result.{get_ok',error_to_failure}",
+        "breaking change": false,
+        "authors": [ [ "Daniel", "Bünzli" ] ],
+        "review": [
+          [ "wikku" ],
+          [ "Gabriel", "Scherer" ],
+          [ "Nicolás", "Ojeda", "Bär" ],
+          [ "Vincent", "Laviron" ],
+          [ "hirrolot" ]
+        ]
+      },
+      {
+        "references": [ 13885 ],
+        "text": "Add Dynarray.{exists2, for_all2}.",
+        "breaking change": false,
+        "authors": [ [ "T.", "Kinsart" ] ],
+        "review": [
+          [ "Daniel", "Bünzli" ],
+          [ "Gabriel", "Scherer" ],
+          [ "Nicolás", "Ojeda", "Bär" ]
+        ]
+      },
+      {
+        "references": [ 13862 ],
+        "text": "Make List.sort_uniq keep the first occurrences of duplicates.",
+        "breaking change": true,
+        "authors": [ [ "Benoît", "Jubin" ] ],
+        "review": [ [ "Nicolás", "Ojeda", "Bär" ], [ "Gabriel", "Scherer" ] ]
+      },
+      {
+        "references": [ 13836 ],
+        "text": "Add [Float.]Array.{equal,compare}.",
+        "breaking change": false,
+        "authors": [ [ "Daniel", "Bünzli" ] ],
+        "review": [ [ "Nicolás", "Ojeda", "Bär" ], [ "Gabriel", "Scherer" ] ]
+      },
+      {
+        "references": [ 13796 ],
+        "text": "Add Uchar.utf_8_decode_length_of_byte and\n  Uchar.max_utf_8_decode_length.",
+        "breaking change": false,
+        "authors": [ [ "Daniel", "Bünzli" ] ],
+        "review": [
+          [ "Nicolás", "Ojeda", "Bär" ], [ "Florian", "Angeletti" ]
+        ]
+      },
+      {
+        "references": [ 13768 ],
+        "text": "Add Either.get_left and Either.get_right",
+        "breaking change": false,
+        "authors": [ [ "T.", "Kinsart" ] ],
+        "review": [
+          [ "Nicolás", "Ojeda", "Bär" ], [ "Florian", "Angeletti" ]
+        ]
+      },
+      {
+        "references": [ 13570, 13794 ],
+        "text": "Format, add an out_width function to Format device for\n   approximating unicode width.",
+        "breaking change": false,
+        "authors": [ [ "Florian", "Angeletti" ] ],
+        "review": [
+          [ "Nicolás", "Ojeda", "Bär" ],
+          [ "Daniel", "Bünzli" ],
+          [ "Gabriel", "Scherer" ]
+        ]
+      },
+      {
+        "references": [ 13731 ],
+        "text": "Add Either.retract",
+        "breaking change": false,
+        "authors": [ [ "Daniel", "Bünzli" ] ],
+        "review": [ [ "Nicolás", "Ojeda", "Bär" ], [ "David", "Allsopp" ] ]
+      },
+      {
+        "references": [ 13729 ],
+        "text": "Add Seq.filteri",
+        "breaking change": false,
+        "authors": [ [ "T.", "Kinsart" ] ],
+        "review": [ [ "Nicolás", "Ojeda", "Bär" ], [ "Daniel", "Bünzli" ] ]
+      },
+      {
+        "references": [ 13721 ],
+        "text": "Add Result.retract",
+        "breaking change": false,
+        "authors": [ [ "Daniel", "Bünzli" ] ],
+        "review": [
+          [ "Gabriel", "Scherer" ],
+          [ "Nicolás", "Ojeda", "Bär" ],
+          [ "David", "Allsopp" ]
+        ]
+      },
+      {
+        "references": [ 13310 ],
+        "text": "Add Stdlib.Pair",
+        "breaking change": false,
+        "authors": [ [ "Victoire", "Noizet" ] ],
+        "review": [
+          [ "Nicolás", "Ojeda", "Bär" ],
+          [ "Daniel", "Bünzli" ],
+          [ "Xavier", "Van", "de", "Woestyne" ],
+          [ "Jeremy", "Yallop" ],
+          [ "Florian", "Angeletti" ]
+        ]
+      },
+      {
+        "references": [ 13662 ],
+        "text": "Add eager boolean operations Bool.logand, Bool.logor, Bool.logxor",
+        "breaking change": false,
+        "authors": [ [ "Jeremy", "Yallop" ] ],
+        "review": [ [ "Nicolás", "Ojeda", "Bär" ] ]
+      },
+      {
+        "references": [ 13463, 13572 ],
+        "text": "Avoid raising Queue.empty in Format when it is used\n  concurrently, raise a specific exception instead.",
+        "breaking change": false,
+        "authors": [ [ "Chritophe", "Raffalli" ] ],
+        "review": [ [ "Gabriel", "Scherer" ], [ "Daniel", "Bünzli" ] ]
+      },
+      {
+        "references": [ 13620 ],
+        "text": "Avoid copying the string in String.concat, String.sub and\n  String.split_on_char when the full string is returned.",
+        "breaking change": false,
+        "authors": [ [ "Christophe", "Raffalli" ] ],
+        "review": [
+          [ "Nicolás", "Ojeda", "Bär" ],
+          [ "Gabriel", "Scherer" ],
+          [ "Hugo", "Heuzard" ]
+        ]
+      },
+      {
+        "references": [ 13727 ],
+        "text": "Reimplement Sys.getenv_opt not to use exceptions internally, meaning\n  that the current backtrace is preserved when Sys.getenv_opt returns None.",
+        "breaking change": false,
+        "authors": [ [ "David", "Allsopp" ] ],
+        "review": [
+          [ "Nicolás", "Ojeda", "Bär" ],
+          [ "Josh", "Berdine" ],
+          [ "Gabriel", "Scherer" ]
+        ]
+      },
+      {
+        "references": [ 13737 ],
+        "text": "Avoid closure allocations in Weak.Make.add when resizing the\n  table",
+        "breaking change": false,
+        "authors": [ [ "Vincent", "Laviron" ] ],
+        "review": [ [ "Gabriel", "Scherer" ], [ "Daniel", "Bünzli" ] ]
+      },
+      {
+        "references": [ 13740 ],
+        "text": "Improve performance of Weak.find_aux",
+        "breaking change": false,
+        "authors": [ [ "Josh", "Berdine" ] ],
+        "review": [ [ "Gabriel", "Scherer" ] ]
+      },
+      {
+        "references": [ 13782 ],
+        "text": "Improve performance and type safety of Type.Id by using\n  [%extension_constructor] instead of Obj.Extension_constructor.of_val.",
+        "breaking change": false,
+        "authors": [ [ "Basile", "Clément" ] ],
+        "review": [ [ "Vincent", "Laviron" ], [ "Nicolás", "Ojeda", "Bär" ] ]
+      },
+      {
+        "references": [ 13589 ],
+        "text": "Expose Sys.io_buffer_size, the size of internal buffers used by the\n  runtime system and the `unix` library.",
+        "breaking change": false,
+        "authors": [ [ "Yves", "Ndiaye" ], [ "Nicolás", "Ojeda", "Bär" ] ],
+        "review": [ [ "Daniel", "Bünzli" ], [ "Nicolás", "Ojeda", "Bär" ] ]
+      },
+      {
+        "references": [ 13569 ],
+        "text": "add a `Format.format_text` which adds break hints to format literals.",
+        "breaking change": false,
+        "authors": [ [ "Florian", "Angeletti" ] ],
+        "review": [
+          [ "Nicolás", "Ojeda", "Bär" ],
+          [ "Daniel", "Bünzli" ],
+          [ "Gabriel", "Scherer" ]
+        ]
+      },
+      {
+        "references": [ 13578 ],
+        "text": "On Windows, use the OS CSPRNG to seed the Stdlib.Random generator.",
+        "breaking change": false,
+        "authors": [ [ "Antonin", "Décimo" ] ],
+        "review": [
+          [ "Miod", "Vallat" ],
+          [ "Nicolás", "Ojeda", "Bär" ],
+          [ "Xavier", "Leroy" ]
+        ]
+      },
+      {
+        "references": [ 13859 ],
+        "text": "Fix Weak.get_copy not darkening custom blocks",
+        "breaking change": false,
+        "authors": [ [ "Josh", "Berdine" ] ],
+        "review": [ [ "Stephen", "Dolan" ] ]
+      },
+      {
+        "references": [ 13909 ],
+        "text": "Add `Dynarray.unsafe_to_iarray`",
+        "breaking change": false,
+        "authors": [ [ "Olivier", "Nicole" ] ],
+        "request": [ [ "Daniel", "Bünzli" ] ],
+        "review": [
+          [ "Daniel", "Bünzli" ],
+          [ "Stefan", "Muenzel" ],
+          [ "Gabriel", "Scherer" ]
+        ]
+      },
+      {
+        "references": [ 13932 ],
+        "text": "Add List.singleton and Seq.singleton",
+        "breaking change": false,
+        "authors": [
+          [ "David", "Allsopp" ],
+          [ "tariffs", "applied", "by", "Nicolás", "Ojeda", "Bär" ],
+          [ "Gabriel", "Scherer" ]
+        ]
+      },
+      {
+        "references": [ 13843 ],
+        "text": "Add signal definitions for SIGIO and SIGWINCH. Introduces a\n  type alias for signal int, signal_to_string to convert OCaml signal numbers\n  to their POSIX equivalent names, and signal_of_int/signal_to_int for\n  converting between OCaml and platform signal numbers. (Reported in #13825)",
+        "breaking change": true,
+        "authors": [ [ "Tim", "McGilchrist" ] ],
+        "review": [
+          [ "David", "Allsopp" ],
+          [ "Nicolás", "Ojeda", "Bär" ],
+          [ "Daniel", "Bünzli", "Jan", "Midtgaard" ],
+          [ "Miod", "Vallat" ]
+        ]
       }
     ],
     " Runtime system:": [
+      {
+        "references": [ 13500 ],
+        "text": "Add frame pointers support for ARM64 on Linux and macOS.",
+        "breaking change": false,
+        "authors": [ [ "Tim", "McGilchrist" ] ],
+        "review": [
+          [ "KC", "Sivaramakrishnan" ],
+          [ "Fabrice", "Buoro" ],
+          [ "Miod", "Vallat" ]
+        ]
+      },
+      {
+        "references": [ 12964 ],
+        "text": "Reintroduce \"memory cleanup upon exit\" mode. The cleanup will\n  however be incomplete if not all domains have been joined when the main\n  domain terminates.",
+        "breaking change": false,
+        "authors": [ [ "Miod", "Vallat" ] ],
+        "feedback": [ [ "Nick", "Barnes" ], [ "Gabriel", "Scherer" ] ],
+        "review": [ [ "KC", "Sivaramakrishnan" ] ]
+      },
+      {
+        "references": [ 13582 ],
+        "text": "Enable software prefetching support for ARM64, s390x, PPC64 and RiscV.\n  Used during GC marking and sweeping to speed up both operations by\n  prefetching data.",
+        "breaking change": false,
+        "authors": [ [ "Tim", "McGilchrist" ] ],
+        "review": [
+          [ "Nick", "Barnes" ],
+          [ "Antonin", "Décimo" ],
+          [ "Stephen", "Dolan" ],
+          [ "Miod", "Vallat" ]
+        ]
+      },
+      {
+        "references": [ 13675 ],
+        "text": "Make Unix.map_file memory show up in Gc.Memprof.",
+        "breaking change": false,
+        "authors": [ [ "Stephen", "Dolan" ] ],
+        "review": [
+          [ "Guillaume", "Munch-Maccagnoni" ], [ "Gabriel", "Scherer" ]
+        ]
+      },
+      {
+        "references": [ 13785 ],
+        "text": "Add `Runtime_events.Timestamp.get_current`.",
+        "breaking change": false,
+        "authors": [ [ "Simon", "Cruanes" ] ]
+      },
+      {
+        "references": [ 13774 ],
+        "text": "Fix for inaccurate live blocks/words stats in compaction.",
+        "breaking change": false,
+        "authors": [ [ "Sadiq", "Jaffer" ] ],
+        "report": [ [ "KC", "Sivaramakrishnan" ], [ "Jan", "Midtgaard" ] ],
+        "review": [ [ "Gabriel", "Scherer" ] ]
+      },
+      {
+        "references": [ 13773 ],
+        "text": "Ensure that shared pool owners are correctly set on pool adoption.",
+        "breaking change": false,
+        "authors": [ [ "Stephen", "Dolan" ] ],
+        "review": [ [ "Sadiq", "Jaffer" ], [ "Gabriel", "Scherer" ] ]
+      },
+      {
+        "references": [ 11449, 13497 ],
+        "text": "Add caml_stat_char_array_{to,of}_os functions allowing\n  conversion of string data which may contain NUL characters. Correct\n  implementation of caml_stat_strdup_to_utf16 to raise Out_of_memory instead of\n  returning of NULL (the behaviour of caml_stat_strdup_to_os was inconsistent\n  between Unix/Windows).",
+        "breaking change": true,
+        "authors": [ [ "David", "Allsopp" ] ],
+        "review": [
+          [ "Nick", "Barnes" ], [ "Antonin", "Décimo" ], [ "Miod", "Vallat" ]
+        ]
+      },
       {
         "references": [ 13352 ],
         "text": "Concurrency refactors and cleanups.",
@@ -60,25 +859,6 @@
         "review": [ [ "Tim", "McGilchrist" ], [ "Miod", "Vallat" ] ]
       },
       {
-        "references": [ 13500 ],
-        "text": "Add frame pointers support for ARM64 on Linux and macOS.",
-        "breaking change": false,
-        "authors": [ [ "Tim", "McGilchrist" ] ],
-        "review": [
-          [ "KC", "Sivaramakrishnan" ],
-          [ "Fabrice", "Buoro" ],
-          [ "Miod", "Vallat" ]
-        ]
-      },
-      {
-        "references": [ 12964 ],
-        "text": "Reintroduce \"memory cleanup upon exit\" mode. The cleanup will\n  however be incomplete if not all domains have been joined when the main\n  domain terminates.",
-        "breaking change": false,
-        "authors": [ [ "Miod", "Vallat" ] ],
-        "feedback": [ [ "Nick", "Barnes" ], [ "Gabriel", "Scherer" ] ],
-        "review": [ [ "KC", "Sivaramakrishnan" ] ]
-      },
-      {
         "references": [ 13354 ],
         "text": "Use C99 flexible array member syntax everywhere.",
         "breaking change": false,
@@ -113,6 +893,13 @@
         "review": [ [ "Tim", "McGilchrist" ], [ "Fabrice", "Buoro" ] ]
       },
       {
+        "references": [ 13643 ],
+        "text": "Allow values reachable from ephemeron keys to be collected by minor GC",
+        "breaking change": false,
+        "authors": [ [ "Stephen", "Dolan" ] ],
+        "review": [ [ "François", "Bobot" ] ]
+      },
+      {
         "references": [ 13701 ],
         "text": "optimize `caml_continuation_use` based on #12735",
         "breaking change": false,
@@ -126,12 +913,65 @@
         "authors": [ [ "Guillaume", "Munch-Maccagnoni" ] ],
         "review": [ [ "Gabriel", "Scherer" ] ],
         "tests": [ [ "Jan", "Midtgaard" ] ]
+      },
+      {
+        "references": [ 13736 ],
+        "text": "Fix major GC pacing bug triggered by synchronous collections.",
+        "breaking change": false,
+        "authors": [ [ "Nick", "Barnes" ] ],
+        "review": [ [ "Damien", "Doligez" ], [ "Tim", "McGilchrist" ] ]
+      },
+      {
+        "references": [ 13827 ],
+        "text": "Avoid re-marking ephemerons with trivial data.",
+        "breaking change": false,
+        "authors": [ [ "Stephen", "Dolan" ] ],
+        "benchmarking": [ [ "Nicolás", "Ojeda", "Bär" ] ],
+        "review": [ [ "Nick", "Barnes" ], [ "Josh", "Berdine" ] ]
+      },
+      {
+        "references": [ 13300, 13861 ],
+        "text": "introduce `Gc.ramp_up` to explicitly mark ramp-up\n  phases of memory consumption and avoid GC overwork. Ramp-up behaviors\n  are worse with OCaml 5 than with OCaml 4 due to higher sensitivity\n  to excessive pacing computations. Indicating ramp-up explicitly eliminates\n  the main known slowdown of OCaml 5 (relative to OCaml 4) for Coq/Rocq.",
+        "breaking change": false,
+        "authors": [ [ "Gabriel", "Scherer" ] ],
+        "report": [
+          [ "Emilio", "Jesús", "Gallego", "Arias" ], [ "Olivier", "Nicole" ]
+        ],
+        "review": [
+          [ "Damien", "Doligez" ], [ "Guillaume", "Munch-Maccagnoni" ]
+        ]
+      },
+      {
+        "references": [ 14057 ],
+        "text": "Don't update memprof too early at the end of a minor GC.",
+        "breaking change": false,
+        "authors": [ [ "Nick", "Barnes" ] ],
+        "review": [ [ "Damien", "Doligez" ] ]
       }
     ],
     " Code generation and optimizations:": [
       {
-        "references": [ 13050 ],
-        "text": "Use '$' instead of '.' to separate module names in symbol names.\n  This changes mangling of OCaml identifiers from\n  `camlModule.name_NNN` to `camlModule$name_NNN`. Additionally it\n  changes the encoding of special characters from $xx (two hex digits)\n  to $$xx (two dollar signs followed by two hex digits).\n  Mangled names are now consistent across all platforms.",
+        "references": [ 13262, 14074 ],
+        "text": "fix performance issue on Apple Silicon macOS by emitting\n  `stlr` instead of `dmb ishld; str`.",
+        "breaking change": false,
+        "analysis": [
+          [ "Frédéric", "Bour" ],
+          [ "Xavier", "Leroy" ],
+          [ "Miod", "Vallat" ],
+          [ "Gabriel", "Scherer" ],
+          [ "Stephen", "Dolan" ]
+        ],
+        "authors": [ [ "KC", "Sivaramakrishnan" ] ],
+        "report": [ [ "François", "Pottier" ] ],
+        "review": [
+          [ "Miod", "Vallat" ],
+          [ "Vincent", "Laviron" ],
+          [ "Xavier", "Leroy" ]
+        ]
+      },
+      {
+        "references": [ 13050, 14104, 14143 ],
+        "text": "Use '$' instead of '.' to separate module names\n  in symbol names on macOS and Windows (including the Cygwin backend).\n  This changes mangling of OCaml identifiers on those operating systems from\n  `camlModule.name_NNN` to `camlModule$name_NNN`. Additionally it\n  changes the encoding of special characters from $xx (two hex digits)\n  to $$xx (two dollar signs followed by two hex digits).",
         "breaking change": true,
         "authors": [ [ "Tim", "McGilchrist" ] ],
         "contributions": [ [ "Xavier", "Leroy" ] ],
@@ -142,6 +982,13 @@
           [ "Nick", "Barnes" ],
           [ "Hugo", "Heuzard" ]
         ]
+      },
+      {
+        "references": [ 13807 ],
+        "text": "Allow unaligned memory accesses on ARM64.",
+        "breaking change": false,
+        "authors": [ [ "Matthew", "Else" ] ],
+        "review": [ [ "Xavier", "Leroy" ] ]
       },
       {
         "references": [ 13565 ],
@@ -165,99 +1012,48 @@
         "breaking change": false,
         "authors": [ [ "Stephen", "Dolan" ], [ "Tim", "McGilchrist" ] ],
         "review": [ [ "Xavier", "Leroy" ], [ "David", "Allsopp" ] ]
-      }
-    ],
-    " Standard library:": [
-      {
-        "references": [ 13729 ],
-        "text": "Add Either.retract",
-        "breaking change": false,
-        "authors": [ [ "Daniel", "Bünzli" ] ],
-        "review": [ [ "Nicolás", "Ojeda", "Bär" ], [ "David", "Allsopp" ] ]
       },
       {
-        "references": [ 13729 ],
-        "text": "Add Seq.filteri",
-        "breaking change": false,
-        "authors": [ [ "Tima", "Kinsart" ] ],
-        "review": [
-          [ "Nicolás", "Ojeda", "Bär" ], [ "Daniel", "Bünzli" ]
-        ]
-      },
-      {
-        "references": [ 13721 ],
-        "text": "Add Result.retract",
-        "breaking change": false,
-        "authors": [ [ "Daniel", "Bünzli" ] ],
-        "review": [
-          [ "Gabriel", "Scherer" ],
-          [ "Nicolás", "Ojeda", "Bär" ],
-          [ "David", "Allsopp" ]
-        ]
-      },
-      {
-        "references": [ 13695 ],
-        "text": "Add Stdlib.Char.Ascii",
-        "breaking change": false,
-        "authors": [ [ "Daniel", "Bünzli" ] ],
-        "review": [
-          [ "by", "Nicolás", "Ojeda", "Bär" ], [ "Jeremy", "Yallop" ]
-        ]
-      },
-      {
-        "references": [ 13310 ],
-        "text": "Add Stdlib.Pair",
-        "breaking change": false,
-        "authors": [ [ "Victoire", "Noizet" ] ],
-        "review": [
-          [ "Nicolás", "Ojeda", "Bär" ],
-          [ "Daniel", "Bünzli" ],
-          [ "Xavier", "Van", "de", "Woestyne" ],
-          [ "Jeremy", "Yallop" ],
-          [ "Florian", "Angeletti" ]
-        ]
-      },
-      {
-        "references": [ 13662 ],
-        "text": "Add eager boolean operations Bool.logand, Bool.logor, Bool.logxor",
-        "breaking change": false,
-        "authors": [ [ "Jeremy", "Yallop" ] ],
-        "review": [ [ "Nicolás", "Ojeda", "Bär" ] ]
-      },
-      {
-        "references": [ 13463, 13572 ],
-        "text": "Avoid Queue.empty to be raised by Format when used\n  concurrently. prefer undefined behavior to uncaught exception.",
-        "breaking change": false,
-        "authors": [ [ "Chritophe", "Raffalli" ] ],
-        "review": [ [ "Gabriel", "Scherer" ], [ "Daniel", "Bünzli" ] ]
-      },
-      {
-        "references": [ 13620 ],
-        "text": "Avoid copying the string in String.concat, String.sub and\n  String.split_on_char when the full string is returned.",
-        "breaking change": false,
-        "authors": [ [ "Christophe", "Raffalli" ] ],
-        "review": [
-          [ "Nicolás", "Ojeda", "Bär" ],
-          [ "Gabriel", "Scherer" ],
-          [ "Hugo", "Heuzard" ]
-        ]
-      },
-      {
-        "references": [ 13737 ],
-        "text": "Avoid closure allocations in Weak.Make.add when resizing the\n  table",
+        "references": [ 13758 ],
+        "text": "Propagate more value kinds in Flambda to allow more unboxing",
         "breaking change": false,
         "authors": [ [ "Vincent", "Laviron" ] ],
-        "review": [ [ "Gabriel", "Scherer" ], [ "Daniel", "Bünzli" ] ]
+        "review": [ [ "Pierre", "Chambart" ] ]
       },
       {
-        "references": [ 13740 ],
-        "text": "Improve performance of Weak.find_aux",
+        "references": [ 13759 ],
+        "text": "Propagate more type information from clambda to cmm.",
         "breaking change": false,
-        "authors": [ [ "Josh", "Berdine" ] ],
+        "authors": [ [ "Pierre", "Chambart" ] ],
         "review": [ [ "Gabriel", "Scherer" ] ]
+      },
+      {
+        "references": [ 13735 ],
+        "text": "Follow the behaviour of the C compiler to decide whether to emit the\n  `.size` and `.type` directives and the `.note.GNU-stack` section",
+        "breaking change": false,
+        "authors": [ [ "Samuel", "Hym" ] ],
+        "review": [
+          [ "Miod", "Vallat" ],
+          [ "Antonin", "Décimo" ],
+          [ "Gabriel", "Scherer" ]
+        ]
       }
     ],
     " Other libraries:": [
+      {
+        "references": [ 13435 ],
+        "text": "On Windows, use system calls for `Filename.get_temp_dir_name` instead\n  of directly reading the environment, which in particular improves the security\n  of OCaml processes running in the SYSTEM security context by mitigating\n  privileged file operation attacks. For all other processes running with the\n  default environment (where `TEMP` is set), there is no discernible change.",
+        "breaking change": true,
+        "authors": [ [ "Antonin", "Décimo" ] ],
+        "review": [ [ "Nicolás", "Ojeda", "Bär" ], [ "David", "Allsopp" ] ]
+      },
+      {
+        "references": [ 13504, 13625 ],
+        "text": "Add `Thread.set_current_thread_name`.",
+        "breaking change": false,
+        "authors": [ [ "Romain", "Beauxis" ] ],
+        "review": [ [ "Gabriel", "Scherer" ], [ "Antonin", "Décimo" ] ]
+      },
       {
         "references": [ 13376 ],
         "text": "Allow Dynlink.loadfile_private to load bytecode libraries with\n  internal dependencies",
@@ -289,21 +1085,28 @@
         ]
       },
       {
-        "references": [ 13435 ],
-        "text": "On Windows, use system calls for `Filename.get_temp_dir_name` instead\n  of directly reading the environment, which in particular improves the security\n  of OCaml processes running in the SYSTEM security context by mitigating\n  privileged file operation attacks. For all other processes running with the\n  default environment (where `TEMP` is set), there is no discernible change.",
-        "breaking change": true,
+        "references": [ 13576 ],
+        "text": "Introduce internal helpers to convert between time representations.\n  On Windows, prevent erroneously waiting for an unbounded time in Unix.select\n  if more than 64 file descriptors per lists are watched, or if watching\n  non-socket file descriptors, and a timeout longer than $2^{32}$ milliseconds\n  is used. Cap the timeout to $2^{32}$ milliseconds.",
+        "breaking change": false,
         "authors": [ [ "Antonin", "Décimo" ] ],
-        "review": [ [ "Nicolás", "Ojeda", "Bär" ], [ "David", "Allsopp" ] ]
+        "review": [ [ "Gabriel", "Scherer" ], [ "Miod", "Vallat" ] ]
       },
       {
-        "references": [ 13504, 13625 ],
-        "text": "Add `Thread.set_current_thread_name`.",
+        "references": [ 13921 ],
+        "text": "Set cloexec correctly on CRT file descriptors created by the Unix\n  library on Windows. The inheritance on the underlying Win32 handles was\n  correctly set, but the book-keeping for the CRT was leaking the value of\n  non-inherited handles which combined with re-use of HANDLE values within\n  processes could appear to make a CRT file descriptor \"re-open\".",
         "breaking change": false,
-        "authors": [ [ "Romain", "Beauxis" ] ],
-        "review": [ [ "Gabriel", "Scherer" ], [ "Antonin", "Décimo" ] ]
+        "authors": [ [ "David", "Allsopp" ] ],
+        "review": [ [ "Nicolás", "Ojeda", "Bär" ] ]
       }
     ],
     " Tools:": [
+      {
+        "references": [ 13686 ],
+        "text": "Fix Python debugger extensions (for LLDB and GDB) to restore\n  functionality broken by #13272 in 5.3.",
+        "breaking change": false,
+        "authors": [ [ "Nick", "Barnes" ] ],
+        "review": [ [ "Tim", "McGilchrist", "Gabriel", "Scherer" ] ]
+      },
       {
         "references": [ 12019 ],
         "text": "ocamlc: add `align_double` and `align_int64` to `ocamlc -config`\n  output.",
@@ -319,33 +1122,142 @@
         "review": [ [ "Florian", "Angeletti" ] ]
       },
       {
-        "references": [ 13686 ],
-        "text": "Fix Python debugger extensions (for LLDB and GDB) to restore\n  functionality broken by #13272.",
+        "references": [ 13199, 13485, 13665, 13762, 13965 ],
+        "text": "Support running native debuggers in\n  ocamltest.",
         "breaking change": false,
-        "authors": [ [ "Nick", "Barnes" ] ],
-        "review": [ [ "Tim", "McGilchrist", "Gabriel", "Scherer" ] ]
-      },
-      {
-        "references": [ 13199, 13485 ],
-        "text": "Support running native debuggers in ocamltest.",
-        "breaking change": false,
-        "authors": [ [ "Tim", "McGilchrist" ], [ "Sébastien", "Hinderer" ] ],
+        "authors": [
+          [ "Tim", "McGilchrist" ],
+          [ "Sébastien", "Hinderer" ],
+          [ "David", "Allsopp" ],
+          [ "Antonin", "Décimo" ]
+        ],
         "review": [
           [ "Sébastien", "Hinderer" ],
           [ "Gabriel", "Scherer" ],
-          [ "Antonin", "Décimo" ]
+          [ "Antonin", "Décimo" ],
+          [ "Tim", "McGilchrist" ]
         ]
+      },
+      {
+        "references": [ 13764, 13779 ],
+        "text": "add missing \"-keywords\" flag to ocamldep and ocamlprof",
+        "breaking change": false,
+        "authors": [ [ "Florian", "Angeletti" ] ],
+        "report": [ [ "Prashanth", "Mundkur" ] ],
+        "review": [ [ "Gabriel", "Scherer" ] ]
+      },
+      {
+        "references": [ 13877 ],
+        "text": "ocamldoc, add a `-latex-escape-underscore` flag to control the\n  escaping of `_` underscore in latex references (in order to be able to match\n  odoc behaviour).",
+        "breaking change": false,
+        "authors": [ [ "Florian", "Angeletti" ] ],
+        "review": [ [ "Gabriel", "Scherer" ] ]
+      },
+      {
+        "references": [ 13906 ],
+        "text": "Add support for a `multicore` tag in ocamltest and use it for\n  tests that fail on mono-core systems.",
+        "breaking change": false,
+        "authors": [ [ "Stéphane", "Glondu" ] ],
+        "review": [ [ "Nicolás", "Ojeda", "Bär" ] ]
       }
     ],
     " Manual and documentation:": [
+      {
+        "references": [ 13751 ],
+        "text": "Document support for profiling with Linux perf and frame pointers.",
+        "breaking change": false,
+        "authors": [ [ "Tim", "McGilchrist" ] ],
+        "review": [ [ "Gabriel", "Scherer" ], [ "Miod", "Vallat" ] ]
+      },
+      {
+        "references": [ 12452 ],
+        "text": "Add examples to Stdlib.Fun documentation.",
+        "breaking change": false,
+        "authors": [ [ "Hazem", "ElMasry" ] ],
+        "review": [ [ "Florian", "Angeletti" ], [ "Gabriel", "Scherer" ] ]
+      },
+      {
+        "references": [ 13924 ],
+        "text": "Document how to put [@deprecated] on let bindings, constructors, etc\n  in the manual",
+        "breaking change": false,
+        "authors": [ [ "Valentin", "Gatien-Baron" ] ],
+        "review": [ [ "Florian", "Angeletti" ] ]
+      },
       {
         "references": [ 13694 ],
         "text": "Fix name for caml_hash_variant in the C interface.",
         "breaking change": false,
         "authors": [ [ "Michael", "Hendricks" ] ]
+      },
+      {
+        "references": [ 13732 ],
+        "text": "Document that custom finalizers must not access the OCaml heap, etc.",
+        "breaking change": false,
+        "authors": [ [ "Josh", "Berdine" ] ],
+        "review": [
+          [ "Stephen", "Dolan" ], [ "Guillaume", "Munch-Maccagnoni" ]
+        ]
+      }
+    ],
+    " Type system": [
+      {
+        "references": [ 13830 ],
+        "text": "fail rather than silently create abstract module types when avoiding\n  (i.e. hiding) signature items, as in:\n  ```ocaml\n    module N = struct\n      open (struct type t = A | B end)\n      module type T = sig type u = t * int end\n    end\n  ```\n  Before, it was succeeding with `module N : sig module type T end`, now it\n  fails. Similarly for anonymous functor calls (of the form `F(struct ... end))",
+        "breaking change": true,
+        "authors": [ [ "Clement", "Blaudeau" ] ],
+        "review": [ [ "Gabriel", "Scherer" ] ]
       }
     ],
     " Compiler user-interface and warnings:": [
+      {
+        "references": [ 13817 ],
+        "text": "align spellchecking hints with the possibly misspelled identifier/\n              Error: Unbound type constructor \"aray\"\n              Hint:              Did you mean \"array\"?",
+        "breaking change": false,
+        "authors": [ [ "Florian", "Angeletti" ] ],
+        "review": [ [ "Gabriel", "Scherer" ] ],
+        "suggestion": [ [ "Daniel", "Bünzli" ] ]
+      },
+      {
+        "references": [ 13587 ],
+        "text": "Enable native backend on x86_64 GNU/Hurd.",
+        "breaking change": false,
+        "authors": [ [ "Samuel", "Thibault" ] ],
+        "review": [
+          [ "Antonin", "Décimo" ],
+          [ "Sébastien", "Hinderer" ],
+          [ "Miod", "Vallat" ]
+        ]
+      },
+      {
+        "references": [ 13663 ],
+        "text": "Improve the error message when GADT parameter variance cannot be\n  checked.",
+        "breaking change": false,
+        "authors": [ [ "Stefan", "Muenzel" ] ],
+        "review": [ [ "Gabriel", "Scherer" ], [ "Florian", "Angeletti" ] ]
+      },
+      {
+        "references": [ 13646 ],
+        "text": "Improve the error messages when a recursive module type\n  references another recursive module type.",
+        "breaking change": false,
+        "authors": [ [ "Stefan", "Muenzel" ] ],
+        "review": [ [ "Florian", "Angeletti" ], [ "Gabriel", "Scherer" ] ]
+      },
+      {
+        "references": [ 13702, 13865 ],
+        "text": "Specialized error messages for functors appearing in contexts\n  where non-functors were expected `module A: sig ... end = Set.Make`\n  (and the reverse)",
+        "breaking change": false,
+        "authors": [ [ "Florian", "Angeletti" ] ],
+        "report": [ [ "Jeremy", "Yallop" ] ],
+        "review": [ [ "Gabriel", "Scherer" ] ]
+      },
+      {
+        "references": [ 13788, 13813 ],
+        "text": "Keep the module context in spellchecking hints.\n  `Fun.protact` now prompts `Did you mean \"Fun.protect?\"` rather than\n  `Did you mean \"protect?\"`.",
+        "breaking change": false,
+        "authors": [ [ "Florian", "Angeletti" ] ],
+        "review": [ [ "Gabriel", "Scherer" ] ],
+        "suggestion": [ [ "Daniel", "Bünzli" ] ]
+      },
       {
         "references": [ 13428 ],
         "text": "support dump=[source | parsetree | lambda | ... | cmm | ...]\n  in OCAMLRUNPARAM",
@@ -375,17 +1287,6 @@
         "review": [ [ "Richard", "Eisenberg" ] ]
       },
       {
-        "references": [ 13587 ],
-        "text": "Enable native backend on x86_64 GNU/Hurd.",
-        "breaking change": false,
-        "authors": [ [ "Samuel", "Thibault" ] ],
-        "review": [
-          [ "Antonin", "Décimo" ],
-          [ "Sébastien", "Hinderer" ],
-          [ "Miod", "Vallat" ]
-        ]
-      },
-      {
         "references": [ 13601 ],
         "text": "Enable natdynlink on x86_64 GNU/Hurd",
         "breaking change": false,
@@ -393,29 +1294,62 @@
         "review": [ [ "Sébastien", "Hinderer" ] ]
       },
       {
-        "references": [ 13663 ],
-        "text": "Improve the error message when GADT parameter variance cannot be\n  checked.",
+        "references": [ 13809 ],
+        "text": "Distinguish `(module M : S)` and `(module M) : (module S)` and\n  change locations of error messages when `S` is ill-typed in `(module S)`",
         "breaking change": false,
-        "authors": [ [ "Stefan", "Muenzel" ] ],
-        "review": [ [ "Gabriel", "Scherer" ], [ "Florian", "Angeletti" ] ]
+        "authors": [ [ "Samuel", "Vivien" ] ],
+        "review": [ [ "Florian", "Angeletti" ], [ "Gabriel", "Scherer" ] ]
       },
       {
-        "references": [ 13646 ],
-        "text": "Improve the error messages when a recursive module type\n  references another recursive module type.",
+        "references": [ 13814 ],
+        "text": ", 13898: Add an `unused-type-declaration` warning when using\n  a `t as 'a` with no other occurences of `'a`",
         "breaking change": false,
-        "authors": [ [ "Stefan", "Muenzel" ] ],
-        "review": [ [ "Florian", "Angeletti" ], [ "Gabriel", "Scherer" ] ]
+        "authors": [ [ "Samuel", "Vivien" ] ],
+        "review": [ [ "Florian", "Angeletti" ], [ "Kate", "Deplaix" ] ]
+      },
+      {
+        "references": [ 13818 ],
+        "text": "better delimited hints in error message",
+        "breaking change": false,
+        "authors": [ [ "Florian", "Angeletti" ] ],
+        "review": [ [ "Gabriel", "Scherer" ] ]
       }
     ],
     " Internal/compiler-libs changes:": [
       {
+        "references": [ 13539, 13776 ],
+        "text": "Use nanosleep instead of usleep or select, if available.",
+        "breaking change": false,
+        "authors": [ [ "Antonin", "Décimo" ] ],
+        "review": [ [ "Miod", "Vallat" ], [ "Gabriel", "Scherer" ] ]
+      },
+      {
+        "references": [ 13748 ],
+        "text": "Add a .editorconfig file for basic editor auto-configuration.",
+        "breaking change": false,
+        "authors": [ [ "Antonin", "Décimo" ] ],
+        "review": [ [ "Gabriel", "Scherer" ], [ "David", "Allsopp" ] ]
+      },
+      {
+        "references": [ 13302 ],
+        "text": "Store locations of longidents components",
+        "breaking change": false,
+        "authors": [ [ "Ulysse", "Gérard" ], [ "Jules", "Aguillon" ] ],
+        "review": [ [ "Jules", "Aguillon" ], [ "Florian", "Angeletti" ] ]
+      },
+      {
         "references": [ 13314 ],
         "text": "Comment the code of Translclass",
         "breaking change": false,
-        "authors": [
-          [ "Vincent", "Laviron" ], [ "Nathanaëlle", "Courant" ]
-        ],
+        "authors": [ [ "Vincent", "Laviron" ], [ "Nathanaëlle", "Courant" ] ],
         "review": [ [ "Olivier", "Nicole" ] ]
+      },
+      {
+        "references": [ 13362 ],
+        "text": "reimplement Floatarray.concat in C (`caml_floatarray_concat`),\n  matching the implementation of Array.concat.",
+        "breaking change": false,
+        "authors": [ [ "Gabriel", "Scherer" ] ],
+        "review": [ [ "Nicolás", "Ojeda", "Bär" ] ]
       },
       {
         "references": [ 13624 ],
@@ -429,9 +1363,7 @@
         "text": "undocumented -dmatchcomp flag for the debug\n  output of the pattern-matching compiler",
         "breaking change": false,
         "authors": [ [ "Gabriel", "Scherer" ] ],
-        "review": [
-          [ "Vincent", "Laviron" ], [ "Nicolás", "Ojeda", "Bär" ]
-        ]
+        "review": [ [ "Vincent", "Laviron" ], [ "Nicolás", "Ojeda", "Bär" ] ]
       },
       {
         "references": [ 13460 ],
@@ -455,13 +1387,6 @@
         "review": [ [ "Jacques", "Garrigue" ] ]
       },
       {
-        "references": [ 13539 ],
-        "text": "Use nanosleep instead of usleep, if available.",
-        "breaking change": false,
-        "authors": [ [ "Antonin", "Décimo" ] ],
-        "review": [ [ "Miod", "Vallat" ], [ "Gabriel", "Scherer" ] ]
-      },
-      {
         "references": [ 13606 ],
         "text": "Fix Numbers.Int_base.compare",
         "breaking change": false,
@@ -480,9 +1405,115 @@
           [ "Florian", "Angeletti" ],
           [ "Jacques", "Garrigue" ]
         ]
+      },
+      {
+        "references": [ 13744 ],
+        "text": "Refactor in `collect_apply_args`",
+        "breaking change": false,
+        "authors": [ [ "Samuel", "Vivien" ] ],
+        "review": [ [ "Florian", "Angeletti" ], [ "Gabriel", "Scherer" ] ]
+      },
+      {
+        "references": [ 13787 ],
+        "text": "a new -dcanonical-ids option to show canonicalized identifier stamps\n  in -d{lambda,cmm,...} outputs.",
+        "breaking change": false,
+        "authors": [ [ "Gabriel", "Scherer" ] ],
+        "review": [ [ "Vincent", "Laviron" ], [ "David", "Allsopp" ] ],
+        "suggested": [ [ "David", "Allsopp" ] ]
+      },
+      {
+        "references": [ 13820 ],
+        "text": "Add a new option -i-variance to print the variance of every\n  type parameter; bivariance is printed as `+-`, and for consistency,\n  parser is modified too to accept `+-` and `-+` as `type_variance`.",
+        "breaking change": false,
+        "authors": [ [ "Takafumi", "Saikawa" ], [ "Jacques", "Garrigue" ] ],
+        "review": [ [ "Florian", "Angeletti" ] ]
+      },
+      {
+        "references": [ 13828 ],
+        "text": "Apply BUILD_PATH_PREFIX_MAP to Sys.argv.(0) before storing it in .cmt\n  and .cmti files.",
+        "breaking change": false,
+        "authors": [ [ "David", "Allsopp" ] ],
+        "review": [ [ "Daniel", "Bünzli" ], [ "Gabriel", "Scherer" ] ]
+      },
+      {
+        "references": [ 13848 ],
+        "text": "Add all paths components to the cmt files indexes",
+        "breaking change": false,
+        "authors": [ [ "Ulysse", "Gérard" ] ],
+        "review": [ [ "Florian", "Angeletti" ] ]
+      },
+      {
+        "references": [ 13854 ],
+        "text": "Make the parser set loc_ghost more correctly, for `keyword%extension`\n  syntax",
+        "breaking change": false,
+        "authors": [ [ "Valentin", "Gatien-Baron" ] ],
+        "review": [ [ "Florian", "Angeletti" ] ]
+      },
+      {
+        "references": [ 13856 ],
+        "text": "Add a new indirection in types AST called `package` that stores the\n  content of a `Tpackage` node",
+        "breaking change": false,
+        "authors": [ [ "Samuel", "Vivien" ] ],
+        "review": [ [ "Florian", "Angeletti" ] ]
+      },
+      {
+        "references": [ 13866 ],
+        "text": "Modified occurence check that prevents recursive types for it to see\n  the checked type as a graph rather than a tree",
+        "breaking change": false,
+        "authors": [ [ "Samuel", "Vivien" ] ],
+        "report": [ [ "Didier", "Remy" ] ],
+        "review": [ [ "Florian", "Angeletti" ], [ "Jacques", "Garrigue" ] ]
+      },
+      {
+        "references": [ 13884 ],
+        "text": "Correctly index modules in constructors and labels paths",
+        "breaking change": false,
+        "authors": [ [ "Ulysse", "Gérard" ] ],
+        "review": [ [ "Florian", "Angeletti" ] ]
+      },
+      {
+        "references": [ 13946 ],
+        "text": "refactor the #install_printer code in the debugger and toplevel",
+        "breaking change": false,
+        "authors": [ [ "Pierre", "Boutillier" ] ],
+        "review": [ [ "Gabriel", "Scherer" ], [ "Florian", "Angeletti" ] ]
+      },
+      {
+        "references": [ 13952 ],
+        "text": "check and document the correctness of `caml_domain_alone ()`.",
+        "breaking change": false,
+        "authors": [ [ "Gabriel", "Scherer" ] ],
+        "report": [ [ "Olivier", "Nicole" ] ],
+        "review": [ [ "KC", "Sivaramakrishnan" ] ]
+      },
+      {
+        "references": [ 13971 ],
+        "text": "Keep generalized structure from patterns when typing `let`",
+        "breaking change": false,
+        "authors": [ [ "Leo", "White" ] ],
+        "review": [ [ "Samuel", "Vivien" ], [ "Florian", "Angeletti" ] ]
+      },
+      {
+        "references": [ 13972 ],
+        "text": "Renamed the `-no-alias-deps` flag internal representation to\n  `no_alias_deps` instead of `transparent_modules`.",
+        "breaking change": true,
+        "authors": [ [ "Clement", "Blaudeau" ] ],
+        "review": [ [ "Gabriel", "Scherer" ] ]
       }
     ],
     " Build system:": [
+      {
+        "references": [ 13526, 13789, 13804 ],
+        "text": "Simplify the build of cross compilers\n  This replaces the configure `--with-target-bindir` option by an equivalent\n  `TARGET_BINDIR` variable",
+        "breaking change": true,
+        "authors": [ [ "Samuel", "Hym" ] ],
+        "review": [
+          [ "Miod", "Vallat" ],
+          [ "Xavier", "Leroy" ],
+          [ "Antonin", "Décimo" ],
+          [ "Sébastien", "Hinderer" ]
+        ]
+      },
       {
         "references": [ 13431 ],
         "text": "Simplify github action responsible for flagging PRs with\n  the `parsetree-changes` label and extend it to mention the @ppxlib-dev\n  team.",
@@ -495,30 +1526,50 @@
         "text": "Use native symlinks on Windows for the OCaml installation, reducing\n  disk usage considerably.",
         "breaking change": false,
         "authors": [ [ "David", "Allsopp" ] ],
-        "review": [
-          [ "Nicolás", "Ojeda", "Bär" ], [ "Gabriel", "Scherer" ]
-        ]
+        "review": [ [ "Nicolás", "Ojeda", "Bär" ], [ "Gabriel", "Scherer" ] ]
       },
       {
-        "references": [ 13526 ],
-        "text": "Simplify the build of cross compilers\n  This replaces the configure `--with-target-bindir` option by an equivalent\n  `TARGET_BINDIR` variable",
-        "breaking change": true,
-        "authors": [ [ "Samuel", "Hym" ] ],
-        "review": [
-          [ "Miod", "Vallat" ],
-          [ "Xavier", "Leroy" ],
-          [ "Antonin", "Décimo" ],
-          [ "Sébastien", "Hinderer" ]
-        ]
+        "references": [ 13789 ],
+        "text": "Strictly validate the host and target triplets when building for the\n  Windows ports to be *-*-cygwin, *-w64-mingw32* or *-pc-windows. Other Cygwin\n  variants used to be rejected - other MSVC and mingw-w64 variants are now\n  rejected too.",
+        "breaking change": false,
+        "authors": [ [ "David", "Allsopp" ] ],
+        "review": [ [ "Antonin", "Décimo" ], [ "Gabriel", "Scherer" ] ]
       }
     ],
     " Bug fixes:": [
       {
+        "references": [ 13819 ],
+        "text": "Fix field initialisation bug in runtime events subsystem.",
+        "breaking change": false,
+        "authors": [ [ "Nick", "Barnes" ] ],
+        "review": [ [ "Gabriel", "Scherer" ] ]
+      },
+      {
+        "references": [ 13977 ],
+        "text": "Pass `-fPIC` when compiling C files using `ocamlopt`. This was a\n  regression in OCaml 5.3.",
+        "breaking change": false,
+        "authors": [ [ "Nicolás", "Ojeda", "Bär" ] ],
+        "review": [ [ "Daniel", "Bünzli" ], [ "Gabriel", "Scherer" ] ]
+      },
+      {
+        "references": [ 13957 ],
+        "text": "Allow 'effect' as attribute id.",
+        "breaking change": false,
+        "authors": [ [ "Pieter", "Goetschalckx" ] ],
+        "review": [
+          [ "Nicolás", "Ojeda", "Bär" ], [ "Florian", "Angeletti" ]
+        ]
+      },
+      {
         "references": [ 13691 ],
-        "text": "Make four globals underlying Gc.control atomic to avoid C data\n  races against them",
+        "text": "#13895: Make four globals underlying Gc.control atomic to avoid C data\n  races against them.",
         "breaking change": false,
         "authors": [ [ "Jan", "Midtgaard" ] ],
-        "review": [ [ "Miod", "Vallat" ], [ "Sadiq", "Jaffer" ] ]
+        "review": [
+          [ "Miod", "Vallat" ],
+          [ "Sadiq", "Jaffer" ],
+          [ "Antonin", "Décimo" ]
+        ]
       },
       {
         "references": [ 13454 ],
@@ -536,12 +1587,31 @@
         "review": [ [ "Nick", "Barnes" ] ]
       },
       {
+        "references": [ 13605 ],
+        "text": "Fix ungenerated constraints when they where impossible due to polyvars\n  issues",
+        "breaking change": true,
+        "authors": [ [ "Samuel", "Vivien" ] ],
+        "review": [
+          [ "Florian", "Angeletti" ],
+          [ "Richard", "Eisenberg" ],
+          [ "Jacques", "Garrigue" ]
+        ]
+      },
+      {
         "references": [ 13677, 13679 ],
         "text": "domain.c: remove backup_thread_running to simplify\n  concurrent state updates to the backup thread status.",
         "breaking change": false,
         "authors": [ [ "Gabriel", "Scherer" ] ],
         "report": [ [ "Jan", "Midtgaard" ] ],
         "review": [ [ "Jan", "Midtgaard" ], [ "Miod", "Vallat" ] ]
+      },
+      {
+        "references": [ 13896, 14098 ],
+        "text": "ocamldoc, do not wrap module description in a paragraph tag\n  inside the table of modules",
+        "breaking change": false,
+        "authors": [ [ "Florian", "Angeletti" ] ],
+        "report": [ [ "John", "Whitington" ] ],
+        "review": [ [ "Gabriel", "Scherer" ] ]
       },
       {
         "references": [ 13703 ],
@@ -557,6 +1627,201 @@
         "breaking change": false,
         "authors": [ [ "Pieter", "Goetschalckx" ] ],
         "review": [ [ "Florian", "Angeletti" ], [ "Gabriel", "Scherer" ] ]
+      },
+      {
+        "references": [ 13763 ],
+        "text": "Track type of variables bound by as-patterns",
+        "breaking change": false,
+        "authors": [ [ "Leo", "White" ] ],
+        "port": [ [ "Vincent", "Laviron" ] ],
+        "review": [ [ "Gabriel", "Scherer" ] ]
+      },
+      {
+        "references": [ 13778, 13811 ],
+        "text": "do not warn for unused type declarations when the type is used\n  in a first-class module type (`module S with type t = int)`.",
+        "breaking change": false,
+        "authors": [ [ "Florian", "Angeletti" ] ],
+        "report": [ [ "Nicolás", "Ojeda", "Bär" ] ],
+        "review": [ [ "Gabriel", "Scherer" ] ]
+      },
+      {
+        "references": [ 13790 ],
+        "text": "Fix bytecode-only build of Cygwin when flexlink is being bootstrapped\n  with the compiler.",
+        "breaking change": false,
+        "authors": [ [ "David", "Allsopp" ] ],
+        "review": [ [ "Antonin", "Décimo" ], [ "Miod", "Vallat" ] ]
+      },
+      {
+        "references": [ 13812 ],
+        "text": "Add forgotten check about the validity of the type variable name on\n  the right-hand side of `_ as _`.",
+        "breaking change": false,
+        "authors": [ [ "Samuel", "Vivien" ] ],
+        "review": [ [ "Gabriel", "Scherer" ] ]
+      },
+      {
+        "references": [ 13845 ],
+        "text": "Fix bug in untypeast/pprintast for value bindings with polymorphic\n  type annotations.",
+        "breaking change": false,
+        "authors": [ [ "Chris", "Casinghino" ] ],
+        "review": [ [ "Florian", "Angeletti" ], [ "Gabriel", "Scherer" ] ]
+      },
+      {
+        "references": [ 13930, 13933 ],
+        "text": "Fix bugs in recursive values definitions involving\n  lazy values that have already been evaluated.",
+        "breaking change": false,
+        "authors": [ [ "Gabriel", "Scherer" ] ],
+        "report": [ [ "Vincent", "Laviron" ] ],
+        "review": [ [ "Vincent", "Laviron" ] ]
+      },
+      {
+        "references": [ 13867 ],
+        "text": "Fix bug with some recursive bindings of lazy values.",
+        "breaking change": false,
+        "authors": [ [ "Guillaume", "Bury" ], [ "Vincent", "Laviron" ] ],
+        "review": [ [ "Stefan", "Muenzel" ], [ "Gabriel", "Scherer" ] ]
+      },
+      {
+        "references": [ 13931 ],
+        "text": "fix bugs in nested recursive value definitions.",
+        "breaking change": false,
+        "authors": [ [ "Gabriel", "Scherer" ] ],
+        "report": [ [ "Vincent", "Laviron" ] ],
+        "review": [ [ "Vincent", "Laviron" ] ]
+      },
+      {
+        "references": [ 13875, 13878 ],
+        "text": "Add dedicated constructor for mutable variable access in\n  Cmm to prevent bugs linked to incorrect handling of coeffects.",
+        "breaking change": false,
+        "authors": [ [ "Vincent", "Laviron" ] ],
+        "review": [ [ "Gabriel", "Scherer" ] ]
+      },
+      {
+        "references": [ 13880 ],
+        "text": "Make object stat counters atomic",
+        "breaking change": false,
+        "authors": [ [ "Dimitris", "Mostrous" ] ],
+        "review": [ [ "Gabriel", "Scherer" ], [ "Nicolás", "Ojeda", "Bär" ] ]
+      },
+      {
+        "references": [ 13172, 13829 ],
+        "text": "Fix a missing check of illegal recursive module-type\n  definitions",
+        "breaking change": false,
+        "authors": [ [ "Clement", "Blaudeau" ] ],
+        "review": [ [ "Florian", "Angeletti" ] ]
+      },
+      {
+        "references": [ 13874, 13882 ],
+        "text": "Make evaluation order consistent for applications when using\n  the non-flambda native compiler",
+        "breaking change": true,
+        "authors": [ [ "Vincent", "Laviron" ] ],
+        "report": [ [ "Jean-Marie", "Madiot" ] ],
+        "review": [ [ "Gabriel", "Scherer" ] ]
+      },
+      {
+        "references": [ 13942 ],
+        "text": "Fix assertion on empty array case",
+        "breaking change": false,
+        "authors": [ [ "Olivier", "Nicole" ] ],
+        "review": [ [ "Gabriel", "Scherer" ] ]
+      },
+      {
+        "references": [ 13950 ],
+        "text": "Avoid tearing in `Array.sub`",
+        "breaking change": false,
+        "authors": [ [ "Gabriel", "Scherer" ], [ "Olivier", "Nicole" ] ],
+        "report": [ [ "Jan", "Midtgaard" ] ],
+        "review": [ [ "Gabriel", "Scherer" ] ]
+      },
+      {
+        "references": [ 13928, 13944 ],
+        "text": "Fix handling of excessively nested unboxed types",
+        "breaking change": false,
+        "authors": [ [ "Vincent", "Laviron" ] ],
+        "review": [ [ "Gabriel", "Scherer" ] ]
+      },
+      {
+        "references": [ 13987 ],
+        "text": "Remove a spurious TSan report in case of benign data race between\n  major GC read and write from the mutator (fixes #13427)",
+        "breaking change": false,
+        "authors": [ [ "Olivier", "Nicole" ] ],
+        "report": [ [ "Thomas", "Leonard" ] ],
+        "review": [ [ "Gabriel", "Scherer" ] ]
+      },
+      {
+        "references": [ 14007, 14015 ],
+        "text": "Fix memory corruption when an exception is raised during\n  demarshaling.",
+        "breaking change": false,
+        "authors": [ [ "Benoît", "Vaugon" ] ],
+        "review": [ [ "David", "Allsopp" ], [ "Gabriel", "Scherer" ] ]
+      },
+      {
+        "references": [ 14025 ],
+        "text": "fix data race between compaction and domain termination",
+        "breaking change": false,
+        "authors": [ [ "Gabriel", "Scherer" ] ],
+        "report": [ [ "Jan", "Midtgaard" ] ],
+        "review": [ [ "Jan", "Midtgaard" ] ]
+      },
+      {
+        "references": [ 13956 ],
+        "text": "Fix a regression introduced in #13308 triggering wrong unused warnings.",
+        "breaking change": false,
+        "authors": [ [ "Ulysse", "Gérard" ] ],
+        "review": [ [ "Florian", "Angeletti" ] ]
+      },
+      {
+        "references": [ 14070 ],
+        "text": "also point to label mismatches in error messages for labelled tuples",
+        "breaking change": false,
+        "authors": [ [ "Florian", "Angeletti" ] ],
+        "review": [ [ "Gabriel", "Scherer" ] ]
+      },
+      {
+        "references": [ 14088, 14091 ],
+        "text": "fix non-deterministic code generation in\n  matching.ml (backport of rescript-lang/rescript#7557)",
+        "breaking change": false,
+        "authors": [ [ "Christiano", "Calgano" ] ],
+        "review": [ [ "Gabriel", "Scherer" ], [ "Vincent", "Laviron" ] ]
+      },
+      {
+        "references": [ 14105 ],
+        "text": "Fix a loop in Pprintast that could result in a hang when printing\n  constructor `(::)` in isolation.",
+        "breaking change": false,
+        "authors": [ [ "Ulysse", "Gérard" ] ],
+        "review": [
+          [ "Nicolás", "Ojeda", "Bär" ], [ "Florian", "Angeletti" ]
+        ]
+      },
+      {
+        "references": [ 14108 ],
+        "text": "toplevel, fix a typo in directive type mismatch",
+        "breaking change": false,
+        "authors": [ [ "Florian", "Angeletti" ] ],
+        "review": [ [ "Gabriel", "Scherer" ] ]
+      },
+      {
+        "references": [ 13586, 14093 ],
+        "text": "Fix closing an out_channel during flush",
+        "breaking change": false,
+        "authors": [ [ "Stephen", "Dolan" ] ],
+        "investigation": [ [ "Nick", "Roberts" ] ],
+        "report": [ [ "Jan", "Midtgaard" ] ],
+        "review": [ [ "Antonin", "Décimo" ], [ "Miod", "Vallat" ] ]
+      },
+      {
+        "references": [ 14101, 14139 ],
+        "text": "define atomic helper types inside `caml/misc.h` to improve\n  header compatibility with C++",
+        "breaking change": false,
+        "authors": [ [ "Florian", "Angeletti" ] ],
+        "report": [ [ "Kate", "Deplaix" ] ],
+        "review": [ [ "Gabriel", "Scherer" ] ]
+      },
+      {
+        "references": [ 14135 ],
+        "text": "Fix a rare internal typechecker error when combining recursive\n  modules, polymorphic fields or methods, and constrained type parameters.",
+        "breaking change": false,
+        "authors": [ [ "Florian", "Angeletti" ] ],
+        "review": [ [ "Gabriel", "Scherer" ] ]
       }
     ]
   },
@@ -594,15 +1859,6 @@
     ],
     " Language features:": [
       {
-        "references": [ 12828, 13283 ],
-        "text": "Add short syntax for dependent functor types `(X:A) -> ...`",
-        "breaking change": false,
-        "authors": [ [ "Jeremy", "Yallop" ] ],
-        "review": [
-          [ "Nicolás", "Ojeda", "Bär" ], [ "Gabriel", "Scherer" ]
-        ]
-      },
-      {
         "references": [ 12309, 13158 ],
         "text": "Add syntax support for deep effect handlers",
         "breaking change": false,
@@ -626,6 +1882,13 @@
         "breaking change": false,
         "authors": [ [ "Xavier", "Leroy" ], [ "Florian", "Angeletti" ] ],
         "review": [ [ "Daniel", "Bünzli" ], [ "Jules", "Aguillon" ] ]
+      },
+      {
+        "references": [ 12828, 13283 ],
+        "text": "Add short syntax for dependent functor types `(X:A) -> ...`",
+        "breaking change": false,
+        "authors": [ [ "Jeremy", "Yallop" ] ],
+        "review": [ [ "Nicolás", "Ojeda", "Bär" ], [ "Gabriel", "Scherer" ] ]
       }
     ],
     " Type system": [
@@ -639,6 +1902,17 @@
       }
     ],
     " Runtime system:": [
+      {
+        "references": [ 11911, 12923 ],
+        "text": "Multicore statistical memory profiling.\n  This restores a notable OCaml 4 feature that was missing\n  in OCaml 5.",
+        "breaking change": false,
+        "authors": [ [ "Nick", "Barnes" ] ],
+        "review": [
+          [ "Stephen", "Dolan" ],
+          [ "Jacques-Henri", "Jourdan" ],
+          [ "Guillaume", "Munch-Maccagnoni" ]
+        ]
+      },
       {
         "references": [ 13419 ],
         "text": "Fix memory bugs in runtime events system.",
@@ -687,17 +1961,6 @@
           [ "Miod", "Vallat" ],
           [ "Gabriel", "Scherer" ],
           [ "David", "Allsopp" ]
-        ]
-      },
-      {
-        "references": [ 11911, 12923 ],
-        "text": "Multicore statistical memory profiling.\n  This restores a notable OCaml 4 feature that was missing\n  in OCaml 5.",
-        "breaking change": false,
-        "authors": [ [ "Nick", "Barnes" ] ],
-        "review": [
-          [ "Stephen", "Dolan" ],
-          [ "Jacques-Henri", "Jourdan" ],
-          [ "Guillaume", "Munch-Maccagnoni" ]
         ]
       },
       {
@@ -884,9 +2147,14 @@
       },
       {
         "references": [ 13407 ],
-        "text": "Add Runtime_events.EV_EMPTY_MINOR",
+        "text": "Add Runtime_events.EV_EMPTY_MINOR.",
         "breaking change": false,
-        "authors": [ [ "Thomas", "Leonard" ] ]
+        "authors": [ [ "Thomas", "Leonard" ] ],
+        "review": [
+          [ "KC", "Sivaramakrishnan" ],
+          [ "Sadiq", "Jaffer" ],
+          [ "Gabriel", "Scherer" ]
+        ]
       },
       {
         "references": [ 13522 ],
@@ -952,13 +2220,24 @@
     ],
     " Standard library:": [
       {
+        "references": [ 12885 ],
+        "text": "move Dynarray to an unboxed representation",
+        "breaking change": false,
+        "authors": [ [ "Gabriel", "Scherer" ] ],
+        "review": [
+          [ "Olivier", "Nicole" ],
+          [ "Simon", "Cruanes" ],
+          [ "Yann", "Leray" ],
+          [ "Alain", "Frisch" ]
+        ],
+        "suggestions": [ [ "Vincent", "Laviron" ] ]
+      },
+      {
         "references": [ 12884 ],
         "text": "Add `Queue.drop`",
         "breaking change": false,
         "authors": [ [ "Léo", "Andrès" ] ],
-        "review": [
-          [ "Nicolás", "Ojeda", "Bär" ], [ "Gabriel", "Scherer" ]
-        ]
+        "review": [ [ "Nicolás", "Ojeda", "Bär" ], [ "Gabriel", "Scherer" ] ]
       },
       {
         "references": [ 13168 ],
@@ -992,19 +2271,6 @@
           [ "Craig", "Ferguson" ],
           [ "Gabriel", "Scherer" ]
         ]
-      },
-      {
-        "references": [ 12885 ],
-        "text": "move Dynarray to an unboxed representation",
-        "breaking change": false,
-        "authors": [ [ "Gabriel", "Scherer" ] ],
-        "review": [
-          [ "Olivier", "Nicole" ],
-          [ "Simon", "Cruanes" ],
-          [ "Yann", "Leray" ],
-          [ "Alain", "Frisch" ]
-        ],
-        "suggestions": [ [ "Vincent", "Laviron" ] ]
       },
       {
         "references": [ 13047 ],
@@ -1058,9 +2324,7 @@
         "text": "Add Uchar.seeded_hash, Change Uchar.hash implementation.\n  Previously, Uchar.hash was aliased to Uchar.to_int. If you need that behavior,\n  change your module instantiation from eg `module HT = Hashtbl.Make(Uchar)` to\n  ```\n    module HT = Hashtbl.Make(struct\n      ...\n      let hash = Uchar.to_int\n    end)\n  ```\n  If the current implementation is desired, and you have a hashtable module `HT`\n  (produced with the `Make` functor) in persistent storage, use `HT.rebuild` to\n  ensure it doesn't break when reading from or writing to buckets.",
         "breaking change": true,
         "authors": [ [ "Hazem", "ElMasry" ] ],
-        "review": [
-          [ "Gabriel", "Scherer" ], [ "Nicolás", "Ojeda", "Bär" ]
-        ]
+        "review": [ [ "Gabriel", "Scherer" ], [ "Nicolás", "Ojeda", "Bär" ] ]
       },
       {
         "references": [ 13318 ],
@@ -1267,9 +2531,7 @@
         "text": "Document the basic support for unicode identifiers and the switch to\n   UTF-8 encoded Unicode text for OCaml source file",
         "breaking change": false,
         "authors": [ [ "Florian", "Angeletti" ] ],
-        "review": [
-          [ "Nicolás", "Ojeda", "Bär" ], [ "Daniel", "Bünzli" ]
-        ]
+        "review": [ [ "Nicolás", "Ojeda", "Bär" ], [ "Daniel", "Bünzli" ] ]
       }
     ],
     " Compiler user-interface and warnings:": [
@@ -1362,6 +2624,20 @@
       }
     ],
     " Internal/compiler-libs changes:": [
+      {
+        "references": [ 13286 ],
+        "text": "Distinguish unique identifiers `Shape.Uid.t` according to their\n  provenance: either an implementation or an interface.",
+        "breaking change": false,
+        "authors": [ [ "Ulysse", "Gérard" ] ],
+        "review": [ [ "Florian", "Angeletti" ], [ "Leo", "White" ] ]
+      },
+      {
+        "references": [ 13308 ],
+        "text": "keep track of relations between declaration in the cmt files. This is\n  useful information for external tools for navigation and analysis purposis.",
+        "breaking change": false,
+        "authors": [ [ "Ulysse", "Gérard" ], [ "Florian", "Angeletti" ] ],
+        "review": [ [ "Florian", "Angeletti" ], [ "Gabriel", "Scherer" ] ]
+      },
       {
         "references": [ 11129, 11148 ],
         "text": "enforce that ppxs do not produce `parsetree`s with\n  an empty list of universally quantified type variables\n  (`. int -> int` instead of `'a . int -> int'`)",
@@ -1495,25 +2771,11 @@
         "review": [ [ "Jeremy", "Yallop" ] ]
       },
       {
-        "references": [ 13286 ],
-        "text": "Distinguish unique identifiers `Shape.Uid.t` according to their\n  provenance: either an implementation or an interface.",
-        "breaking change": false,
-        "authors": [ [ "Ulysse", "Gérard" ] ],
-        "review": [ [ "Florian", "Angeletti" ], [ "Leo", "White" ] ]
-      },
-      {
         "references": [ 13289 ],
         "text": "Use C99 for loop to reduce the scope of the for loop iterator.",
         "breaking change": false,
         "authors": [ [ "Antonin", "Décimo" ] ],
         "review": [ [ "Miod", "Vallat" ], [ "Gabriel", "Scherer" ] ]
-      },
-      {
-        "references": [ 13308 ],
-        "text": "keep track of relations between declaration in the cmt files. This is\n  useful information for external tools for navigation and analysis purposis.",
-        "breaking change": false,
-        "authors": [ [ "Ulysse", "Gérard" ], [ "Florian", "Angeletti" ] ],
-        "review": [ [ "Florian", "Angeletti" ], [ "Gabriel", "Scherer" ] ]
       },
       {
         "references": [ 13336 ],
@@ -1940,9 +3202,7 @@
         "text": "Give `while true' a polymorphic type, similarly to\n  `assert false'",
         "breaking change": false,
         "authors": [ [ "Jeremy", "Yallop" ] ],
-        "review": [
-          [ "Nicolás", "Ojeda", "Bär" ], [ "Gabriel", "Scherer" ]
-        ],
+        "review": [ [ "Nicolás", "Ojeda", "Bär" ], [ "Gabriel", "Scherer" ] ],
         "suggestion": [ [ "Rodolphe", "Lepigre" ], [ "John", "Whitington" ] ]
       },
       {
@@ -2483,9 +3743,7 @@
         "text": "Add `Format.pp_print_nothing` function.",
         "breaking change": false,
         "authors": [ [ "Léo", "Andrès" ] ],
-        "review": [
-          [ "Gabriel", "Scherer" ], [ "Nicolás", "Ojeda", "Bär" ]
-        ]
+        "review": [ [ "Gabriel", "Scherer" ], [ "Nicolás", "Ojeda", "Bär" ] ]
       },
       {
         "references": [ 11563 ],
@@ -2686,9 +3944,7 @@
         "text": "Dynlink library, improve legibility of error messages",
         "breaking change": false,
         "authors": [ [ "Samuel", "Hym" ] ],
-        "review": [
-          [ "Gabriel", "Scherer" ], [ "Nicolás", "Ojeda", "Bär" ]
-        ]
+        "review": [ [ "Gabriel", "Scherer" ], [ "Nicolás", "Ojeda", "Bär" ] ]
       },
       {
         "references": [ 12686 ],
@@ -2775,9 +4031,7 @@
         "breaking change": false,
         "authors": [ [ "David", "Allsopp" ] ],
         "report": [ [ "Jonah", "Beckford" ] ],
-        "review": [
-          [ "Nicolás", "Ojeda", "Bär" ], [ "Antonin", "Décimo" ]
-        ]
+        "review": [ [ "Nicolás", "Ojeda", "Bär" ], [ "Antonin", "Décimo" ] ]
       },
       {
         "references": [ 12688 ],
@@ -3276,6 +4530,18 @@
       }
     ],
     " Bug fixes:": [
+      {
+        "references": [ 14065 ],
+        "text": "Fix function signature mismatch of `__tsan_func_exit` with GCC 15.\n  Check in the configure step if the TSan provided internal builtins are the\n  same as what we expect, introduce `caml_tsan_*` wrappers for the `__tsan_*`\n  functions we use.",
+        "breaking change": false,
+        "authors": [ [ "Hari", "Hara", "Naveen", "S" ] ],
+        "report": [ [ "Hari", "Hara", "Naveen", "S" ] ],
+        "review": [
+          [ "Gabriel", "Scherer" ],
+          [ "Antonin", "Décimo" ],
+          [ "Olivier", "Nicole" ]
+        ]
+      },
       {
         "references": [ 10652, 12720 ],
         "text": "fix evaluation order in presence of optional arguments",
@@ -3862,19 +5128,15 @@
         "references": [ 11848 ],
         "text": "Add `List.find_mapi`,\n  `List.find_index: ('a -> bool) -> 'a list -> int option`,\n  `Seq.find_mapi`, `Seq.find_index`, `Array.find_mapi`, `Array.find_index`,\n  `Float.Array.find_opt`, `Float.Array.find_index`, `Float.Array.find_map`,\n  `Float.Array.find_mapi`.",
         "breaking change": false,
-        "authors": [ [ "Tima", "Kinsart" ] ],
-        "review": [
-          [ "Daniel", "Bünzli" ], [ "Nicolás", "Ojeda", "Bär" ]
-        ]
+        "authors": [ [ "T.", "Kinsart" ] ],
+        "review": [ [ "Daniel", "Bünzli" ], [ "Nicolás", "Ojeda", "Bär" ] ]
       },
       {
         "references": [ 11410 ],
         "text": "Add Set.to_list, Map.to_list, Map.of_list,\n  `Map.add_to_list: key -> 'a -> 'a list t -> 'a list t`.",
         "breaking change": false,
         "authors": [ [ "Daniel", "Bünzli" ] ],
-        "review": [
-          [ "Nicolás", "Ojeda", "Bär" ], [ "Gabriel", "Scherer" ]
-        ]
+        "review": [ [ "Nicolás", "Ojeda", "Bär" ], [ "Gabriel", "Scherer" ] ]
       },
       {
         "references": [ 11836, 11837 ],
@@ -4006,9 +5268,7 @@
         "authors": [
           [ "Valentin", "Gatien-Baron" ], [ "François", "Berenger" ]
         ],
-        "review": [
-          [ "Gabriel", "Scherer" ], [ "Nicolás", "Ojeda", "Bär" ]
-        ]
+        "review": [ [ "Gabriel", "Scherer" ], [ "Nicolás", "Ojeda", "Bär" ] ]
       },
       {
         "references": [ 11354 ],
@@ -4529,9 +5789,7 @@
         "references": [ 11166 ],
         "text": "ocamllex: the union of two character sets \"cset1 | cset2\" can now be\n  used in any context where a character set is expected.",
         "breaking change": false,
-        "authors": [
-          [ "Nicolás", "Ojeda", "Bär" ], [ "Martin", "Jambon" ]
-        ],
+        "authors": [ [ "Nicolás", "Ojeda", "Bär" ], [ "Martin", "Jambon" ] ],
         "review": [ [ "Sébastien", "Hinderer" ] ]
       },
       {
@@ -4797,9 +6055,7 @@
         "text": "Add the -no-absname option to ocamlc, ocamlopt and ocamldep.",
         "breaking change": false,
         "authors": [ [ "Abiola", "Abdulsalam" ] ],
-        "review": [
-          [ "Sébastien", "Hinderer" ], [ "Florian", "Angeletti" ]
-        ]
+        "review": [ [ "Sébastien", "Hinderer" ], [ "Florian", "Angeletti" ] ]
       },
       {
         "references": [ 11696 ],
@@ -5047,9 +6303,7 @@
         "text": "Add location, attribute(s) visitors to Tast_mapper/Tast_iterator",
         "breaking change": false,
         "authors": [ [ "Yan", "Dong" ] ],
-        "review": [
-          [ "Nicolás", "Ojeda", "Bär" ], [ "Gabriel", "Scherer" ]
-        ]
+        "review": [ [ "Nicolás", "Ojeda", "Bär" ], [ "Gabriel", "Scherer" ] ]
       },
       {
         "references": [ 11933 ],
@@ -6083,9 +7337,7 @@
         "text": "New command-line flag -nocwd to not include implicit\n  the current directory to the load path.",
         "breaking change": false,
         "authors": [ [ "Thomas", "Roglin" ] ],
-        "review": [
-          [ "Gabriel", "Scherer" ], [ "Nicolás", "Ojeda", "Bär" ]
-        ]
+        "review": [ [ "Gabriel", "Scherer" ], [ "Nicolás", "Ojeda", "Bär" ] ]
       },
       {
         "references": [ 11089 ],
@@ -6128,9 +7380,7 @@
         "text": "Deprecate `ocaml script` and `ocamlnat` script where `script` has no\n  extension and is an implicit basename.",
         "breaking change": false,
         "authors": [ [ "David", "Allsopp" ] ],
-        "review": [
-          [ "Florian", "Angeletti" ], [ "Sébastien", "Hinderer" ]
-        ]
+        "review": [ [ "Florian", "Angeletti" ], [ "Sébastien", "Hinderer" ] ]
       }
     ],
     " Internal/compiler-libs changes:": [
@@ -6401,9 +7651,7 @@
         "references": [ 11576 ],
         "text": "Fix bug in Bigarray.Genarray.init in the the case of zero-dimensional\n  arrays.",
         "breaking change": false,
-        "authors": [
-          [ "Nicolás", "Ojeda", "Bär" ], [ "Jeremy", "Yallop" ]
-        ],
+        "authors": [ [ "Nicolás", "Ojeda", "Bär" ], [ "Jeremy", "Yallop" ] ],
         "report": [ [ "Masayuki", "Takeda" ] ],
         "review": [ [ "Jeremy", "Yallop" ], [ "Florian", "Angeletti" ] ]
       },
@@ -6459,9 +7707,7 @@
         "text": "Pass option -no-execute-only to the linker for OpenBSD >= 7.3\n  so that code sections remain readable, as needed for closure marshaling.",
         "breaking change": false,
         "authors": [ [ "Xavier", "Leroy" ], [ "Anil", "Madhavapeddy" ] ],
-        "review": [
-          [ "Anil", "Madhavapeddy" ], [ "Sébastien", "Hinderer" ]
-        ]
+        "review": [ [ "Anil", "Madhavapeddy" ], [ "Sébastien", "Hinderer" ] ]
       },
       {
         "references": [ 12903 ],
@@ -6508,9 +7754,7 @@
         "breaking change": false,
         "authors": [ [ "Gabriel", "Scherer" ] ],
         "report": [ [ "Raphaël", "Bocquet" ], [ "Simon", "Cruanes" ] ],
-        "review": [
-          [ "Nicolás", "Ojeda", "Bär" ], [ "Vincent", "Laviron" ]
-        ]
+        "review": [ [ "Nicolás", "Ojeda", "Bär" ], [ "Vincent", "Laviron" ] ]
       }
     ]
   },
@@ -6561,9 +7805,7 @@
         "references": [ 11263, 11267 ],
         "text": "caml/{memory,misc}.h: check whether `_MSC_VER` is defined\n  before using it to ensure that the headers can always be used in code which\n  turns on -Wundef (or equivalent).",
         "breaking change": false,
-        "authors": [
-          [ "David", "Allsopp" ], [ "Nicolás", "Ojeda", "Bär" ]
-        ],
+        "authors": [ [ "David", "Allsopp" ], [ "Nicolás", "Ojeda", "Bär" ] ],
         "review": [
           [ "Nicolás", "Ojeda", "Bär" ], [ "Sébastien", "Hinderer" ]
         ]
@@ -6845,9 +8087,7 @@
         "text": "Annotate `Uchar.t` with immediate attribute",
         "breaking change": true,
         "authors": [ [ "Hongbo", "Zhang" ] ],
-        "reivew": [
-          [ "Gabriel", "Scherer" ], [ "Nicolás", "Ojeda", "Bär" ]
-        ]
+        "reivew": [ [ "Gabriel", "Scherer" ], [ "Nicolás", "Ojeda", "Bär" ] ]
       },
       {
         "references": [ 7812, 10475 ],
@@ -7453,9 +8693,7 @@
         "references": [ 10742 ],
         "text": "strong call-by-need reduction for shapes",
         "breaking change": false,
-        "authors": [
-          [ "Gabriel", "Scherer" ], [ "Nathanaëlle", "Courant" ]
-        ],
+        "authors": [ [ "Gabriel", "Scherer" ], [ "Nathanaëlle", "Courant" ] ],
         "review": [
           [ "Florian", "Angeletti" ],
           [ "Ulysse", "Gérard" ],
@@ -8297,9 +9535,7 @@
         "references": [ 1351 ],
         "text": "Document `-output-complete-obj` option in the manual.",
         "breaking change": false,
-        "authors": [
-          [ "François", "Bobot" ], [ "Nicolás", "Ojeda", "Bär" ]
-        ],
+        "authors": [ [ "François", "Bobot" ], [ "Nicolás", "Ojeda", "Bär" ] ],
         "review": [ [ "Daniel", "Bünzli" ], [ "Damien", "Doligez" ] ]
       },
       {
@@ -8522,9 +9758,7 @@
         "text": "Fix Ast_mapper to apply the mapping function to the constants in\n  \"interval\" patterns `c1..c2`.",
         "breaking change": false,
         "authors": [ [ "Guillaume", "Petiot" ] ],
-        "review": [
-          [ "Gabriel", "Scherer" ], [ "Nicolás", "Ojeda", "Bär" ]
-        ]
+        "review": [ [ "Gabriel", "Scherer" ], [ "Nicolás", "Ojeda", "Bär" ] ]
       }
     ],
     " Internal typechecker changes:": [
@@ -8637,9 +9871,7 @@
         "text": "Replace the use of iconv with a C utility to convert $(LIBDIR)\n  to a C string constant on Windows when building the runtime. Hardens the\n  generation of the constant on Unix for paths with backslashes, double-quotes\n  and newlines.",
         "breaking change": false,
         "authors": [ [ "David", "Allsopp" ] ],
-        "review": [
-          [ "Florian", "Angeletti" ], [ "Sébastien", "Hinderer" ]
-        ]
+        "review": [ [ "Florian", "Angeletti" ], [ "Sébastien", "Hinderer" ] ]
       },
       {
         "references": [ 10471 ],
@@ -8936,9 +10168,7 @@
         "references": [ 10478 ],
         "text": "Fix segfault under Windows due to a mistaken initialization of thread\n  ID when a thread starts.",
         "breaking change": false,
-        "authors": [
-          [ "David", "Allsopp" ], [ "Nicolás", "Ojeda", "Bär" ]
-        ],
+        "authors": [ [ "David", "Allsopp" ], [ "Nicolás", "Ojeda", "Bär" ] ],
         "review": [ [ "Xavier", "Leroy" ] ]
       },
       {
@@ -9526,9 +10756,7 @@
         "references": [ 9554 ],
         "text": "add primitive __FUNCTION__ that returns the name of the current method\n  or function, including any enclosing module or class.",
         "breaking change": true,
-        "authors": [
-          [ "Nicolás", "Ojeda", "Bär" ], [ "Stephen", "Dolan" ]
-        ],
+        "authors": [ [ "Nicolás", "Ojeda", "Bär" ], [ "Stephen", "Dolan" ] ],
         "review": [ [ "Stephen", "Dolan" ] ]
       },
       {
@@ -9536,9 +10764,7 @@
         "text": "define to_rev_seq in Set and Map modules.",
         "breaking change": false,
         "authors": [ [ "Sébastien", "Briais" ] ],
-        "review": [
-          [ "Gabriel", "Scherer" ], [ "Nicolás", "Ojeda", "Bär" ]
-        ]
+        "review": [ [ "Gabriel", "Scherer" ], [ "Nicolás", "Ojeda", "Bär" ] ]
       },
       {
         "references": [ 9561 ],
@@ -9587,9 +10813,7 @@
         "text": "Extend Printexc API for raw backtrace entries.",
         "breaking change": false,
         "authors": [ [ "Stephen", "Dolan" ] ],
-        "review": [
-          [ "Nicolás", "Ojeda", "Bär" ], [ "Gabriel", "Scherer" ]
-        ]
+        "review": [ [ "Nicolás", "Ojeda", "Bär" ], [ "Gabriel", "Scherer" ] ]
       },
       {
         "references": [ 9763 ],
@@ -10955,9 +12179,7 @@
         "text": "Extend ocamlopt option \"-stop-after\" to handle \"scheduling\" argument.",
         "breaking change": false,
         "authors": [ [ "Greta", "Yorsh" ] ],
-        "review": [
-          [ "Florian", "Angeletti" ], [ "Sébastien", "Hinderer" ]
-        ]
+        "review": [ [ "Florian", "Angeletti" ], [ "Sébastien", "Hinderer" ] ]
       },
       {
         "references": [ 8945, 9086 ],
@@ -11324,9 +12546,7 @@
         "text": "actually have --disable-stdlib-manpages not build the manpages\n  (implementation conflicted with #8837 which wasn't picked up in review)",
         "breaking change": false,
         "authors": [ [ "David", "Allsopp" ] ],
-        "review": [
-          [ "Florian", "Angeletti" ], [ "Sébastien", "Hinderer" ]
-        ]
+        "review": [ [ "Florian", "Angeletti" ], [ "Sébastien", "Hinderer" ] ]
       },
       {
         "references": [ 9343 ],
@@ -12317,9 +13537,7 @@
         "breaking change": false,
         "authors": [ [ "Kyle", "Miller" ] ],
         "reported": [ [ "Armaël", "Guéneau" ] ],
-        "review": [
-          [ "Armaël", "Guéneau" ], [ "Nicolás", "Ojeda", "Bär" ]
-        ]
+        "review": [ [ "Armaël", "Guéneau" ], [ "Nicolás", "Ojeda", "Bär" ] ]
       },
       {
         "references": [ 8622 ],
@@ -12930,9 +14148,7 @@
         "text": "Replaced TypedtreeIter with tast_iterator",
         "breaking change": false,
         "authors": [ [ "Isaac", "\"Izzy\"", "Avram" ] ],
-        "review": [
-          [ "Gabriel", "Scherer" ], [ "Nicolás", "Ojeda", "Bär" ]
-        ]
+        "review": [ [ "Gabriel", "Scherer" ], [ "Nicolás", "Ojeda", "Bär" ] ]
       },
       {
         "references": [ 8598 ],
@@ -13334,9 +14550,7 @@
         "text": "Add Stack.{top_opt,pop_opt} and Queue.{peek_opt,take_opt}.",
         "breaking change": false,
         "authors": [ [ "Vladimir", "Keleshev" ] ],
-        "review": [
-          [ "Nicolás", "Ojeda", "Bär" ], [ "Gabriel", "Scherer" ]
-        ]
+        "review": [ [ "Nicolás", "Ojeda", "Bär" ], [ "Gabriel", "Scherer" ] ]
       },
       {
         "references": [ 1182 ],
@@ -13631,9 +14845,7 @@
         "references": [ 1720 ],
         "text": "Improve error reporting for missing 'rec' in let-bindings.",
         "breaking change": false,
-        "authors": [
-          [ "Arthur", "Charguéraud" ], [ "Armaël", "Guéneau" ]
-        ],
+        "authors": [ [ "Arthur", "Charguéraud" ], [ "Armaël", "Guéneau" ] ],
         "help": [
           [ "Gabriel", "Scherer" ],
           [ "Frédéric", "Bour" ],
@@ -14132,9 +15344,7 @@
         "text": "ocamldoc, better handling of {{!label}text} in the latex\n  backend.",
         "breaking change": false,
         "authors": [ [ "Florian", "Angeletti" ] ],
-        "review": [
-          [ "Nicolás", "Ojeda", "Bär" ], [ "Gabriel", "Scherer" ]
-        ]
+        "review": [ [ "Nicolás", "Ojeda", "Bär" ], [ "Gabriel", "Scherer" ] ]
       },
       {
         "references": [ 7844, 2040 ],
@@ -14306,9 +15516,7 @@
         "text": "fix a parallel build bug involving CamlinternalLazy.",
         "breaking change": false,
         "authors": [ [ "Stephen", "Dolan" ] ],
-        "review": [
-          [ "Gabriel", "Scherer" ], [ "Nicolás", "Ojeda", "Bär" ]
-        ]
+        "review": [ [ "Gabriel", "Scherer" ], [ "Nicolás", "Ojeda", "Bär" ] ]
       },
       {
         "references": [ 2264, 7904 ],
@@ -14565,9 +15773,7 @@
         "text": "Refactor Stdlib.Format. Notably, use Stdlib.Stack and Stdlib.Queue,\n  and avoid exceptions for control flow.",
         "breaking change": false,
         "authors": [ [ "Vladimir", "Keleshev" ] ],
-        "review": [
-          [ "Nicolás", "Ojeda", "Bär" ], [ "Gabriel", "Scherer" ]
-        ]
+        "review": [ [ "Nicolás", "Ojeda", "Bär" ], [ "Gabriel", "Scherer" ] ]
       },
       {
         "references": [ 1952 ],
@@ -15187,9 +16393,7 @@
         "references": [ 1505 ],
         "text": "Add specific error messages for unification errors involving\n  functions of type \"unit -> _\".",
         "breaking change": false,
-        "authors": [
-          [ "Arthur", "Charguéraud" ], [ "Armaël", "Guéneau" ]
-        ],
+        "authors": [ [ "Arthur", "Charguéraud" ], [ "Armaël", "Guéneau" ] ],
         "help": [ [ "Leo", "White" ] ],
         "review": [ [ "Florian", "Angeletti" ], [ "Gabriel", "Radanne" ] ]
       },
@@ -15797,9 +17001,7 @@
         "text": "Organise and simplify translation of primitives.",
         "breaking change": false,
         "authors": [ [ "Leo", "White" ] ],
-        "review": [
-          [ "François", "Bobot" ], [ "Nicolás", "Ojeda", "Bär" ]
-        ]
+        "review": [ [ "François", "Bobot" ], [ "Nicolás", "Ojeda", "Bär" ] ]
       },
       {
         "references": [ 1567 ],
@@ -16136,9 +17338,7 @@
         "breaking change": false,
         "authors": [ [ "Xavier", "Clerc" ] ],
         "report": [ [ "Christophe", "Troestler" ] ],
-        "review": [
-          [ "Nicolás", "Ojeda", "Bär" ], [ "Gabriel", "Scherer" ]
-        ]
+        "review": [ [ "Nicolás", "Ojeda", "Bär" ], [ "Gabriel", "Scherer" ] ]
       },
       {
         "references": [ 1835 ],
