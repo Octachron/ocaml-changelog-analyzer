@@ -21,6 +21,8 @@ let rec ligature = function
     "regression" :: "fix" :: q
   | "advice" :: "and" :: "review" :: q ->
     "review" :: q
+  | "applied" :: "by" :: q ->
+    "," :: "applied" :: "by" :: ligature q
   | x :: q -> x :: ligature q
   | [] -> []
 

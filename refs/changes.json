@@ -20,7 +20,7 @@
         "authors": [ [ "Stephen", "Dolan" ], [ "Olivier", "Nicole" ] ],
         "review": [
           [ "Hugo", "Heuzard" ],
-          [ "Jacques", "Guarrigue" ],
+          [ "Jacques", "Garrigue" ],
           [ "Jeremy", "Yallop" ],
           [ "Gabriel", "Scherer" ]
         ]
@@ -31,9 +31,42 @@
         "breaking change": true,
         "authors": [ [ "Takafumi", "Saikawa" ], [ "Jacques", "Garrigue" ] ],
         "review": [ [ "Richard", "Eisenberg" ] ]
+      },
+      {
+        "references": [ 13806 ],
+        "text": "Enable the use of function parameters with polymorphic types.",
+        "breaking change": false,
+        "authors": [ [ "Ulysse", "Gérard" ], [ "Leo", "White" ] ],
+        "review": [
+          [ "Florian", "Angeletti" ],
+          [ "Samuel", "Vivien" ],
+          [ "Gabriel", "Scherer" ],
+          [ "Jacques", "Garrigue" ]
+        ]
+      },
+      {
+        "references": [ 14040 ],
+        "text": "generalize the constructs `let module`, `let exception` and `let open`\n  to most other structure items, eg `let type t = ... in ...`, `let type t +=\n  ... in ...`, etc.",
+        "breaking change": false,
+        "authors": [ [ "Nicolás", "Ojeda", "Bär" ] ],
+        "review": [ [ "Valentin", "Gatien-Baron" ] ]
       }
     ],
     " Runtime system:": [
+      {
+        "references": [ 14416 ],
+        "text": "Spawned domains will record backtraces if the parent domain has\n  enabled it.",
+        "breaking change": false,
+        "authors": [ [ "Nathan", "Taylor" ] ],
+        "review": [ [ "Gabriel", "Scherer" ] ]
+      },
+      {
+        "references": [ 13616 ],
+        "text": "Change free list representation in shared heap",
+        "breaking change": false,
+        "authors": [ [ "Sadiq", "Jaffer" ] ],
+        "review": [ [ "Damien", "Doligez" ] ]
+      },
       {
         "references": [ 13580 ],
         "text": "Introduce sweep-only phase at start of major GC cycle,\n  to reduce latent-garbage delay and therefore improve GC performance.",
@@ -92,11 +125,35 @@
         ]
       },
       {
-        "references": [ 14238 ],
-        "text": "Fix certain variadic macros in misc.h which could trigger C warnings\n  under certain conditions.",
+        "references": [ 14243 ],
+        "text": "Explicit relative paths in ld.conf (\".\", \"..\", \"./<path...>\",\n  \"../<path...>\") are interpreted as being relative to the directory ld.conf\n  was loaded from, and the default ld.conf now uses relative paths, rather than\n  embedding the absolute path to the Standard Library. The brave may continue to\n  put implicit paths in ld.conf. The interpretation of CAML_LD_LIBRARY_PATH is\n  unaltered. Additionally, ld.conf is loaded from all of $OCAMLLIB/ld.conf,\n  $CAMLLIB/ld.conf and standard_library_default/ld.conf rather than just the\n  first one found. ld.conf files with CRLF line endings are now consistently\n  normalised on both Windows and Unix.",
+        "breaking change": true,
+        "authors": [ [ "David", "Allsopp" ] ],
+        "review": [
+          [ "Jonah", "Beckford" ],
+          [ "Damien", "Doligez" ],
+          [ "Hugo", "Heuzard" ]
+        ]
+      },
+      {
+        "references": [ 14244 ],
+        "text": "Added --with-relative-libdir which allows the runtime and the\n  compilers to locate the Standard Library relative to where the binaries\n  themselves are installed, removing the absolute path previously embedded in\n  caml_standard_library_default. Executables linked with `ocamlc -custom` now\n  always attempt to load bytecode from the executable itself, rather than first\n  trying `argv[0]`.",
         "breaking change": false,
-        "authors": [ [ "Antonin", "Décimo" ] ],
-        "review": [ [ "Nicolás", "Ojeda", "Bär" ] ]
+        "authors": [ [ "David", "Allsopp" ] ],
+        "review": [
+          [ "Jonah", "Beckford" ],
+          [ "Antonin", "Décimo" ],
+          [ "Damien", "Doligez" ],
+          [ "Samuel", "Hym" ],
+          [ "Vincent", "Laviron" ]
+        ]
+      },
+      {
+        "references": [ 14245 ],
+        "text": "Introduce Runtime IDs for use in filename mangling to allow different\n  configurations and different versions of the runtime system to coexist\n  harmoniously on a single system. The IDs are used, along with the host\n  triplet, to provide mangled names for the ocamlrun executable and its variants\n  and the DLL versions of both the bytecode and native runtimes, with symlinks\n  created for the original names. They are also used to mangle the names of stub\n  libraries so that stub libraries compiled for a given configuration of the\n  runtime will only be sought by that runtime. The behaviour is disabled by\n  configuring with --disable-suffixing.",
+        "breaking change": false,
+        "authors": [ [ "David", "Allsopp" ] ],
+        "review": [ [ "Damien", "Doligez" ], [ "Samuel", "Hym" ] ]
       },
       {
         "references": [ 12269, 12410, 13063 ],
@@ -108,9 +165,85 @@
           [ "B.", "Szilvasy" ],
           [ "Miod", "Vallat" ]
         ]
+      },
+      {
+        "references": [ 14275 ],
+        "text": "Add function caml_c_thread_register_in_domain, which makes it\n  possible to register \"C threads\" in another domain than 0 (which is\n  what caml_c_thread_register does). The function takes a domain unique\n  ID in which to register the thread. The domain must be running\n  when the function is called.",
+        "breaking change": false,
+        "authors": [ [ "Jack", "Nørskov", "Jørgensen" ] ],
+        "review": [
+          [ "Gabriel", "Scherer" ], [ "Guillaume", "Munch-Maccagnoni" ]
+        ]
+      },
+      {
+        "references": [ 14337 ],
+        "text": "Fix potential segfault due to the C callback mechanism dropping\n  continuations without calling `caml_continuation_use`.",
+        "breaking change": false,
+        "authors": [ [ "Max", "Slater" ] ],
+        "review": [ [ "Nick", "Barnes" ], [ "Stephen", "Dolan" ] ]
+      },
+      {
+        "references": [ 13416 ],
+        "text": "Implement concurrency primitives using WinAPI instead of\n  winpthreads on Windows.",
+        "breaking change": false,
+        "authors": [ [ "Antonin", "Décimo" ] ],
+        "review": [
+          [ "Samuel", "Hym" ],
+          [ "Gabriel", "Scherer" ],
+          [ "Miod", "Vallat" ],
+          [ "B.", "Szilvasy" ],
+          [ "Nicolás", "Ojeda", "Bär" ]
+        ]
       }
     ],
     " Standard library:": [
+      {
+        "references": [ 14438 ],
+        "text": "Add String.is_empty",
+        "breaking change": false,
+        "authors": [ [ "Daniel", "Bünzli" ] ],
+        "review": [ [ "Nicolás", "Ojeda", "Bär" ], [ "Gabriel", "Scherer" ] ]
+      },
+      {
+        "references": [ 14440 ],
+        "text": "Add String.of_char",
+        "breaking change": false,
+        "authors": [ [ "Daniel", "Bünzli" ] ],
+        "review": [ [ "Nicolás", "Ojeda", "Bär" ], [ "Gabriel", "Scherer" ] ]
+      },
+      {
+        "references": [ 14362 ],
+        "text": "Add String.{drop,take,cut}_{first,last}_while",
+        "breaking change": false,
+        "authors": [ [ "Daniel", "Bünzli" ] ],
+        "review": [ [ "Nicolás", "Ojeda", "Bär" ], [ "David", "Allsopp" ] ]
+      },
+      {
+        "references": [ 14363 ],
+        "text": "Preserve the backtrace at exceptional domain termination. Domain.join\n  on an exceptionally terminated domain re-raises the exception with the\n  backtrace.",
+        "breaking change": false,
+        "authors": [ [ "KC", "Sivaramakrishnan" ] ],
+        "report": [ [ "Nathan", "Taylor" ] ],
+        "review": [ [ "Gabriel", "Scherer" ], [ "David", "Allsopp" ] ]
+      },
+      {
+        "references": [ 13372 ],
+        "text": "New Format and Printf printf-like functions that accept a\n   heterogeneous list as arguments.",
+        "breaking change": false,
+        "authors": [ [ "Leonardo", "Santos" ] ],
+        "review": [ [ "Florian", "Angeletti" ], [ "Gabriel", "Scherer" ] ]
+      },
+      {
+        "references": [ 14352 ],
+        "text": "Add String.{drop,take,cut}_{first,last}.",
+        "breaking change": false,
+        "authors": [ [ "Daniel", "Bünzli" ] ],
+        "review": [
+          [ "David", "Allsopp" ],
+          [ "Nicolás", "Ojeda", "Bär" ],
+          [ "Vincent", "Laviron" ]
+        ]
+      },
       {
         "references": [ 14185 ],
         "text": "List.split_map",
@@ -217,6 +350,13 @@
           [ "Jan", "Midtgaard" ],
           [ "Damien", "Doligez" ]
         ]
+      },
+      {
+        "references": [ 14084 ],
+        "text": "Future-proof Dynarray implementation against a smarter compiler",
+        "breaking change": false,
+        "authors": [ [ "Basile", "Clément" ] ],
+        "review": [ [ "Gabriel", "Scherer" ] ]
       }
     ],
     " Type system:": [
@@ -240,9 +380,35 @@
         "breaking change": true,
         "authors": [ [ "Clement", "Blaudeau" ], [ "Ryan", "Tjoa" ] ],
         "review": [ [ "Florian", "Angeletti" ] ]
+      },
+      {
+        "references": [ 14327 ],
+        "text": "Allow retyping as-patterns that contain existentials\n  (completing #14229)",
+        "breaking change": false,
+        "authors": [ [ "Jacques", "Garrigue" ], [ "Takafumi", "Saikawa" ] ],
+        "reported": [ [ "Olivier", "Nicole" ] ],
+        "review": [ [ "Gabriel", "Scherer" ] ]
       }
     ],
     " Other libraries:": [
+      {
+        "references": [ 13700, 14454 ],
+        "text": "Use POSIX thread-safe getgrnam_r, getgrgid_r, getpwnam_r,\n  getpwuid_r, gmtime_r, localtime_r, getlogin_r, and fix mktime error checking.",
+        "breaking change": false,
+        "authors": [ [ "Antonin", "Décimo" ] ],
+        "review": [
+          [ "David", "Allsopp" ],
+          [ "Stefan", "Muenzel" ],
+          [ "Miod", "Vallat" ]
+        ]
+      },
+      {
+        "references": [ 14406 ],
+        "text": "Better handling of address length for unix sockets, improving Haiku\n  compatibility.",
+        "breaking change": false,
+        "authors": [ [ "Sylvain", "Kerjean" ] ],
+        "review": [ [ "Antonin", "Décimo" ], [ "Nicolás", "Ojeda", "Bär" ] ]
+      },
       {
         "references": [ 14046 ],
         "text": "On Windows, `Unix.kill pid Sys.sigkill` causes the receiving process\n  to exit with code ERROR_PROCESS_ABORTED (1067) instead of 0.",
@@ -267,6 +433,24 @@
         "breaking change": false,
         "authors": [ [ "Antonin", "Décimo" ] ],
         "review": [ [ "Gabriel", "Scherer" ], [ "Nicolás", "Ojeda", "Bär" ] ]
+      },
+      {
+        "references": [ 14310 ],
+        "text": "Deprecate union sock_addr_union for struct sockaddr_storage\n  and socklen_param_type for socklen_t.",
+        "breaking change": false,
+        "authors": [ [ "Antonin", "Décimo" ] ],
+        "review": [
+          [ "Nicolás", "Ojeda", "Bär" ],
+          [ "David", "Allsopp" ],
+          [ "Samuel", "Hym" ]
+        ]
+      },
+      {
+        "references": [ 14391 ],
+        "text": "unload native dynlinked objects when an error occurs and it is safe to\n  do so. (Fixes #14323)",
+        "breaking change": false,
+        "authors": [ [ "Nicolás", "Ojeda", "Bär" ] ],
+        "review": [ [ "Vincent", "Laviron" ] ]
       }
     ],
     " Tools:": [
@@ -319,9 +503,56 @@
         "breaking change": false,
         "authors": [ [ "Pierre", "Boutillier" ] ],
         "review": [ [ "Gabriel", "Scherer" ] ]
+      },
+      {
+        "references": [ 14032, 14034 ],
+        "text": "Update to and require FlexDLL 0.44.",
+        "breaking change": false,
+        "authors": [ [ "Jan", "Midtgaard" ], [ "Antonin", "Décimo" ] ],
+        "review": [ [ "David", "Allsopp" ] ]
+      },
+      {
+        "references": [ 14239 ],
+        "text": "Fix `#show_constructor` when printing non-GADT type parameters",
+        "breaking change": false,
+        "authors": [ [ "Takafumi", "Saikawa" ], [ "Jacques", "Garrigue" ] ],
+        "review": [ [ "Gabriel", "Scherer" ] ]
+      },
+      {
+        "references": [ 14245 ],
+        "text": "ocamlobjinfo now displays the runtime invoked by a bytecode\n  executable (either from the RNTM section or by analysing the shebang lines)",
+        "breaking change": false,
+        "authors": [ [ "David", "Allsopp" ] ],
+        "review": [ [ "Damien", "Doligez" ], [ "Samuel", "Hym" ] ]
       }
     ],
     " Manual and documentation:": [
+      {
+        "references": [ 14397 ],
+        "text": "Improve documentation of type-directed disambiguation of array\n  literals",
+        "breaking change": false,
+        "authors": [ [ "Alicia", "Michael" ] ],
+        "review": [ [ "Olivier", "Nicole" ], [ "Florian", "Angeletti" ] ]
+      },
+      {
+        "references": [ 14293 ],
+        "text": "Improve documentation of Runtime_events.Timestamp",
+        "breaking change": false,
+        "authors": [ [ "Raphaël", "Proust" ] ],
+        "review": [ [ "Gabriel", "Scherer" ] ]
+      },
+      {
+        "references": [ 13747 ],
+        "text": "Document support for native debugging with GDB and LLDB.",
+        "breaking change": false,
+        "authors": [ [ "Tim", "McGilchrist" ] ],
+        "review": [
+          [ "Daniel", "Bünzli" ],
+          [ "Samuel", "Hym" ],
+          [ "Olivier", "Nicole" ],
+          [ "Antonin", "Décimo" ]
+        ]
+      },
       {
         "references": [ 13975 ],
         "text": "documented the `[@remove_aliases]` built-in attribute for signatures\n  (introduced by #1652 in 2018). Small refactor of the code that fetches the\n  attribute.",
@@ -369,6 +600,13 @@
         "breaking change": false,
         "authors": [ [ "Raphaël", "Proust" ] ],
         "review": [ [ "Gabriel", "Scherer" ] ]
+      },
+      {
+        "references": [ 14392 ],
+        "text": "Fix AsciiDoc files, add more markup, xrefs, documentation.",
+        "breaking change": false,
+        "authors": [ [ "Antonin", "Décimo" ] ],
+        "review": [ [ "Gabriel", "Scherer" ], [ "David", "Allsopp" ] ]
       }
     ],
     " Compiler user-interface and warnings:": [
@@ -378,6 +616,17 @@
         "breaking change": false,
         "authors": [ [ "Shivam", "Acharya" ] ],
         "review": [ [ "Gabriel", "Scherer" ], [ "Florian", "Angeletti" ] ]
+      },
+      {
+        "references": [ 13994 ],
+        "text": "documentation for external types",
+        "breaking change": false,
+        "authors": [ [ "Gabriel", "Scherer" ] ],
+        "review": [
+          [ "Jan", "Midtgaard" ],
+          [ "Jacques", "Garrigue" ],
+          [ "Florian", "Angeletti" ]
+        ]
       },
       {
         "references": [ 14076 ],
@@ -408,6 +657,13 @@
         "review": [ [ "Jacques", "Garrigue" ], [ "Florian", "Angeletti" ] ]
       },
       {
+        "references": [ 14190 ],
+        "text": "`ocaml -e` now also processes `-init` (previously it was ignored).",
+        "breaking change": false,
+        "authors": [ [ "Emile", "Trotignon" ] ],
+        "review": [ [ "David", "Allsopp" ], [ "@ygrek" ] ]
+      },
+      {
         "references": [ 14225 ],
         "text": "do not raise unused-constructor warning on private\n  constructor in type implementations, for example\n  `type safe = private Safe`, which are typically used to\n  create new fresh/generative types (here `safe`) to be used\n  as GADT indices.",
         "breaking change": false,
@@ -416,6 +672,46 @@
         "review": [
           [ "Nicolás", "Ojeda", "Bär" ], [ "Florian", "Angeletti" ]
         ]
+      },
+      {
+        "references": [ 14244 ],
+        "text": "Add -set-runtime-default option to the compiler, allowing the default\n  value of the Standard Library location used by the runtime to be overridden.",
+        "breaking change": false,
+        "authors": [ [ "Antonin", "Décimo" ] ],
+        "review": [
+          [ "David", "Allsopp" ],
+          [ "Jonah", "Beckford" ],
+          [ "Damien", "Doligez" ],
+          [ "Samuel", "Hym" ]
+        ]
+      },
+      {
+        "references": [ 14245 ],
+        "text": "New option -launch-method for ocamlc allows the method used by a\n  tendered bytecode executable to locate the interpreter to be given explicitly.\n  In particular, it makes it easier to specify the use of the executable\n  launcher on Unix. New option -runtime-search extends the bytecode executable\n  header to be able to search for the runtime interpreter in the directory\n  containing the executable and in PATH rather than relying on a single\n  hard-coded path.",
+        "breaking change": false,
+        "authors": [ [ "David", "Allsopp" ] ],
+        "review": [ [ "Damien", "Doligez" ], [ "Samuel", "Hym" ] ]
+      },
+      {
+        "references": [ 14315 ],
+        "text": "enable -i-variance also for classes and extension constructors,\n  and add description of -i-variance in manpages",
+        "breaking change": false,
+        "authors": [ [ "Takafumi", "Saikawa" ] ],
+        "review": [ [ "Florian", "Angeletti" ], [ "Jacques", "Garrigue" ] ]
+      },
+      {
+        "references": [ 14373 ],
+        "text": "remove the OCAML_BINANNOT_WITHENV environment variable, and\n   always strip typing environment in cmt files",
+        "breaking change": false,
+        "authors": [ [ "Florian", "Angeletti" ] ],
+        "review": [ [ "David", "Allsopp" ] ]
+      },
+      {
+        "references": [ 14330 ],
+        "text": "add suggestions when a signature mismatch is likely to be be caused by\n  spellchecking mistakes, for instance\n  ```\n      module M: sig type albatross end = struct type albatros end\n  ```",
+        "breaking change": false,
+        "authors": [ [ "Malo", "Monin" ], [ "Florian", "Angeletti" ] ],
+        "review": [ [ "Gabriel", "Scherer" ] ]
       }
     ],
     " Internal/compiler-libs changes:": [
@@ -461,11 +757,11 @@
         "review": [ [ "Gabriel", "Scherer" ] ]
       },
       {
-        "references": [ 13656, 14114 ],
-        "text": "Use C99 stdint.h/inttypes.h fixed-width integer types and\n  macros to define OCaml integers.",
+        "references": [ 13656, 14114, 14308 ],
+        "text": "Use C99 stdint.h/inttypes.h fixed-width\n  integer types and macros to define OCaml integers.",
         "breaking change": false,
         "authors": [ [ "Antonin", "Décimo" ] ],
-        "review": [ [ "Nick", "Barnes" ] ]
+        "review": [ [ "Nick", "Barnes" ], [ "David", "Allsopp" ] ]
       },
       {
         "references": [ 14148 ],
@@ -503,23 +799,150 @@
         "review": [ [ "Nicolás", "Ojeda", "Bär" ] ]
       },
       {
+        "references": [ 14243 ],
+        "text": "ocamlc now uses the same code as the runtime to parse ld.conf (via a\n  C primitive), eliminating some highly obscure corner cases.",
+        "breaking change": false,
+        "authors": [ [ "David", "Allsopp" ] ],
+        "review": [
+          [ "Jonah", "Beckford" ],
+          [ "Damien", "Doligez" ],
+          [ "Hugo", "Heuzard" ]
+        ]
+      },
+      {
         "references": [ 14260 ],
         "text": "Refactor Lambda.structured_constant to avoid duplicate\n  representations for string constants",
         "breaking change": false,
         "authors": [ [ "Vincent", "Laviron" ] ],
         "review": [ [ "Nicolás", "Ojeda", "Bär" ], [ "Gabriel", "Scherer" ] ]
+      },
+      {
+        "references": [ 13913 ],
+        "text": "Use Blake128 as the hash function for the compiler's CRCs",
+        "breaking change": false,
+        "authors": [ [ "Vincent", "Laviron" ] ],
+        "review": [ [ "Xavier", "Leroy" ], [ "Gabriel", "Scherer" ] ]
+      },
+      {
+        "references": [ 14297, 14299 ],
+        "text": "Avoid iterating on hash tables to produce types or terms",
+        "breaking change": false,
+        "authors": [ [ "Vincent", "Laviron" ] ],
+        "review": [ [ "Nicolás", "Ojeda", "Bär" ], [ "Gabriel", "Scherer" ] ]
+      },
+      {
+        "references": [ 14322 ],
+        "text": "Remove leftover hacks for handling pattern constraints\n  As a side effect, `let rec (_ as x) = ...` is now always rejected instead of\n  being treated as equivalent to `let rec x = ...`",
+        "breaking change": true,
+        "authors": [ [ "Vincent", "Laviron" ] ],
+        "review": [ [ "Alistair", "O'Brien" ], [ "Florian", "Angeletti" ] ]
+      },
+      {
+        "references": [ 14331 ],
+        "text": "Enforce current_level <= generic_level, and explain create_scope",
+        "breaking change": false,
+        "authors": [ [ "Jacques", "Garrigue" ], [ "Takafumi", "Saikawa" ] ],
+        "review": [ [ "Gabriel", "Scherer" ] ]
+      },
+      {
+        "references": [ 14388 ],
+        "text": "Remove support for `let rec (module M : S) = e1 in e2`.",
+        "breaking change": true,
+        "authors": [ [ "Alistair", "O'Brien" ] ],
+        "review": [ [ "Vincent", "Laviron" ], [ "Gabriel", "Scherer" ] ]
+      },
+      {
+        "references": [ 14422 ],
+        "text": "Refactoring an `if match e with p1 -> true | p2 -> false then ...`\n  into a match in typetexp.",
+        "breaking change": false,
+        "authors": [ [ "Samuel", "Vivien" ] ],
+        "review": [ [ "Gabriel", "Scherer" ] ]
+      },
+      {
+        "references": [ 13224 ],
+        "text": "Clarify barriers and spin macros with delayed expansion.",
+        "breaking change": false,
+        "authors": [ [ "Antonin", "Décimo" ] ],
+        "review": [ [ "David", "Allsopp" ], [ "Gabriel", "Scherer" ] ]
+      },
+      {
+        "references": [ 14435, 14455 ],
+        "text": "Add the not-root builtin ocamltest action. This allows to skip\n  tests that fail if the current user is root (superuser).",
+        "breaking change": false,
+        "authors": [ [ "Kate", "Deplaix" ] ],
+        "review": [
+          [ "Gabriel", "Scherer" ],
+          [ "Nicolás", "Ojeda", "Bär" ],
+          [ "Antonin", "Décimo" ]
+        ]
       }
     ],
     " Build system:": [
+      {
+        "references": [ 13705, 14444 ],
+        "text": "Cache test results of custom Autoconf tests from aclocal.m4.",
+        "breaking change": false,
+        "authors": [ [ "Antonin", "Décimo" ] ],
+        "review": [ [ "David", "Allsopp" ], [ "Miod", "Vallat" ] ]
+      },
       {
         "references": [ 13810 ],
         "text": "Support build of cross compilers to native freestanding targets",
         "breaking change": false,
         "authors": [ [ "Samuel", "Hym" ] ],
         "review": [ [ "Antonin", "Décimo" ], [ "Romain", "Calascibetta" ] ]
+      },
+      {
+        "references": [ 14243 ],
+        "text": "New configure option --with-additional-stublibsdir allows an\n  additional directory to be added to the start of ld.conf. Additionally, the\n  stublibs subdirectory is no longer created, nor added to ld.conf, when\n  building OCaml with --disable-shared.",
+        "breaking change": false,
+        "authors": [ [ "David", "Allsopp" ] ],
+        "review": [
+          [ "Jonah", "Beckford" ],
+          [ "Damien", "Doligez" ],
+          [ "Hugo", "Heuzard" ]
+        ]
+      },
+      {
+        "references": [ 14244 ],
+        "text": "When targeting native Windows on Cygwin or MSYS2, preserve\n  backslashes in the supplied `--prefix` (in particular, backslashes instead of\n  slashes will then be displayed by `ocamlopt -config-var standard_library`).\n  If the supplied prefix contains a slash, then it is normalised, as\n  previously.",
+        "breaking change": false,
+        "authors": [ [ "David", "Allsopp" ] ],
+        "review": [
+          [ "Jonah", "Beckford" ],
+          [ "Antonin", "Décimo" ],
+          [ "Damien", "Doligez" ],
+          [ "Samuel", "Hym" ]
+        ]
+      },
+      {
+        "references": [ 14245 ],
+        "text": "New --enable-runtime-search configure option controls the\n  -runtime-search option used to build the bytecode binaries in the compiler\n  distribution. --enable-runtime-search-target controls the default value of\n  -runtime-search used for bytecode executables produced by the compiler.",
+        "breaking change": false,
+        "authors": [ [ "David", "Allsopp" ] ],
+        "review": [ [ "Damien", "Doligez" ], [ "Samuel", "Hym" ] ]
       }
     ],
     " Bug fixes:": [
+      {
+        "references": [ 14036 ],
+        "text": "Fix nontermination of cycle printing in recursive modules with\n  `-short-paths`. Add error message for types considered abstract while\n  checking recursive modules.",
+        "breaking change": false,
+        "authors": [ [ "Brandon", "Stride" ] ],
+        "review": [ [ "Florian", "Angeletti" ] ]
+      },
+      {
+        "references": [ 14065 ],
+        "text": "Fix function signature mismatch of `__tsan_func_exit` with GCC 15.\n  Check in the configure step if the TSan provided internal builtins are the\n  same as what we expect, introduce `caml_tsan_*` wrappers for the `__tsan_*`\n  functions we use.",
+        "breaking change": false,
+        "authors": [ [ "Hari", "Hara", "Naveen", "S" ] ],
+        "report": [ [ "Hari", "Hara", "Naveen", "S" ] ],
+        "review": [
+          [ "Gabriel", "Scherer" ],
+          [ "Antonin", "Décimo" ],
+          [ "Olivier", "Nicole" ]
+        ]
+      },
       {
         "references": [ 14071 ],
         "text": "Fix exception name in Dynlink.Error printer.",
@@ -557,6 +980,14 @@
         "review": [ [ "Gabriel", "Scherer" ] ]
       },
       {
+        "references": [ 14210 ],
+        "text": "fix TSan-reported data race in weak pointers runtime",
+        "breaking change": false,
+        "authors": [ [ "Gabriel", "Scherer" ], [ "Damien", "Doligez" ] ],
+        "report": [ [ "Olivier", "Nicole" ] ],
+        "review": [ [ "KC", "Sivaramakrishnan" ] ]
+      },
+      {
         "references": [ 14213 ],
         "text": "Fix shadow-stack-related crashes with TSan",
         "breaking change": false,
@@ -573,10 +1004,11 @@
         "review": [ [ "Florian", "Angeletti" ] ]
       },
       {
-        "references": [ 14061, 14209 ],
-        "text": "fix a memory-ordering bug in Weak.set that could\n  result in uninitialized memory seen by Weak.get on another domain.",
+        "references": [ 14255 ],
+        "text": "Fix TSan bug with C calls that take many arguments",
         "breaking change": false,
-        "authors": [ [ "Damien", "Doligez" ] ],
+        "authors": [ [ "Olivier", "Nicole" ], [ "Miod", "Vallat" ] ],
+        "report": [ [ "Nathan", "Taylor" ] ],
         "review": [ [ "Gabriel", "Scherer" ] ]
       },
       {
@@ -592,10 +1024,54 @@
         "breaking change": false,
         "authors": [ [ "Florian", "Angeletti" ] ],
         "review": [ [ "Gabriel", "Scherer" ] ]
+      },
+      {
+        "references": [ 14300, 14304 ],
+        "text": "fix a race between memprof and the minor GC, detected by TSan",
+        "breaking change": false,
+        "authors": [ [ "Gabriel", "Scherer" ] ],
+        "report": [ [ "Olivier", "Nicole" ] ],
+        "review": [ [ "Stephen", "Dolan" ], [ "Nick", "Barnes" ] ]
+      },
+      {
+        "references": [ 14332 ],
+        "text": "Fix missing TSan instrumentation in subexpressions",
+        "breaking change": false,
+        "authors": [ [ "Vincent", "Laviron" ] ],
+        "review": [ [ "Gabriel", "Scherer" ], [ "Olivier", "Nicole" ] ]
+      },
+      {
+        "references": [ 14370, 14429 ],
+        "text": "Fix headers for C++ inclusion.",
+        "breaking change": false,
+        "authors": [ [ "Antonin", "Décimo" ] ],
+        "review": [ [ "Gabriel", "Scherer" ] ]
+      },
+      {
+        "references": [ 14417 ],
+        "text": "Fix issue with nested packs on macOS.",
+        "breaking change": false,
+        "authors": [ [ "Vincent", "Laviron" ] ],
+        "report": [ [ "Kate", "Deplaix" ] ],
+        "review": [ [ "Gabriel", "Scherer" ] ]
+      },
+      {
+        "references": [ 14423 ],
+        "text": "Fix detection of SetThreadDescription on 32-bit builds, meaning that\n  Thread.set_current_thread_name now works on 32-bit MSVC and uses the correct\n  mechanism on 32-bit mingw-w64.",
+        "breaking change": false,
+        "authors": [ [ "David", "Allsopp" ] ],
+        "review": [ [ "Antonin", "Décimo" ] ]
+      },
+      {
+        "references": [ 14431 ],
+        "text": "Enable native backend for DragonFly BSD. This builds ocamlopt on\n  DragonFly.",
+        "breaking change": false,
+        "authors": [ [ "Michael", "Neumann" ] ],
+        "review": [ [ "Gabriel", "Scherer" ], [ "Kate", "Deplaix" ] ]
       }
     ]
   },
-  "OCaml 5.4.0": {
+  "OCaml 5.4.0 (9 October 2025)": {
     "Release documentation": [
       {
         "doc": "(Changes that can break existing programs are marked with a \"*\")"
@@ -647,18 +1123,6 @@
           [ "KC", "Sivaramakrishnan" ],
           [ "Basile", "Clément" ],
           [ "Olivier", "Nicole" ]
-        ]
-      },
-      {
-        "references": [ 13806 ],
-        "text": "Enable the use of function parameters with polymorphic types.",
-        "breaking change": false,
-        "authors": [ [ "Ulysse", "Gérard" ], [ "Leo", "White" ] ],
-        "review": [
-          [ "Florian", "Angeletti" ],
-          [ "Samuel", "Vivien" ],
-          [ "Gabriel", "Scherer" ],
-          [ "Jacques", "Garrigue" ]
         ]
       }
     ],
@@ -720,9 +1184,7 @@
         "text": "Add Stdlib.Char.Ascii",
         "breaking change": false,
         "authors": [ [ "Daniel", "Bünzli" ] ],
-        "review": [
-          [ "by", "Nicolás", "Ojeda", "Bär" ], [ "Jeremy", "Yallop" ]
-        ]
+        "review": [ [ "Nicolás", "Ojeda", "Bär" ], [ "Jeremy", "Yallop" ] ]
       },
       {
         "references": [ 13720 ],
@@ -938,11 +1400,10 @@
         "references": [ 13932 ],
         "text": "Add List.singleton and Seq.singleton",
         "breaking change": false,
-        "authors": [
-          [ "David", "Allsopp" ],
-          [ "tariffs", "applied", "by", "Nicolás", "Ojeda", "Bär" ],
-          [ "Gabriel", "Scherer" ]
-        ]
+        "applied": [
+          [ "Nicolás", "Ojeda", "Bär" ], [ "Gabriel", "Scherer" ]
+        ],
+        "authors": [ [ "David", "Allsopp" ], [ "tariffs" ] ]
       },
       {
         "references": [ 13843 ],
@@ -952,7 +1413,8 @@
         "review": [
           [ "David", "Allsopp" ],
           [ "Nicolás", "Ojeda", "Bär" ],
-          [ "Daniel", "Bünzli", "Jan", "Midtgaard" ],
+          [ "Daniel", "Bünzli" ],
+          [ "Jan", "Midtgaard" ],
           [ "Miod", "Vallat" ]
         ]
       }
@@ -1002,7 +1464,15 @@
         "references": [ 13785 ],
         "text": "Add `Runtime_events.Timestamp.get_current`.",
         "breaking change": false,
-        "authors": [ [ "Simon", "Cruanes" ] ]
+        "authors": [ [ "Simon", "Cruanes" ] ],
+        "review": [
+          [ "Gabriel", "Scherer" ],
+          [ "David", "Allsopp" ],
+          [ "Antonin", "Décimo" ],
+          [ "Tim", "McGilchrist" ],
+          [ "Sadiq", "Jaffer" ],
+          [ "Vincent", "Laviron" ]
+        ]
       },
       {
         "references": [ 13774 ],
@@ -1027,13 +1497,6 @@
         "review": [
           [ "Nick", "Barnes" ], [ "Antonin", "Décimo" ], [ "Miod", "Vallat" ]
         ]
-      },
-      {
-        "references": [ 13616 ],
-        "text": "Change free list representation in shared heap",
-        "breaking change": false,
-        "authors": [ [ "Sadiq", "Jaffer" ] ],
-        "review": [ [ "Damien", "Doligez" ] ]
       },
       {
         "references": [ 13352 ],
@@ -1321,7 +1784,7 @@
         "text": "Fix Python debugger extensions (for LLDB and GDB) to restore\n  functionality broken by #13272 in 5.3.",
         "breaking change": false,
         "authors": [ [ "Nick", "Barnes" ] ],
-        "review": [ [ "Tim", "McGilchrist", "Gabriel", "Scherer" ] ]
+        "review": [ [ "Tim", "McGilchrist" ], [ "Gabriel", "Scherer" ] ]
       },
       {
         "references": [ 12019 ],
@@ -1422,18 +1885,6 @@
         "breaking change": true,
         "authors": [ [ "Clement", "Blaudeau" ] ],
         "review": [ [ "Gabriel", "Scherer" ] ]
-      },
-      {
-        "references": [ 13747 ],
-        "text": "Document support for native debugging with GDB and LLDB.",
-        "breaking change": false,
-        "authors": [ [ "Tim", "McGilchrist" ] ],
-        "review": [
-          [ "Daniel", "Bünzli" ],
-          [ "Samuel", "Hym" ],
-          [ "Olivier", "Nicole" ],
-          [ "Antonin", "Décimo" ]
-        ]
       }
     ],
     " Compiler user-interface and warnings:": [
@@ -2082,12 +2533,40 @@
         "review": [ [ "Stephen", "Dolan" ] ]
       },
       {
+        "references": [ 14061, 14209 ],
+        "text": "fix a memory-ordering bug in Weak.set that could\n  result in uninitialized memory seen by Weak.get on another domain.",
+        "breaking change": false,
+        "authors": [ [ "Damien", "Doligez" ] ],
+        "review": [ [ "Gabriel", "Scherer" ] ]
+      },
+      {
         "references": [ 14214, 14221 ],
         "text": "fix a confused error message for module inclusions,\n  functor error messages were missing some type equalities potentially leading\n  to nonsensical \"type t is not compatible with type t\" submessage",
         "breaking change": false,
         "authors": [ [ "Florian", "Angeletti" ] ],
         "report": [ [ "Basile", "Clément" ] ],
         "review": [ [ "Gabriel", "Scherer" ] ]
+      },
+      {
+        "references": [ 14238 ],
+        "text": "Fix certain variadic macros in misc.h which could trigger C warnings\n  under certain conditions in prerelease versions of OCaml 5.4.",
+        "breaking change": false,
+        "authors": [ [ "Antonin", "Décimo" ] ],
+        "review": [ [ "Nicolás", "Ojeda", "Bär" ] ]
+      },
+      {
+        "references": [ 14287 ],
+        "text": "Bugfix for GC root mishandling in memprof.c",
+        "breaking change": false,
+        "authors": [ [ "Stephen", "Dolan" ] ],
+        "review": [ [ "Leo", "White" ] ]
+      },
+      {
+        "references": [ 14368 ],
+        "text": "Bugfix for Simplif substituting under lambda",
+        "breaking change": false,
+        "authors": [ [ "Stephen", "Dolan" ] ],
+        "review": [ [ "Vincent", "Laviron" ], [ "Gabriel", "Scherer" ] ]
       }
     ]
   },
@@ -2657,6 +3136,13 @@
         "breaking change": false,
         "authors": [ [ "Nick", "Barnes" ] ],
         "review": [ [ "Tim", "McGilchrist" ], [ "Gabriel", "Scherer" ] ]
+      },
+      {
+        "references": [ 14375 ],
+        "text": "More accurate error message in the ocamldebug in case of incorrect or\n  missing magic number.",
+        "breaking change": false,
+        "authors": [ [ "Alex", "Asafov" ] ],
+        "review": [ [ "Gabriel", "Scherer" ] ]
       }
     ],
     " Toplevel:": [
@@ -2678,7 +3164,7 @@
     " Manual and documentation:": [
       {
         "references": [ 13370 ],
-        "text": "Document that that temporary variables holding GCd pointers must\n  not be live across a GC.",
+        "text": "Document that temporary variables holding GCd pointers must\n  not be live across a GC.",
         "breaking change": false,
         "authors": [ [ "Demi", "Marie", "Obenour" ] ]
       },
@@ -4796,18 +5282,6 @@
       }
     ],
     " Bug fixes:": [
-      {
-        "references": [ 14065 ],
-        "text": "Fix function signature mismatch of `__tsan_func_exit` with GCC 15.\n  Check in the configure step if the TSan provided internal builtins are the\n  same as what we expect, introduce `caml_tsan_*` wrappers for the `__tsan_*`\n  functions we use.",
-        "breaking change": false,
-        "authors": [ [ "Hari", "Hara", "Naveen", "S" ] ],
-        "report": [ [ "Hari", "Hara", "Naveen", "S" ] ],
-        "review": [
-          [ "Gabriel", "Scherer" ],
-          [ "Antonin", "Décimo" ],
-          [ "Olivier", "Nicole" ]
-        ]
-      },
       {
         "references": [ 10652, 12720 ],
         "text": "fix evaluation order in presence of optional arguments",
@@ -9940,7 +10414,7 @@
       },
       {
         "references": [ 10045 ],
-        "text": "Add libext variable to ocamltest and enable C# tests on on mingw",
+        "text": "Add libext variable to ocamltest and enable C# tests on mingw",
         "breaking change": false,
         "authors": [ [ "David", "Allsopp" ] ],
         "review": [ [ "Gabriel", "Scherer" ] ]
