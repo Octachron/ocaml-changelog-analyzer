@@ -14,6 +14,18 @@
         "review": [ [ "Gabriel", "Scherer" ] ]
       },
       {
+        "references": [ 14029 ],
+        "text": "Recognize `%identity` as nonexpansive",
+        "breaking change": false,
+        "authors": [ [ "Stephen", "Dolan" ], [ "Olivier", "Nicole" ] ],
+        "review": [
+          [ "Hugo", "Heuzard" ],
+          [ "Jacques", "Guarrigue" ],
+          [ "Jeremy", "Yallop" ],
+          [ "Gabriel", "Scherer" ]
+        ]
+      },
+      {
         "references": [ 13712 ],
         "text": "Introduce a new kind `Type_external` and syntax\n  `type t = external \"name\"` to discriminate external types from other types\n  and each other.  This PR turns primitive types into external and removes the\n  past behavior of discriminating abstract types defined in the current module.",
         "breaking change": true,
@@ -22,6 +34,20 @@
       }
     ],
     " Runtime system:": [
+      {
+        "references": [ 13580 ],
+        "text": "Introduce sweep-only phase at start of major GC cycle,\n  to reduce latent-garbage delay and therefore improve GC performance.",
+        "breaking change": false,
+        "authors": [ [ "Stephen", "Dolan" ], [ "Nick", "Barnes" ] ],
+        "review": [ [ "KC", "Sivaramakrishnan" ] ]
+      },
+      {
+        "references": [ 14123 ],
+        "text": "Fix integer-overflow problems in heap compaction.",
+        "breaking change": false,
+        "authors": [ [ "Nick", "Barnes" ] ],
+        "review": [ [ "Antonin", "Décimo" ] ]
+      },
       {
         "references": [ 14035 ],
         "text": "Fix the alignment of _Atomic long long unsigned int fields\n  before GCC 11.1 on i686. Silence GCC note on newer versions.",
@@ -39,9 +65,63 @@
           [ "Gabriel", "Scherer" ],
           [ "Olivier", "Nicole" ]
         ]
+      },
+      {
+        "references": [ 14053 ],
+        "text": "Statmemprof: it is now possible to replace a profile in the\n  current domain without stopping it in all domains.\n  Added the function [Gc.Memprof.is_sampling].",
+        "breaking change": false,
+        "authors": [ [ "Guillaume", "Munch-Maccagnoni" ] ],
+        "review": [ [ "Gabriel", "Scherer" ] ]
+      },
+      {
+        "references": [ 14168 ],
+        "text": "restore the stack size statistic in `Gc.stat` and adds a new\n  `live_stacks_words` field tracking the total size in words of live stacks.",
+        "breaking change": false,
+        "authors": [ [ "Florian", "Angeletti" ] ],
+        "review": [ [ "Gabriel", "Scherer" ] ]
+      },
+      {
+        "references": [ 14189 ],
+        "text": "Add runtime counters EV_C_MINOR_PROMOTED_WORDS and\n  EV_C_MINOR_ALLOCATED_WORDS. EV_C_MINOR_PROMOTED_WORDS reports words promoted\n  by minor GC and EV_C_MINOR_ALLOCATED_WORDS reports words allocated by minor\n  GC. Both have equivalent bytes counters. Also updated the documentation for\n  EV_C_MINOR_PROMOTED and EV_C_MINOR_ALLOCATED to qualify scope of the values\n  reported as being per-domain.",
+        "breaking change": false,
+        "authors": [ [ "Tim", "McGilchrist" ] ],
+        "review": [
+          [ "Nick", "Barnes" ],
+          [ "Sadiq", "Jaffer" ],
+          [ "Gabriel", "Scherer" ]
+        ]
+      },
+      {
+        "references": [ 14238 ],
+        "text": "Fix certain variadic macros in misc.h which could trigger C warnings\n  under certain conditions.",
+        "breaking change": false,
+        "authors": [ [ "Antonin", "Décimo" ] ],
+        "review": [ [ "Nicolás", "Ojeda", "Bär" ] ]
+      },
+      {
+        "references": [ 12269, 12410, 13063 ],
+        "text": "Fix unsafety, deadlocks, and/or leaks should\n  rare errors happen during domain creation and thread\n  creation/registration.",
+        "breaking change": false,
+        "authors": [ [ "Guillaume", "Munch-Maccagnoni" ] ],
+        "review": [
+          [ "Gabriel", "Scherer" ],
+          [ "B.", "Szilvasy" ],
+          [ "Miod", "Vallat" ]
+        ]
       }
     ],
     " Standard library:": [
+      {
+        "references": [ 14185 ],
+        "text": "List.split_map",
+        "breaking change": false,
+        "authors": [ [ "Jeremy", "Yallop" ] ],
+        "review": [
+          [ "Daniel", "Bünzli" ],
+          [ "Nicolás", "Ojeda", "Bär" ],
+          [ "Damien", "Doligez" ]
+        ]
+      },
       {
         "references": [ 13728 ],
         "text": "Add Sys.runtime_executable containing the full path (if available) to\n  the currently executing runtime.",
@@ -119,6 +199,24 @@
           [ "Nicolás", "Ojeda", "Bär" ],
           [ "Stephen", "Dolan" ]
         ]
+      },
+      {
+        "references": [ 14060 ],
+        "text": "Add Hashtbl.find_and_replace and Hashtbl.find_and_remove.",
+        "breaking change": false,
+        "authors": [ [ "Sacha-Élie", "Ayoun" ] ],
+        "review": [ [ "Nicolás", "Ojeda", "Bär" ], [ "Gabriel", "Scherer" ] ]
+      },
+      {
+        "references": [ 14227 ],
+        "text": "Add List.filter_mapi.",
+        "breaking change": false,
+        "authors": [ [ "Émile", "Trotignon" ] ],
+        "review": [
+          [ "Nicolás", "Ojeda", "Bär" ],
+          [ "Jan", "Midtgaard" ],
+          [ "Damien", "Doligez" ]
+        ]
       }
     ],
     " Type system:": [
@@ -173,11 +271,11 @@
     ],
     " Tools:": [
       {
-        "references": [ 12139 ],
-        "text": "BUILD_PATH_PREFIX_MAP rewriting in debug-event locations.",
+        "references": [ 14055 ],
+        "text": "Invert BUILD_PATH_PREFIX_MAP in directories loaded at startup\n  by the debugger.",
         "breaking change": false,
-        "authors": [ [ "Richard", "L.", "Ford" ] ],
-        "review": [ [ "Gabriel", "Scherer" ] ]
+        "authors": [ [ "Pierre", "Boutillier" ] ],
+        "review": [ [ "Gabriel", "Scherer" ], [ "Daniel", "Bünzli" ] ]
       },
       {
         "references": [ 13638 ],
@@ -257,6 +355,20 @@
         "text": "Add missing `item-attribute` rule for `let-binding`s in documentation\n  for attributes.",
         "breaking change": false,
         "authors": [ [ "Shon", "Feder" ] ]
+      },
+      {
+        "references": [ 14228 ],
+        "text": "Trim leading spaces from first lines of LaTeX `ocamldoccode`\n  environments.",
+        "breaking change": false,
+        "authors": [ [ "Yukai", "Chou" ] ],
+        "review": [ [ "Nicolás", "Ojeda", "Bär" ] ]
+      },
+      {
+        "references": [ 14248 ],
+        "text": "Added documentation about the way `Domain.join` triggers a\n  `Thread.join` on the domain's systhreads.",
+        "breaking change": false,
+        "authors": [ [ "Raphaël", "Proust" ] ],
+        "review": [ [ "Gabriel", "Scherer" ] ]
       }
     ],
     " Compiler user-interface and warnings:": [
@@ -269,10 +381,17 @@
       },
       {
         "references": [ 14076 ],
-        "text": "error messages, add a short explanation for mismatched universal\n  variables.",
+        "text": ", 14111: error messages, add a short explanation for mismatched\n  universal variables and universal quantifications.",
         "breaking change": false,
         "authors": [ [ "Florian", "Angeletti" ] ],
         "review": [ [ "Gabriel", "Scherer" ] ]
+      },
+      {
+        "references": [ 14126 ],
+        "text": "Document the `-i-variance` option and `+-`, `-+` variance indicators\n  in the reference manual.",
+        "breaking change": false,
+        "authors": [ [ "Takafumi", "Saikawa" ] ],
+        "review": [ [ "Florian", "Angeletti" ] ]
       },
       {
         "references": [ 14146 ],
@@ -280,6 +399,23 @@
         "breaking change": false,
         "authors": [ [ "Florian", "Angeletti" ] ],
         "review": [ [ "Gabriel", "Scherer" ] ]
+      },
+      {
+        "references": [ 14147 ],
+        "text": "print row types in error messages when they are a type constructor,\n  e.g. `< foo : int; .. as $0>` when $0 is introduced by a GADT constructor",
+        "breaking change": false,
+        "authors": [ [ "Stefan", "Muenzel" ] ],
+        "review": [ [ "Jacques", "Garrigue" ], [ "Florian", "Angeletti" ] ]
+      },
+      {
+        "references": [ 14225 ],
+        "text": "do not raise unused-constructor warning on private\n  constructor in type implementations, for example\n  `type safe = private Safe`, which are typically used to\n  create new fresh/generative types (here `safe`) to be used\n  as GADT indices.",
+        "breaking change": false,
+        "authors": [ [ "Gabriel", "Scherer" ] ],
+        "report": [ [ "Kate", "Deplaix" ] ],
+        "review": [
+          [ "Nicolás", "Ojeda", "Bär" ], [ "Florian", "Angeletti" ]
+        ]
       }
     ],
     " Internal/compiler-libs changes:": [
@@ -344,6 +480,34 @@
         "breaking change": false,
         "authors": [ [ "Stefan", "Muenzel" ] ],
         "review": [ [ "Nicolás", "Ojeda", "Bär" ] ]
+      },
+      {
+        "references": [ 14149 ],
+        "text": "Distinguish `(module M : S)` from `(module M) : (module S)` in\n  patterns.",
+        "breaking change": false,
+        "authors": [ [ "Samuel", "Vivien" ] ],
+        "review": [ [ "Gabriel", "Scherer" ] ]
+      },
+      {
+        "references": [ 14161 ],
+        "text": "refactor the STW-participants machinery to add an intermediate\n  category of 'parked' domain structures.",
+        "breaking change": false,
+        "authors": [ [ "Gabriel", "Scherer" ] ],
+        "review": [ [ "Sivaramakrishnan" ] ]
+      },
+      {
+        "references": [ 14198 ],
+        "text": "Constraints on module unpacking are not ghost",
+        "breaking change": false,
+        "authors": [ [ "Thomas", "Refis" ] ],
+        "review": [ [ "Nicolás", "Ojeda", "Bär" ] ]
+      },
+      {
+        "references": [ 14260 ],
+        "text": "Refactor Lambda.structured_constant to avoid duplicate\n  representations for string constants",
+        "breaking change": false,
+        "authors": [ [ "Vincent", "Laviron" ] ],
+        "review": [ [ "Nicolás", "Ojeda", "Bär" ], [ "Gabriel", "Scherer" ] ]
       }
     ],
     " Build system:": [
@@ -379,9 +543,54 @@
       },
       {
         "references": [ 14155 ],
-        "text": "Audit unexecuted phrases in compiler expect tests and\n  fix all occurences",
+        "text": "Audit unexecuted phrases in compiler expect tests and\n  fix all occurrences",
         "breaking change": false,
         "authors": [ [ "Stefan", "Muenzel" ] ],
+        "review": [ [ "Gabriel", "Scherer" ] ]
+      },
+      {
+        "references": [ 14163, 14176 ],
+        "text": "add a filename location to the deprecation alert for implicit\n  uses of libraries bundled with the compiler (unix,re,threads,dynlink)",
+        "breaking change": false,
+        "authors": [ [ "Florian", "Angeletti" ] ],
+        "report": [ [ "Ali", "Caglayan" ] ],
+        "review": [ [ "Gabriel", "Scherer" ] ]
+      },
+      {
+        "references": [ 14213 ],
+        "text": "Fix shadow-stack-related crashes with TSan",
+        "breaking change": false,
+        "authors": [ [ "Olivier", "Nicole" ] ],
+        "report": [ [ "Nathan", "Taylor" ] ],
+        "review": [ [ "Gabriel", "Scherer" ], [ "Stefan", "Muenzel" ] ]
+      },
+      {
+        "references": [ 13658, 14181 ],
+        "text": "Fix handling of recursive function types that can result\n  in an unbounded number of labeled or optional arguments.",
+        "breaking change": false,
+        "authors": [ [ "Stefan", "Muenzel" ] ],
+        "report": [ [ "Samuel", "Vivien" ] ],
+        "review": [ [ "Florian", "Angeletti" ] ]
+      },
+      {
+        "references": [ 14061, 14209 ],
+        "text": "fix a memory-ordering bug in Weak.set that could\n  result in uninitialized memory seen by Weak.get on another domain.",
+        "breaking change": false,
+        "authors": [ [ "Damien", "Doligez" ] ],
+        "review": [ [ "Gabriel", "Scherer" ] ]
+      },
+      {
+        "references": [ 14230 ],
+        "text": "ocamltest fails to link test program with -custom in some cases",
+        "breaking change": false,
+        "authors": [ [ "Damien", "Doligez" ] ],
+        "review": [ [ "David", "Allsopp" ] ]
+      },
+      {
+        "references": [ 14279 ],
+        "text": "-dsource, preserve (mod) and other escaped infix keyword operators in\n  the printed source wherever possible.",
+        "breaking change": false,
+        "authors": [ [ "Florian", "Angeletti" ] ],
         "review": [ [ "Gabriel", "Scherer" ] ]
       }
     ]
@@ -574,7 +783,7 @@
       {
         "references": [ 13570, 13794 ],
         "text": "Format, add an out_width function to Format device for\n   approximating unicode width.",
-        "breaking change": false,
+        "breaking change": true,
         "authors": [ [ "Florian", "Angeletti" ] ],
         "review": [
           [ "Nicolás", "Ojeda", "Bär" ],
@@ -820,6 +1029,13 @@
         ]
       },
       {
+        "references": [ 13616 ],
+        "text": "Change free list representation in shared heap",
+        "breaking change": false,
+        "authors": [ [ "Sadiq", "Jaffer" ] ],
+        "review": [ [ "Damien", "Doligez" ] ]
+      },
+      {
         "references": [ 13352 ],
         "text": "Concurrency refactors and cleanups.",
         "breaking change": false,
@@ -1048,7 +1264,7 @@
         "review": [ [ "Nicolás", "Ojeda", "Bär" ], [ "David", "Allsopp" ] ]
       },
       {
-        "references": [ 13504, 13625 ],
+        "references": [ 13504, 13625, 14223 ],
         "text": "Add `Thread.set_current_thread_name`.",
         "breaking change": false,
         "authors": [ [ "Romain", "Beauxis" ] ],
@@ -1093,7 +1309,7 @@
       },
       {
         "references": [ 13921 ],
-        "text": "Set cloexec correctly on CRT file descriptors created by the Unix\n  library on Windows. The inheritance on the underlying Win32 handles was\n  correctly set, but the book-keeping for the CRT was leaking the value of\n  non-inherited handles which combined with re-use of HANDLE values within\n  processes could appear to make a CRT file descriptor \"re-open\".",
+        "text": "Set cloexec correctly on CRT file descriptors created by the Unix\n  library on Windows. The inheritance on the underlying Win32 handles was\n  correctly set, but the book-keeping for the CRT was leaking the value of\n  non-inherited handles which combined with reuse of HANDLE values within\n  processes could appear to make a CRT file descriptor \"re-open\".",
         "breaking change": false,
         "authors": [ [ "David", "Allsopp" ] ],
         "review": [ [ "Nicolás", "Ojeda", "Bär" ] ]
@@ -1115,8 +1331,8 @@
         "review": [ [ "David", "Allsopp" ] ]
       },
       {
-        "references": [ 12642, 13536 ],
-        "text": "in the toplevel, print shorter paths for constructors\n  and labels when only some modules along their path are open.",
+        "references": [ 12642, 13536, 14184, 14192 ],
+        "text": "in the toplevel, print shorter paths for\n  constructors and labels when only some modules along their path are open.",
         "breaking change": false,
         "authors": [ [ "Gabriel", "Scherer" ] ],
         "review": [ [ "Florian", "Angeletti" ] ]
@@ -1206,6 +1422,18 @@
         "breaking change": true,
         "authors": [ [ "Clement", "Blaudeau" ] ],
         "review": [ [ "Gabriel", "Scherer" ] ]
+      },
+      {
+        "references": [ 13747 ],
+        "text": "Document support for native debugging with GDB and LLDB.",
+        "breaking change": false,
+        "authors": [ [ "Tim", "McGilchrist" ] ],
+        "review": [
+          [ "Daniel", "Bünzli" ],
+          [ "Samuel", "Hym" ],
+          [ "Olivier", "Nicole" ],
+          [ "Antonin", "Décimo" ]
+        ]
       }
     ],
     " Compiler user-interface and warnings:": [
@@ -1302,7 +1530,7 @@
       },
       {
         "references": [ 13814 ],
-        "text": ", 13898: Add an `unused-type-declaration` warning when using\n  a `t as 'a` with no other occurences of `'a`",
+        "text": ", 13898: Add an `unused-type-declaration` warning when using\n  a `t as 'a` with no other occurrences of `'a`",
         "breaking change": false,
         "authors": [ [ "Samuel", "Vivien" ] ],
         "review": [ [ "Florian", "Angeletti" ], [ "Kate", "Deplaix" ] ]
@@ -1331,7 +1559,7 @@
         "review": [ [ "Gabriel", "Scherer" ], [ "David", "Allsopp" ] ]
       },
       {
-        "references": [ 13302 ],
+        "references": [ 13302, 14236 ],
         "text": "Store locations of longidents components",
         "breaking change": false,
         "authors": [ [ "Ulysse", "Gérard" ], [ "Jules", "Aguillon" ] ],
@@ -1458,7 +1686,7 @@
       },
       {
         "references": [ 13866 ],
-        "text": "Modified occurence check that prevents recursive types for it to see\n  the checked type as a graph rather than a tree",
+        "text": "Modified occurrence check that prevents recursive types for it to see\n  the checked type as a graph rather than a tree",
         "breaking change": false,
         "authors": [ [ "Samuel", "Vivien" ] ],
         "report": [ [ "Didier", "Remy" ] ],
@@ -1710,6 +1938,13 @@
         "review": [ [ "Florian", "Angeletti" ] ]
       },
       {
+        "references": [ 13541, 13777 ],
+        "text": "Using C++11 `thread_local` causes name-mangling\n  issues when linking with flexlink on Cygwin.",
+        "breaking change": false,
+        "authors": [ [ "Antonin", "Décimo" ], [ "David", "Allsopp" ] ],
+        "report": [ [ "Kate", "Deplaix" ] ]
+      },
+      {
         "references": [ 13874, 13882 ],
         "text": "Make evaluation order consistent for applications when using\n  the non-flambda native compiler",
         "breaking change": true,
@@ -1821,6 +2056,37 @@
         "text": "Fix a rare internal typechecker error when combining recursive\n  modules, polymorphic fields or methods, and constrained type parameters.",
         "breaking change": false,
         "authors": [ [ "Florian", "Angeletti" ] ],
+        "review": [ [ "Gabriel", "Scherer" ] ]
+      },
+      {
+        "references": [ 14169 ],
+        "text": "runtime, fix cache miss within the stack fragments cache",
+        "breaking change": false,
+        "authors": [ [ "Florian", "Angeletti" ] ],
+        "review": [ [ "Gabriel", "Scherer" ] ]
+      },
+      {
+        "references": [ 14196, 14197 ],
+        "text": "ocamlprof: do not instrument unreachable clauses",
+        "breaking change": false,
+        "authors": [ [ "Gabriel", "Scherer" ] ],
+        "report": [ [ "Ali", "Caglayan" ] ],
+        "review": [ [ "Nicolás", "Ojeda", "Bär" ] ]
+      },
+      {
+        "references": [ 14200, 14202 ],
+        "text": "bad variance check with private aliases",
+        "breaking change": false,
+        "authors": [ [ "Jacques", "Garrigue" ] ],
+        "report": [ [ "Stephen", "Dolan" ] ],
+        "review": [ [ "Stephen", "Dolan" ] ]
+      },
+      {
+        "references": [ 14214, 14221 ],
+        "text": "fix a confused error message for module inclusions,\n  functor error messages were missing some type equalities potentially leading\n  to nonsensical \"type t is not compatible with type t\" submessage",
+        "breaking change": false,
+        "authors": [ [ "Florian", "Angeletti" ] ],
+        "report": [ [ "Basile", "Clément" ] ],
         "review": [ [ "Gabriel", "Scherer" ] ]
       }
     ]
@@ -2058,7 +2324,7 @@
       },
       {
         "references": [ 10696 ],
-        "text": "Introduce __has_attribute and __has_c_attributes in\n  <caml/misc.h> to test the support of specific atributes in C\n  code. Introduce fallthrough as a wrapper around the fallthrough\n  attribute.",
+        "text": "Introduce __has_attribute and __has_c_attributes in\n  <caml/misc.h> to test the support of specific attributes in C\n  code. Introduce fallthrough as a wrapper around the fallthrough\n  attribute.",
         "breaking change": false,
         "authors": [ [ "Antonin", "Décimo" ] ],
         "review": [
