@@ -2,10 +2,12 @@ open Common
 
 let contribution_by_release (x:Changelog.Def.t) =
   fold_by_release
-    ~entry:(fun map _ _ x -> AR.add map x)
-    ~entry_start:Name_map.empty
+    ~entry:(fun (count,map) _ _ x -> 1 + count, AR.add map x)
+    ~entry_start:(0,Name_map.empty)
     ~release_start:[]
-    ~release:(fun release history map -> (release, map) :: history)
+    ~release:(fun release history (count,map) ->
+        (release, count, map) :: history
+      )
     x
 
 let parse_release_name x =
@@ -23,7 +25,7 @@ let () =
       (Changelog.Def.Pp.padded_name padding) name
       author review any
   in
-  let output_release (r,l) =
+  let output_release (r,number_of_entries,l) =
     let version = parse_release_name r in
     match version with
     | Working_version | Maintenance _ -> ()
@@ -33,7 +35,8 @@ let () =
       let padding = Name_map.fold (fun k _ m -> max m (Changelog.Def.Pp.name_len k)) l 0 in
       Out_channel.with_open_bin filename (fun f ->
           let ppf = Format.formatter_of_out_channel f in
-          Fmt.pf ppf "@[<v># OCaml %d.%d.%d@;%a@]@." v.major v.minor v.patch
+          Fmt.pf ppf "@[<v># OCaml %d.%d.%d, %d entries @;%a@]@."
+            v.major v.minor v.patch number_of_entries
             (Fmt.list @@ pp_author padding) contributions
         )
     in

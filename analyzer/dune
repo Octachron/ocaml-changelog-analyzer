@@ -50,7 +50,11 @@
  (libraries yojson changelog common fmt)
 )
 
-
+(executable
+ (name author_cohorts)
+ (modules author_cohorts)
+ (libraries yojson changelog common fmt)
+)
 
 (executable
  (name social)

@@ -11,5 +11,5 @@ let () =
   let changelog = changelog_from_file filename in
   let ids = ids changelog in
   let contributions = AR.sorted_contributions changelog in
-  Fmt.pr "@[<v># Contributor Authored Reviewed@,%a@]@."
+  Fmt.pr "@[<v># Authored Reviewed ID Name@,%a@]@."
     (Fmt.list @@ pp_contrib ids) contributions

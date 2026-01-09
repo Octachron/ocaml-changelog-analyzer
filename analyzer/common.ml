@@ -71,7 +71,7 @@ module AR = struct
       let d_any = x.any -. y.any in
       let d_author = x.author -. y.author in
       let d_review = x.review -. y.review in
-      let d = 100.*. d_any +. 10. *. d_author +. d_review in
+      let d = 1000.*. d_author +. 10. *. d_review +. d_any in
       if d = 0. then d_any else d
     let (+) x y = {author=x.author +. y.author; review=x.review +. y.review; any = x.any +. y.any}
     let (/.) x n = {author= x.author /. n; review = x.review /. n; any = x.any /. n  }
