@@ -21,6 +21,8 @@ let rec ligature = function
     "regression" :: "fix" :: q
   | "advice" :: "and" :: "review" :: q ->
     "review" :: q
+  | "motivation" :: "," :: ("review" :: _ as q) ->
+    "," :: ligature q
   | "applied" :: "by" :: q ->
     "," :: "applied" :: "by" :: ligature q
   | x :: q -> x :: ligature q
@@ -57,6 +59,7 @@ let normalize_name ~warn = function
   | [("Nathanaël"|"Naëla"); "Courant"] -> ["Nathanaëlle"; "Courant"]
   | ["Frederic"; "Bour"] -> ["Frédéric"; "Bour"]
   | ["Sebastien"; "Hinderer"] ->  ["Sébastien"; "Hinderer"]
+  | ["Sivaramakrishnan"] -> ["KC"; "Sivaramakrishnan"]
   (* pseudo*)
   | ["octachron@"] -> ["Florian"; "Angeletti"]
   | ["Daniel"; "C."; "Bünzli"] ->  ["Daniel"; "Bünzli"]
