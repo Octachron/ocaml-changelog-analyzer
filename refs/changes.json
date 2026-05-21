@@ -1600,7 +1600,7 @@
         "text": "refactor the STW-participants machinery to add an intermediate\n  category of 'parked' domain structures.",
         "breaking change": false,
         "authors": [ [ "Gabriel", "Scherer" ] ],
-        "review": [ [ "Sivaramakrishnan" ] ]
+        "review": [ [ "KC", "Sivaramakrishnan" ] ]
       },
       {
         "references": [ 14198 ],
@@ -5235,7 +5235,7 @@
         "references": [ 12700 ],
         "text": ", continuing #11763 and trying to address #12660:\n  Use the correct types for primitives when generating the table of primitives\n  used by ocamlrun.",
         "breaking change": false,
-        "authors": [ [ "Xavier", "Leroy" ], [ "motivation" ] ],
+        "authors": [ [ "Xavier", "Leroy" ] ],
         "improvements": [ [ "Antonin", "Décimo" ] ],
         "review": [ [ "Antonin", "Décimo" ] ]
       },
