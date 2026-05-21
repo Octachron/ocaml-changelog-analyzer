@@ -176,9 +176,10 @@ module Scanning = struct
         Normal {major;minor;patch;date=day, month, year} in
       let mkm major minor = Maintenance {major;minor} in
       one_of s [
-          "OCaml %d.%02d.%d (%s %s %s@)", mk;
-          "OCaml %d.%d maintenance branch", mkm;
-          "OCaml %d.%d, maintenance version", mkm;
-          "OCaml %d.%d maintenance version", mkm;
-        ]
+        "OCaml %d.%02d.%d (%s %s %s@)", mk;
+        "OCaml %d.%d maintenance branch", mkm;
+        "OCaml %d.%d, maintenance version", mkm;
+        "OCaml %d.%d maintenance version", mkm;
+        "OCaml %d.%d.%d", (fun major minor patch -> mk major minor patch "??" "??" "??")
+      ]
 end
