@@ -36,6 +36,7 @@ let strip_postfix q = match List.rev q with
   | ("Coq" | "Frama-C" | "testing") :: "for" :: q -> List.rev q
   | _ :: "XCode" :: "against" :: q -> List.rev q
   | _ :: "in" :: q -> List.rev q
+  | "team" :: "stdlib":: "the" :: "for" :: q -> List.rev q
   | [ "skills"; "MSDN"; "impressive"; "displaying"] -> []
   | _ -> q
 
@@ -89,6 +90,9 @@ let normalize_name ~warn = function
   | (["Khoo"; "Yit"; "Phang"] as q)
   | ("Github"|"github") :: "user" :: q
   | (["Xavier"; "Van"; "de"; "Woestyne" ] as q) ->  q
+  | ["Jack"; "Nørskov"; "Jørgensen"]
+  | ["Hari"; "Hara"; "Naveen"; "S"]
+  | ["Hernan"; "Ponce"; "de"; "Leon"] as q -> q
     (* mixed format *)
   | ["Leo";  "White"; "(#2269)"] -> ["Leo"; "White"]
   | ["&"; "Mark"; "Shinwell" ] -> ["Mark"; "Shinwell" ]
@@ -163,10 +167,12 @@ let split_section x = match strip_postfix (List.filter ((<>) "") x) with
   | ("feature" | "original") :: "request" :: ("from"|"by") :: q ->
     [Group_by.Sep "feature request"; elt q]
   | "bug" :: "reported" :: q
-  | "regression" :: "spotted" :: q ->
+  | "regression" :: "spotted" :: q
+  | "temporary" :: "regression" :: "reported" :: "by" :: q ->
     [Group_by.Sep "report"; elt q]
   | "stealth" :: "commit" :: "by" :: q ->
     [ Sep "stealth commit"; elt q]
+  | "fix" :: "reviewed" :: "by" :: q -> [Sep "review"; elt q]
   | x :: y :: ("review" | "reviewed") :: "by" :: q ->
     [Elt [x;y]; Sep "review"; elt q]
   | x :: y :: z :: ("review" | "reviewed") :: "by" :: q ->
