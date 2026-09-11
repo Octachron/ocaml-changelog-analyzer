@@ -173,6 +173,8 @@ let split_section x = match strip_postfix (List.filter ((<>) "") x) with
   | "regression" :: "spotted" :: q
   | "temporary" :: "regression" :: "reported" :: "by" :: q ->
     [Group_by.Sep "report"; elt q]
+  | "other" :: "regression" :: "reported" :: "by" :: q ->
+    [Group_by.Sep "more report"; elt q]
   | "stealth" :: "commit" :: "by" :: q ->
     [ Sep "stealth commit"; elt q]
   | "fix" :: "reviewed" :: "by" :: q -> [Sep "review"; elt q]
